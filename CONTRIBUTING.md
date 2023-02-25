@@ -30,12 +30,21 @@ Members who do not attend or make any notable progress on a task for two standup
 ## Coding Standards
 
 -Everyone uses Visual Studio Code
+
 -Use camelCase
+
 -Use Semicolons
+
 -Write comments for all code
+
 -Keep code as simple as possible
+
 -Keep function definitions at the bottom of your code
+
 -Make sure code is not redundant (Reuse code as much as possible)
+
 -Make comprehensible debug statements
+
 -Comment out any debugging lines that are not used
+
 -Remove all dead code
