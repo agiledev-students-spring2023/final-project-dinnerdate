@@ -48,3 +48,14 @@ Members who do not attend or make any notable progress on a task for two standup
 -Comment out any debugging lines that are not used
 
 -Remove all dead code
+
+## Contributions
+
+- Each person will take on the role of scrum master and product owner at least once
+- Work will be divided amongst the members equally throughout the duration of the project
+
+## Set Up
+
+- Each member must use Visual Studio Code
+- All members must use Github
+- All members must run 'npm install' to install the necessary packages
