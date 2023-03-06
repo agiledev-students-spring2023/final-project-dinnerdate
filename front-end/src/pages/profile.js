@@ -5,7 +5,7 @@ const Profile = () => {
             <div class="container">
             <div class="box" style={{paddingBottom:"30px"}}>
                 <img style={{width:"200px", height:"200px", borderRadius:"80px", paddingBottom:"30px"}}
-                src="https://www.nicepng.com/png/detail/933-9332131_profile-picture-default-png.png" alt="profile image"/> 
+                src="https://www.nicepng.com/png/detail/933-9332131_profile-picture-default-png.png" alt=""/> 
                 <button>edit</button>
             </div>
             <div class="About">
@@ -18,7 +18,7 @@ const Profile = () => {
                  <p> User's email address</p>
             </div>
             <div style={{paddingBottom:"10px"}}>
-                <h3 style={{paddingBottom:"5px"}}><button>edit</button>Phone number:</h3>
+                <h3 style={{paddingBottom:"5px"}}><button>edit</button> Phone number:</h3>
                     <p> User's phone number</p>
             </div>
             <div style={{paddingBottom:"10px"}} >
