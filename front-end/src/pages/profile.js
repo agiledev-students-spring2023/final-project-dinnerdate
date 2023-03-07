@@ -14,6 +14,10 @@ const Profile = () => {
                     <p> User's first name, last name</p>
             </div>
             <div style={{paddingBottom:"10px"}}>
+                <h3 style={{paddingBottom:"5px"}}><button>edit</button> Bio:</h3>
+                <p> Description user will write about themselves for other viewers to see</p>
+            </div>
+            <div style={{paddingBottom:"10px"}}>
                 <h3 style={{paddingBottom:"5px"}}><button>edit</button> Email address: </h3>
                  <p> User's email address</p>
             </div>
@@ -29,6 +33,11 @@ const Profile = () => {
             <h3 style={{paddingBottom:"5px"}}><button>edit</button> Password:</h3>
                     <p> ********* </p>
             </div>
+            </div>
+            <div style={{padding:"30px"}}>
+                <h3>Your last post:</h3>
+                <p>User's last post they uploaded for date</p>
+                <p style={{fontSize:"10px"}}>Date and time post was created</p>
             </div>
         </div>
         </div>
