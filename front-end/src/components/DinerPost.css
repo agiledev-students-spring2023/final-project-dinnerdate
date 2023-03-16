@@ -1,0 +1,26 @@
+.text{
+    text-align: left;
+}
+
+.diner-info {
+    padding-left: 75px;
+}
+.diner-post{
+    border: 2px solid black;
+    margin-top: -1px; 
+    transition-duration: 0.4s;
+}
+
+.diner-post :is(h1, h2, h3, h4, h5, h6){
+    transition-duration: 0.4s;
+}
+
+.diner-post:hover, .selected{
+    border: 2px solid #f1356d;
+}
+
+.diner-post:hover :is(h1, h2, h3, h4, h5, h6){
+    color: #f1356d;
+}
+
+
