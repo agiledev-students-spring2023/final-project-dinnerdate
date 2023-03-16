@@ -1,24 +1,25 @@
+import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import './button.css'
 
-const Button = ({ color, text, onClick }) => {
+const Button = ( props ) => {
   return (
     <button
-      onClick={onClick}
-      style={{ backgroundColor: color }}
+      onClick={props.onClick}
       className='btn'
     >
-      {text}
+      {props.link ? <Link to={props.link}>{props.text}</Link> : props.text}
     </button>
   )
 }
 
 Button.defaultProps = {
-  color: 'steelblue',
+  text: "button",
+  onClick: () => { console.log("clicked") },
 }
 
 Button.propTypes = {
   text: PropTypes.string,
-  color: PropTypes.string,
   onClick: PropTypes.func,
 }
 
