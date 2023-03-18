@@ -3,9 +3,11 @@ import Messages from './pages/messages'
 import Profile from './pages/profile'
 import EditPost from './pages/editpost'
 import Login from './pages/login'
+import Register from './pages/register'
 import LocationInfo from './pages/location-info'
 import CreatePost from './pages/createpost'
 import Home from './pages/home'
+import HomeConfirmed from './pages/homeConfirmed'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 function App() {
@@ -19,8 +21,10 @@ function App() {
             <Route path="/profile"><Profile /></Route>
             <Route path="/edit-post"><EditPost /></Route>
             <Route path="/login"><Login /></Route>
+            <Route path="/register"><Register /></Route>
             <Route path="/location-info"><LocationInfo /></Route>
             <Route path="/create-post"><CreatePost /></Route>
+            <Route path="/date"><HomeConfirmed /></Route>
             <Route path="/"><Home /></Route>
           </Switch>
         </div>

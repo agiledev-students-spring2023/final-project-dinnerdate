@@ -1,4 +1,4 @@
-import './dinerpost.css'
+import './DinerPost.css'
 const DinerPost = (props) => {
     return (
         <div className={props.isSelected ? "diner-post selected" : "diner-post"} onClick={() => props.onClick(props.id)}>
