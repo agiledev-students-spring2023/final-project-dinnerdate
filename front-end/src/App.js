@@ -10,26 +10,33 @@ import Home from './pages/home'
 import HomeConfirmed from './pages/homeConfirmed'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+
 function App() {
   return (
-    <Router>
+    <>
+      <Router>
       <div className="App">
         <Navbar />
-        <div className="content">
-          <Switch>
-            <Route path="/messages"><Messages /></Route>
-            <Route path="/profile"><Profile /></Route>
-            <Route path="/edit-post"><EditPost /></Route>
-            <Route path="/login"><Login /></Route>
-            <Route path="/register"><Register /></Route>
-            <Route path="/location-info"><LocationInfo /></Route>
-            <Route path="/create-post"><CreatePost /></Route>
-            <Route path="/date"><HomeConfirmed /></Route>
-            <Route path="/"><Home /></Route>
-          </Switch>
-        </div>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <div className="content">
+            <Switch>
+              <Route path="/messages"><Messages /></Route>
+              <Route path="/profile"><Profile /></Route>
+              <Route path="/edit-post"><EditPost /></Route>
+              <Route path="/login"><Login /></Route>
+              <Route path="/register"><Register /></Route>
+              <Route path="/location-info"><LocationInfo /></Route>
+              <Route path="/create-post"><CreatePost /></Route>
+              <Route path="/date"><HomeConfirmed /></Route>
+              <Route path="/"><Home /></Route>
+            </Switch>
+          </div>
+        </LocalizationProvider>
       </div>
     </Router>
+    </>
   );
 }
 
