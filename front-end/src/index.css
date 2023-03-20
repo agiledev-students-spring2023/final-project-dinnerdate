@@ -1,9 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cantarell&display=swap');
+
+:root {
+  --btn-color: #9690ce;
+}
+
+.btn {
+  color: var(--btn-color);
+}
+.btn a{
+  color: var(--btn-color); 
+}
+
+.btn:hover {
+  background-color: var(--btn-color);
+}
 
 /* base styles */
 * {
   margin: 0;
-  font-family: "Quicksand";
+  font-family: 'Cantarell', sans-serif;
   color: #333;
 }
 .navbar {
@@ -15,7 +30,7 @@
   border-bottom: 1px solid #f2f2f2;
 }
 .navbar h1 {
-  color: #f1356d;
+  color: var(--btn-color);
 }
 .navbar .links {
   margin-left: auto;
@@ -26,7 +41,7 @@
   padding: 6px;
 }
 .navbar a:hover {
-  color: #f1356d;
+  color: var(--btn-color);
 }
 .content {
   max-width: 600px;
