@@ -8,10 +8,12 @@ import LocationInfo from './pages/location-info'
 import CreatePost from './pages/createpost'
 import Home from './pages/home'
 import HomeConfirmed from './pages/homeConfirmed'
+import HomeLFD from './pages/home-lfd'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+
 
 function App() {
   return (
@@ -30,6 +32,7 @@ function App() {
               <Route path="/location-info"><LocationInfo /></Route>
               <Route path="/create-post"><CreatePost /></Route>
               <Route path="/date"><HomeConfirmed /></Route>
+              <Route path="/home-lfd"><HomeLFD /></Route>
               <Route path="/"><Home /></Route>
             </Switch>
           </div>
