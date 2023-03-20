@@ -1,5 +1,6 @@
 import Navbar from './components/Navbar'
-import Messages from './pages/messages'
+import Chat from './pages/chat'
+import Conversation from './pages/conversation'
 import Profile from './pages/profile'
 import EditPost from './pages/editpost'
 import Login from './pages/login'
@@ -22,7 +23,8 @@ function App() {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <div className="content">
             <Switch>
-              <Route path="/messages"><Messages /></Route>
+              <Route path="/chat"><Chat /></Route>
+              <Route path="/conversation"><Conversation/></Route>
               <Route path="/profile"><Profile /></Route>
               <Route path="/edit-post"><EditPost /></Route>
               <Route path="/login"><Login /></Route>
