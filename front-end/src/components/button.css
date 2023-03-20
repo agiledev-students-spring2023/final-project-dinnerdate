@@ -1,0 +1,26 @@
+.btn {
+    background-color: white;
+    color: #f1356d;
+    text-align: center;
+    border: 2px solid #f1356d;
+    transition-duration: 0.4s;
+    cursor: pointer;
+    padding: 10px;
+    border-radius:8px;
+}
+
+.btn a {
+    color: #f1356d; 
+    transition-duration: 0.4s;
+    text-decoration: none;
+}
+
+
+.btn:hover {
+    background-color: #f1356d;
+    color: white;
+}
+
+.btn:hover a{
+    color: white;
+}

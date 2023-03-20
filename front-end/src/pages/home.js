@@ -1,7 +1,8 @@
+import './home.css';
 const Home = () => {
     return (
         <div className="home">
-            <h2>This is the home page.</h2>
+            <h1>Find / Create a Date</h1>
         </div>
     );
 }
