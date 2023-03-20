@@ -53,7 +53,7 @@ const LocationInfo = () => {
                                : <p>There are currently no diners for this restaurant.</p>}
 
             <div className="left-btn"><Button text="Back"/></div>
-            <div className="right-btn">{selectedDiner != -1 ? <Button text="Select" link="/home"/> : <p></p>}</div>
+            <div className="right-btn">{selectedDiner != -1 ? <Link to="/date"><Button text="Select" /></Link> : <p></p>}</div>
             {/* Select onClick should link to appropriate page */}
         </div>
     );
