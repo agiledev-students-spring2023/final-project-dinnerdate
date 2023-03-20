@@ -1,8 +1,11 @@
+/* :root {
+    --btn-color: #9690ce;
+  } */
 .btn {
     background-color: white;
-    color: #f1356d;
+    /* color: var(--btn-color); */
     text-align: center;
-    border: 2px solid #f1356d;
+    border: 2px solid var(--btn-color);
     transition-duration: 0.4s;
     cursor: pointer;
     padding: 10px;
@@ -10,17 +13,18 @@
 }
 
 .btn a {
-    color: #f1356d; 
+    /* color: var(--btn-color);  */
     transition-duration: 0.4s;
     text-decoration: none;
 }
 
 
 .btn:hover {
-    background-color: #f1356d;
+    /* background-color: var(--btn-color); */
     color: white;
 }
 
 .btn:hover a{
     color: white;
 }
+
