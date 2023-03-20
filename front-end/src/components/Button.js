@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import './button.css'
 
@@ -8,7 +7,7 @@ const Button = ( props ) => {
       onClick={props.onClick}
       className='btn'
     >
-      {props.link ? <Link to={props.link}>{props.text}</Link> : props.text}
+      {props.text}
     </button>
   )
 }
