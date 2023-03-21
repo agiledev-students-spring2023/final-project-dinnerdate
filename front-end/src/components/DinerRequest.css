@@ -19,11 +19,11 @@
 }
 
 .diner-request:hover, .selected{
-    border: 2px solid #f1356d;
+    border: 2px solid #9690ce;
 }
 
 .diner-request:hover :is(h1, h2, h3, h4, h5, h6){
-    color: #f1356d;
+    color: #9690ce;
 }
 
 
