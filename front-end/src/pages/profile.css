@@ -1,11 +1,11 @@
-.login label {
+.profile label {
     padding: 10px 0px 0px 0px;
     font-weight: bold;
     text-align: left;
     display: block;
-  }
+}
 
-.login input {
+.profile input {
     width: 100%;
     padding: 7px 10px;
     margin: 10px 0;
@@ -18,10 +18,8 @@
     margin: 10px 0; 
 }
 
-.link {
-    margin-top: 15px;
-    color: #9690ce;
-    float: left;
-}
+.save-btn { float: right; }
 
-.reg-btn { float: right; }
+.editProfile{
+    padding-bottom: 50px;
+}

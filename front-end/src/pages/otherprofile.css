@@ -1,0 +1,25 @@
+.acc-btn Button{ 
+    float: right; 
+    width: 280px;
+}
+
+.dec-btn Button{ 
+    float: left; 
+    width: 280px;
+}
+
+#wrapper {
+    padding-top: 20px;
+    width: stretch;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden; 
+}
+#first {
+    width: 300px;
+    float:left; 
+}
+#second {
+    overflow: hidden; 
+}

@@ -2,6 +2,7 @@ import Navbar from './components/Navbar'
 import Chat from './pages/chat'
 import Conversation from './pages/conversation'
 import Profile from './pages/profile'
+import OtherProfile from './pages/otherprofile'
 import EditPost from './pages/editpost'
 import Login from './pages/login'
 import Register from './pages/register'
@@ -28,6 +29,7 @@ function App() {
               <Route path="/chat"><Chat /></Route>
               <Route path="/conversation"><Conversation/></Route>
               <Route path="/profile"><Profile /></Route>
+              <Route path="/user"><OtherProfile /></Route>
               <Route path="/edit-post"><EditPost /></Route>
               <Route path="/login"><Login /></Route>
               <Route path="/register"><Register /></Route>
