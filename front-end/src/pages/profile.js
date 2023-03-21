@@ -1,5 +1,7 @@
 import './profile.css'
 import Button from '../components/Button.js'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+
 const Profile = () => {
     return (
         <div className="profile">
@@ -24,7 +26,7 @@ const Profile = () => {
                     </label>
                     <label>
                     <p>DOB</p>
-                    <input type="password" placeholder="MM/DD/YYYY"/>
+                    <DatePicker disableFuture/>
                     </label>
                     <label>
                     <p>Password</p>
