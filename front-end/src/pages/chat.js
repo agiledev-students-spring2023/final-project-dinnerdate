@@ -6,7 +6,7 @@ const Chat = () => {
     return (
         <div className="chat">
             <h1>Your Conversation</h1>
-          
+            <ChatRoom />
             <ChatRoom />
             <ChatRoom />
             <ChatRoom />

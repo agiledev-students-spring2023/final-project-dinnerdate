@@ -12,7 +12,6 @@ import Home from './pages/home'
 import HomeConfirmed from './pages/homeConfirmed'
 import HomeLFD from './pages/home-lfd'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
