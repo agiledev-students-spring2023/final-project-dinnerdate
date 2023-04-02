@@ -1,5 +1,6 @@
 import './createpost.css'
 import Button from '../components/Button.js'
+import { Link } from "react-router-dom";
 
 import dayjs from 'dayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
@@ -43,7 +44,11 @@ const CreatePost = () => {
                 <textarea
                     required
                 ></textarea>
-                <div className="right-btn"><Button text="Post"/></div>
+                <div className="right-btn">
+                    <Link to="home-lfd">
+                    <Button text="Post"/>
+                    </Link>
+                </div>
                 
             </form>
         </div>

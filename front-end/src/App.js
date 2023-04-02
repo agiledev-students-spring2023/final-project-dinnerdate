@@ -5,12 +5,12 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import Navbar from './components/Navbar'
 
 import Chat from './pages/chat'
-import Conversation from './pages/conversation'
 import CreatePost from './pages/createpost'
 import EditPost from './pages/editpost'
 import Home from './pages/home'
 import HomeConfirmed from './pages/homeConfirmed'
 import HomeLFD from './pages/home-lfd'
+import Inbox from './pages/inbox'
 import LocationInfo from './pages/location-info'
 import Login from './pages/login'
 import OtherProfile from './pages/otherprofile'
@@ -26,14 +26,14 @@ function App() {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <div className="content">
             <Switch>
-              <Route path="/chat"><Chat /></Route>
-              <Route path="/conversation"><Conversation/></Route>
+              <Route path="/inbox"><Inbox /></Route>
+              <Route path="/chat/:userId"><Chat /></Route>
 
               <Route path="/create-post"><CreatePost /></Route>
               <Route path="/edit-post"><EditPost /></Route>
               
-              <Route path="/user"><OtherProfile /></Route>
-              <Route path="/profile"><Profile /></Route>
+              <Route path="/user:userId"><OtherProfile /></Route>
+              {/* <Route path="/profile"><Profile /></Route> */}
 
               <Route path="/login"><Login /></Route>           
               <Route path="/register"><Register /></Route>

@@ -1,5 +1,7 @@
 import './editpost.css'
 import Button from '../components/Button.js'
+import { Link } from "react-router-dom";
+
 import dayjs from 'dayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { useMemo, useState } from 'react'
@@ -63,7 +65,11 @@ const EditPost = (props) => {
                     onChange={handleChangeDescription}
                     required
                 ></textarea>
-                <div className="middle-btn"><Button text="Post"/></div>
+                <div className="middle-btn">
+                    <Link to="home-lfd">
+                        <Button text="Post"/>
+                    </Link>
+                </div>
                 
             </form>
         </div>
