@@ -5,8 +5,8 @@ const Navbar = () => {
             <h1>DinnerDate</h1>
             <div className="links">
                 <Link to='/home'>Home</Link>
-                <Link to='/chat'>Chat</Link>
-                <Link to='/profile'>My Profile</Link>
+                <Link to='/inbox'>Inbox</Link>
+                <Link to='/user:userId'>My Profile</Link>
             </div>
         </nav>
     );

@@ -44,9 +44,8 @@ const HomeLFD = () => {
                                 <p>There's currently no one available, tough love :c</p>}
             <div className="directions"><Button text="Get Directions"/></div>
             <div className="edit-post"><Link to="edit-post"><Button text="Edit Post"/></Link></div>
-            <div className="remove-post"><Button text="Remove Post"/></div>
+            <div className="remove-post"><Link to="/"><Button text="Remove Post"/></Link></div>
         </div>
-        
     );
 }
 

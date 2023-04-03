@@ -9,7 +9,11 @@ const Register = () => {
 
             <form >
                 <label>
-                <p>Name</p>
+                <p>First Name</p>
+                <input type="text" required/>
+                </label>
+                <label>
+                <p>Last Name</p>
                 <input type="text" required/>
                 </label>
                 <label>
