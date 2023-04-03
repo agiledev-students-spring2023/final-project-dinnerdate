@@ -6,9 +6,8 @@ const DinerPosts = (props) => {
                 key={dinerPost.id}
                 id={dinerPost.id}
                 title={dinerPost.title} 
-                date={dinerPost.date}
-                time={dinerPost.time}
-                author={dinerPost.author}
+                datetime={dinerPost.datetime}
+                full_name={dinerPost.full_name}
                 rating={dinerPost.rating}
                 num_ratings={dinerPost.num_ratings}
                 isSelected={dinerPost.id === props.selectedDiner}

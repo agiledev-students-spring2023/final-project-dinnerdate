@@ -50,7 +50,8 @@ const RestaurantInfo = ( props ) => {
                     "rating": restaurant["rating"],
                     "description": restaurant["description"]
                 });
-            });
+            })
+            .catch(err => console.log("Error: " + err ? err : "Unexpected error occurred."));
     };
 
     const fetchDinerPosts = () => {
@@ -58,7 +59,7 @@ const RestaurantInfo = ( props ) => {
         const dinerPosts = [];
         for(let i = 0; i < randInt; i++){
             // slug should be id of diner post in the future
-            Axios.get(`http://localhost:3000/diner_post/${randInt}`)
+            Axios.get(`http://localhost:3000/diner-post/${randInt}`)
                 .then((res) => {
                     const post = res.data;
                     const dinerPost = ({
@@ -71,9 +72,12 @@ const RestaurantInfo = ( props ) => {
                         "num_ratings": post["num_ratings"]
                     })
                     dinerPosts.append(dinerPost);
-                });
+                })
+                .catch(err => console.log("Error: " + err ? err : "Unexpected error occurred."));
         }
-        setDiners(dinerPosts);
+        if(dinerPosts.length != 0) {
+            setDiners(dinerPosts);
+        }
     };
 
     useEffect(() => {
