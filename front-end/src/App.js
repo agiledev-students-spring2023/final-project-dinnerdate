@@ -11,7 +11,7 @@ import Home from './pages/home'
 import HomeConfirmed from './pages/homeConfirmed'
 import HomeLFD from './pages/home-lfd'
 import Inbox from './pages/inbox'
-import LocationInfo from './pages/location-info'
+import RestaurantInfo from './pages/restaurant-info'
 import Login from './pages/login'
 import OtherProfile from './pages/otherprofile'
 import Profile from './pages/profile'
@@ -32,13 +32,13 @@ function App() {
               <Route path="/create-post"><CreatePost /></Route>
               <Route path="/edit-post"><EditPost /></Route>
               
-              <Route path="/user:userId"><OtherProfile /></Route>
+              <Route path="/user/:userId"><OtherProfile /></Route>
               {/* <Route path="/profile"><Profile /></Route> */}
 
               <Route path="/login"><Login /></Route>           
               <Route path="/register"><Register /></Route>
 
-              <Route path="/location-info"><LocationInfo /></Route>
+              <Route path="/restaurant/:restaurantId"><RestaurantInfo /></Route>
               <Route path="/date"><HomeConfirmed /></Route>
               <Route path="/home-lfd"><HomeLFD /></Route>
               <Route path="/"><Home /></Route>

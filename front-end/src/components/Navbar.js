@@ -6,7 +6,7 @@ const Navbar = () => {
             <div className="links">
                 <Link to='/home'>Home</Link>
                 <Link to='/inbox'>Inbox</Link>
-                <Link to='/user:userId'>My Profile</Link>
+                <Link to='/user/:userId'>My Profile</Link>
             </div>
         </nav>
     );

@@ -1,10 +1,12 @@
 import { Link } from "react-router-dom";
-import { useState } from 'react'
-import './locationInfo.css';
+import { useState, useEffect } from 'react';
+import Axios from 'axios';
+import { useParams } from 'react-router-dom';
+import './restaurant-info.css';
 import Button from '../components/Button.js'
-import DinerPost from '../components/DinerPost.js'
 import DinerPosts from '../components/DinerPosts.js'
 
+// only used in case mockaroo API does not work
 const sampleRestaurantData = {
     "name": 'Restaurant Name',
     "address": '5 University Pl, New York, NY 10003',
@@ -16,26 +18,69 @@ const sampleDinerData = [
     {
     "id": 0,
     "title": "Looking for a Valentines",
-    "date": "MM/DD/YY",
-    "time": "HH:MM PM",
-    "author": "Johnny Appleseed",
+    "datetime": "MM/DD/YY HH:MM PM",
+    "full_name": "Johnny Appleseed",
     "rating": "4.8",
     "num_ratings": "23"
     },
     {
     "id": 1,
     "title": "hi there!",
-    "date": "MM/DD/YY",
-    "time": "HH:MM PM",
-    "author": "Johnny Peachseed",
+    "datetime": "MM/DD/YY HH:MM PM",
+    "full_name": "Johnny Peachseed",
     "rating": "4.5",
     "num_ratings": "7"
     }];
 
-const LocationInfo = () => {
+const RestaurantInfo = ( props ) => {
     const [restaurantData, setRestaurantData] = useState(sampleRestaurantData);
     const [diners, setDiners] = useState([...sampleDinerData]);
     const [selectedDiner, setSelectedDiner] = useState([-1]);
+
+    const { restaurantId } = useParams();
+
+    const fetchRestaurantInfo = () => {
+        Axios.get(`http://localhost:3000/restaurant/${restaurantId}`)
+            .then((res) => {
+                const restaurant = res.data;
+                setRestaurantData({
+                    "id": restaurant["id"],
+                    "name": restaurant["name"],
+                    "address": restaurant["address"],
+                    "rating": restaurant["rating"],
+                    "description": restaurant["description"]
+                });
+            });
+    };
+
+    const fetchDinerPosts = () => {
+        const randInt = Math.floor(Math.random() * (4) + 1);
+        const dinerPosts = [];
+        for(let i = 0; i < randInt; i++){
+            // slug should be id of diner post in the future
+            Axios.get(`http://localhost:3000/diner_post/${randInt}`)
+                .then((res) => {
+                    const post = res.data;
+                    const dinerPost = ({
+                        "id": post["id"],
+                        "title": post["title"],
+                        "datetime": post["datetime"],
+                        "full_name": post["full_name"],
+                        "description": post["description"],
+                        "rating": post["rating"],
+                        "num_ratings": post["num_ratings"]
+                    })
+                    dinerPosts.append(dinerPost);
+                });
+        }
+        setDiners(dinerPosts);
+    };
+
+    useEffect(() => {
+        fetchRestaurantInfo();
+        fetchDinerPosts();
+    }, [])
+    
     return (
         <div className="location-info">
             <h1>{restaurantData.name}</h1>
@@ -67,4 +112,4 @@ const CreatePost = () => {
     )
 }
 
-export default LocationInfo;
+export default RestaurantInfo;

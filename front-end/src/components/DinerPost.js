@@ -7,8 +7,8 @@ const DinerPost = (props) => {
             </div>
             <div className="diner-info"> 
                 <h2 className="text">{props.title}</h2>
-                <h5 className="text">{props.date} at {props.time}</h5>
-                <h3 className="text">{props.author} {props.rating}⭐ ({props.num_ratings} reviews)</h3>
+                <h5 className="text">{props.datetime}</h5>
+                <h3 className="text">{props.full_name} {props.rating}⭐ ({props.num_ratings} reviews)</h3>
                 {/* title, date, time, author, rating, num_ratings */}
             </div>
         </div>
