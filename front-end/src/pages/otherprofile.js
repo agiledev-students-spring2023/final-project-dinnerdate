@@ -10,7 +10,7 @@ const otherUserProfile = () => {
                         src="https://www.nicepng.com/png/detail/933-9332131_profile-picture-default-png.png" alt="" /></div>
                 <div id="second">The User bio will appear here...</div>
             </div>
-            <div className="dec-btn"><Link to="/location-info"><button>Decline</button></Link></div>
+            <div className="dec-btn"><Link to="/restaurant/:restaurantId"><button>Decline</button></Link></div>
             <div className="acc-btn"><Link to="/date"><button>Accept</button></Link></div>
         </div>
     );

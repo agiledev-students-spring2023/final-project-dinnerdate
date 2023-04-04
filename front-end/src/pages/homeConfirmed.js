@@ -10,7 +10,7 @@ const HomeConfirmed = () => {
 
             <Link className='options' to="/chat/:userId"><button>Chat with [DINER NAME]</button></Link>
             <Link className='options' to="/"><button>Get Directions</button></Link>
-            <Link className='options' to="/edit-post"><button>Edit Date</button></Link>
+            <Link className='options' to="/"><button>Edit Date</button></Link>
             <Link className='options' to="/home"><button>Cancel Date</button></Link>
         </div>
     );

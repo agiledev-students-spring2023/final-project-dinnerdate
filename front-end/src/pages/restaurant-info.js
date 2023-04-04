@@ -118,7 +118,7 @@ const CreatePost = () => {
 
 const DinerPost = ( props ) => {
     return (
-            <Link to="/" className="post diner-post">
+            <Link to="/user/:userId" className="post diner-post">
                 <img className="avatar" src={props.avatar_url}></img> 
                 <div className="diner-info"> 
                     <h2>{props.title}</h2>
