@@ -22,10 +22,10 @@ const CreatePost = () => {
             <h3>Create a post to find a date to eat with at [Restaurant Name]!</h3>
             <form>
                 <label>Title</label>
-                <input type="text" required />
+                <input className="input" type="text" required />
 
                 <label>Date and Time</label>
-                <DateTimePicker sx={{ borderColor: '#9690ce' }}
+                <DateTimePicker
                     defaultValue={dayjs().add(1, 'hour')}
                     disablePast
                     onError={(newError) => setError(newError)}
@@ -37,9 +37,9 @@ const CreatePost = () => {
                     />
                 
                 <label>Description</label>
-                <textarea required></textarea>
+                <textarea className="input" required></textarea>
 
-                <Link to="home-lfd" className="right-btn"><button>Post</button></Link>
+                <button className="post-btn"><Link to="home-lfd">Post</Link></button>
             </form>
         </div>
     );

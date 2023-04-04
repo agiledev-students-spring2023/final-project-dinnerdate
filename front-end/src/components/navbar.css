@@ -1,0 +1,22 @@
+/* NavBar */
+.navbar {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    max-width: 600px;
+    margin: 0 auto;
+    border-bottom: 1px solid var(--color-2);
+    max-width: 600px;
+}
+
+.navbar h1 {
+color: var(--color-1);
+}
+.navbar .links {
+margin-left: auto;
+}
+.navbar .links * {
+margin-left: 16px;
+text-decoration: none;
+padding: 6px;
+}

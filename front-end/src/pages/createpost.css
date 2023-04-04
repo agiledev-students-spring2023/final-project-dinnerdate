@@ -8,7 +8,8 @@
     display: block;
 }
 
-.create-post-form input, .create-post-form textarea {
+.create-post-form .input {
+    box-sizing: border-box;
     display: block;
     padding: 7px 10px;
     width: 100%;
@@ -16,4 +17,8 @@
     transition-duration: 0.4s;
 }
 
-.right-btn { float: right; }
+.create-post-form .post-btn {
+    display: flex;
+    margin-top: 10px;
+    margin-left: auto;
+}
