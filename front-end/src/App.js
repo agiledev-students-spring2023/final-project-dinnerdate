@@ -33,7 +33,7 @@ function App() {
               <Route path="/edit-post"><EditPost /></Route>
               
               <Route path="/user/:userId"><OtherProfile /></Route>
-              {/* <Route path="/profile"><Profile /></Route> */}
+              <Route path="/profile"><Profile /></Route>
 
               <Route path="/login"><Login /></Route>           
               <Route path="/register"><Register /></Route>

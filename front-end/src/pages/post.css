@@ -1,0 +1,29 @@
+/* This CSS file is used for both createpost.js and editpost.js. */
+.post-form h1, .post-form h2, .post-form h3 {
+    text-align: center;
+}
+
+.post-form label > p {
+    margin-top: 30px;
+    font-weight: bold;
+    display: block;
+}
+
+.post-form .input {
+    box-sizing: border-box;
+    display: block;
+    padding: 7px 10px;
+    width: 100%;
+    resize: vertical;
+    transition-duration: 0.4s;
+}
+
+.post-form textarea {
+    height: 300px;
+}
+
+.post-form .post-btn {
+    display: flex;
+    margin-top: 10px;
+    margin-left: auto;
+}

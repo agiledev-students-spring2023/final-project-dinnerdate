@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
 import './home-lfd.css';
-import Button from '../components/Button.js'
 import { useState } from 'react'
-import DinerRequest from '../components/DinerRequest';
 import DinerRequests from '../components/DinerRequests';
 
 const sampleDinerData = [
@@ -42,9 +40,9 @@ const HomeLFD = () => {
                                                 onClick={(id) => setSelectedDiner(id)} 
                                                 selectedDiner={selectedDiner}/>: 
                                 <p>There's currently no one available, tough love :c</p>}
-            <div className="directions"><Button text="Get Directions"/></div>
-            <div className="edit-post"><Link to="edit-post"><Button text="Edit Post"/></Link></div>
-            <div className="remove-post"><Link to="/"><Button text="Remove Post"/></Link></div>
+            <Link className="get-directions" to="/">Get Directions</Link>
+            <Link className="edit-post" to="edit-post"><button>Edit Post</button></Link>
+            <Link className="remove-post" to="/"><button>Remove Post</button></Link>
         </div>
     );
 }

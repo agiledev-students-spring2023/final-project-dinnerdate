@@ -1,5 +1,4 @@
 import './profile.css'
-import Button from '../components/Button.js'
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 const Profile = () => {
@@ -8,7 +7,7 @@ const Profile = () => {
             <div class="box" style={{ paddingBottom: "30px" }}>
                     <img style={{ width: "200px", height: "200px", borderRadius: "80px", paddingBottom: "30px" }}
                         src="https://www.nicepng.com/png/detail/933-9332131_profile-picture-default-png.png" alt="" />
-                    <Button text="Edit"/>
+                    <button>Edit</button>
             </div>
             <div className='editProfile'>
                 <form >
@@ -32,7 +31,7 @@ const Profile = () => {
                     <p>Password</p>
                     <input type="password" placeholder="********"/>
                     </label>
-                    <div className="save-btn"><Button text="Save"/></div>
+                    <div className="save-btn"><button>Save</button></div>
                 </form>
             </div>
             <div style={{padding:"30px"}}>

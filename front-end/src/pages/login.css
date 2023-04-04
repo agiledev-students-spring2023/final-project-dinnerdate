@@ -1,27 +1,33 @@
-.login label {
-    padding: 10px 0px 0px 0px;
-    font-weight: bold;
-    text-align: left;
-    display: block;
-  }
-
-.login input {
-    width: 100%;
-    padding: 7px 10px;
-    margin: 10px 0;
-    border: 1px solid #ddd;
-    box-sizing: border-box;
-    resize: vertical;
+.login h1 {
+    padding-bottom: 15px;
+}
+.login .name {
+    display: flex;
+    align-items: center;
 }
 
-.input {
-    margin: 10px 0; 
+.login .name * {
+    width: 100%;
+}
+
+.login input {
+    box-sizing: border-box;
+    padding: 7px 10px;
+    width: 100%;
+    transition-duration: 0.4s;
 }
 
 .link {
-    margin-top: 15px;
-    color: #9690ce;
+    text-decoration: underline;
+    color: var(--color-1);
     float: left;
+}
+.link:hover{
+    filter: brightness(70%);
+}
+
+.login p {
+    font-weight: bold;
 }
 
 .login-btn { float: right; }

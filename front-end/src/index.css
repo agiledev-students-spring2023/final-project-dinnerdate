@@ -2,6 +2,7 @@
 
 :root {
   --color-1: #9690ce;
+  --color-2: #ddd;
 }
 
 /* All elements on the page */
@@ -19,12 +20,22 @@
 }
 
 /* When button is hovered over, it changes color */
-.btn {
+button {
+  background-color: white;
+  border: 1px solid var(--color-2);
+  border-radius:8px;
   color: var(--color-1);
+  cursor: pointer;
+  padding: 9px 10px;
+  text-align: center;
   transition-duration: 0.4s;
 }
-.btn:hover {
+button:hover {
   background-color: var(--color-1);
+  color: white;
+}
+button:hover a{
+  color: white;
 }
 
 /* When link is hovered over, it changes color */
@@ -36,24 +47,15 @@ a:hover {
   color: var(--color-1); 
 }
 
-
-/* NavBar */
-.navbar {
-  padding: 20px;
-  display: flex;
-  align-items: center;
-  max-width: 600px;
-  margin: 0 auto;
-  border-bottom: 1px solid #f2f2f2;
+/* Styling for all input and textarea elements */
+.input {
+  border: 1px solid var(--color-2);
+  border-radius:8px;
 }
-.navbar h1 {
-  color: var(--color-1);
+.input:hover, .input:focus {
+  outline: none !important;
+  border: 1px solid var(--color-1); 
 }
-.navbar .links {
-  margin-left: auto;
-}
-.navbar a {
-  margin-left: 16px;
-  text-decoration: none;
-  padding: 6px;
+.input:focus {
+  box-shadow: 0 0 10px var(--color-1); 
 }
