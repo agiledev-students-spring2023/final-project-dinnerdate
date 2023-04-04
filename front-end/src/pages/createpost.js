@@ -1,10 +1,8 @@
 import './createpost.css'
-import Button from '../components/Button.js'
-import { Link } from "react-router-dom";
-
-import dayjs from 'dayjs';
-import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { useMemo, useState } from 'react'
+import { Link } from "react-router-dom";
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import dayjs from 'dayjs';
 
 const CreatePost = () => {
     const [error, setError] = useState(null);
@@ -19,18 +17,15 @@ const CreatePost = () => {
       }, [error]);
     
     return (
-        <div className="create-post">
+        <div className="create-post-form">
             <h1>Create a Post</h1>
             <h3>Create a post to find a date to eat with at [Restaurant Name]!</h3>
-
             <form>
                 <label>Title</label>
-                <input 
-                    type="text"
-                    required
-                />
+                <input type="text" required />
+
                 <label>Date and Time</label>
-                <DateTimePicker 
+                <DateTimePicker sx={{ borderColor: '#9690ce' }}
                     defaultValue={dayjs().add(1, 'hour')}
                     disablePast
                     onError={(newError) => setError(newError)}
@@ -40,16 +35,11 @@ const CreatePost = () => {
                         },
                     }}
                     />
-                <label>Description</label>
-                <textarea
-                    required
-                ></textarea>
-                <div className="right-btn">
-                    <Link to="home-lfd">
-                    <Button text="Post"/>
-                    </Link>
-                </div>
                 
+                <label>Description</label>
+                <textarea required></textarea>
+
+                <Link to="home-lfd" className="right-btn"><button>Post</button></Link>
             </form>
         </div>
     );

@@ -1,5 +1,4 @@
 import './login.css'
-import Button from '../components/Button.js'
 import { Link } from "react-router-dom";
 
 const Login = () => {
@@ -16,7 +15,7 @@ const Login = () => {
                 <p>Password</p>
                 <input type="password" required/>
                 </label>
-                <div className="login-btn"><Button text="Login"/></div>
+                <div className="login-btn"><button>Login</button></div>
                 <div className="link"><Link className="link" to='/register'>Don't have an account? Register here!</Link></div>
             </form>
         </div>

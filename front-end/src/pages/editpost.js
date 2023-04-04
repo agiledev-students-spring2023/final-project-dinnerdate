@@ -1,5 +1,4 @@
 import './editpost.css'
-import Button from '../components/Button.js'
 import { Link } from "react-router-dom";
 
 import dayjs from 'dayjs';
@@ -67,7 +66,7 @@ const EditPost = (props) => {
                 ></textarea>
                 <div className="middle-btn">
                     <Link to="home-lfd">
-                        <Button text="Post"/>
+                        <button>Post</button>
                     </Link>
                 </div>
                 

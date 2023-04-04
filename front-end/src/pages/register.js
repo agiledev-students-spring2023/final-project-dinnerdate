@@ -1,5 +1,4 @@
 import './register.css';
-import Button from '../components/Button.js'
 import { Link } from "react-router-dom";
 
 const Register = () => {
@@ -28,7 +27,7 @@ const Register = () => {
                 <p>Re-enter Password</p>
                 <input type="password" required/>
                 </label>
-                <div className="reg-btn"><Button text="Register"/></div>
+                <div className="reg-btn"><button>Register</button></div>
                 <div className="link"><Link className="link" to='/login'>Already have an account? Login here!</Link></div>
             </form>
         </div>

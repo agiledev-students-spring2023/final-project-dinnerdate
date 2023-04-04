@@ -1,24 +1,19 @@
-.create-post label {
-    padding: 10px 0px 0px 0px;
+.create-post-form h1, .create-post-form h2, .create-post-form h3 {
+    text-align: center;
+}
+
+.create-post-form label {
+    margin-top: 30px;
     font-weight: bold;
-    text-align: left;
     display: block;
-  }
+}
 
-.create-post input, .create-post textarea {
-    width: 100%;
+.create-post-form input, .create-post-form textarea {
+    display: block;
     padding: 7px 10px;
-    margin: 10px 0;
-    border: 1px solid #ddd;
-    box-sizing: border-box;
+    width: 100%;
     resize: vertical;
-}
-
-textarea {
-    height: 300px;
-}
-.input {
-    margin: 10px 0; 
+    transition-duration: 0.4s;
 }
 
 .right-btn { float: right; }

@@ -1,5 +1,4 @@
 import './chat.css';
-import Button from '../components/Button.js'
 import { Link } from "react-router-dom";
 
 const Inbox = () => {
@@ -18,9 +17,7 @@ const Inbox = () => {
 const ChatRoom = (props) => {
     return (
         // replace with props.author or something
-        <div className="chat-room options">
-            <Link to="/chat/:userId"><Button text="Conversation with [DINER NAME]"/></Link>
-        </div>
+        <Link className="chat-room options" to="/chat/:userId"><button>Conversation with [DINER NAME]</button></Link>
     )
 }
 

@@ -19,12 +19,19 @@
 }
 
 /* When button is hovered over, it changes color */
-.btn {
+button {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius:8px;
   color: var(--color-1);
+  cursor: pointer;
+  padding: 9px 10px;
+  text-align: center;
   transition-duration: 0.4s;
 }
-.btn:hover {
+button:hover {
   background-color: var(--color-1);
+  color: white;
 }
 
 /* When link is hovered over, it changes color */
@@ -36,6 +43,17 @@ a:hover {
   color: var(--color-1); 
 }
 
+/* Styling for all input and textarea elements */
+input, textarea {
+  border: 1px solid #ddd;
+}
+input:hover, input:focus, textarea:hover, textarea:focus {
+  outline: none !important;
+  border: 1px solid var(--color-1); 
+}
+input:focus, textarea:focus {
+  box-shadow: 0 0 10px var(--color-1); 
+}
 
 /* NavBar */
 .navbar {

@@ -1,9 +1,8 @@
-import { Link } from "react-router-dom";
-import { useState, useEffect } from 'react';
-import Axios from 'axios';
-import { useParams } from 'react-router-dom';
 import './restaurant-info.css';
-import Button from '../components/Button.js'
+import { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
+import { useParams } from 'react-router-dom';
+import Axios from 'axios';
 
 // only used in case mockaroo API does not work
 const sampleRestaurantData = {
