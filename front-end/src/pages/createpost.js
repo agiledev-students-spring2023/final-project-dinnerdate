@@ -1,4 +1,4 @@
-import './createpost.css'
+import './post.css'
 import { useMemo, useState } from 'react'
 import { Link } from "react-router-dom";
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
@@ -17,7 +17,7 @@ const CreatePost = () => {
       }, [error]);
     
     return (
-        <div className="create-post-form">
+        <div className="create-post-form post-form">
             <h1>Create a Post</h1>
             <h3>Create a post to find a date to eat with at [Restaurant Name]!</h3>
             <form>
@@ -37,7 +37,7 @@ const CreatePost = () => {
                     />
                 
                 <label>Description</label>
-                <textarea className="input" required></textarea>
+                <textarea className="input" required />
 
                 <button className="post-btn"><Link to="home-lfd">Post</Link></button>
             </form>

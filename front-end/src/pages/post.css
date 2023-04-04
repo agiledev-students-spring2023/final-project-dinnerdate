@@ -1,14 +1,15 @@
-.create-post-form h1, .create-post-form h2, .create-post-form h3 {
+/* This CSS file is used for both createpost.js and editpost.js. */
+.post-form h1, .post-form h2, .post-form h3 {
     text-align: center;
 }
 
-.create-post-form label {
+.post-form label {
     margin-top: 30px;
     font-weight: bold;
     display: block;
 }
 
-.create-post-form .input {
+.post-form .input {
     box-sizing: border-box;
     display: block;
     padding: 7px 10px;
@@ -17,7 +18,7 @@
     transition-duration: 0.4s;
 }
 
-.create-post-form .post-btn {
+.post-form .post-btn {
     display: flex;
     margin-top: 10px;
     margin-left: auto;
