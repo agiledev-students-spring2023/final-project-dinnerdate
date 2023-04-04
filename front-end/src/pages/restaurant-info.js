@@ -111,9 +111,9 @@ const RestaurantInfo = ( props ) => {
 
 const CreatePost = () => {
     return (
-        <div className='post create-post'>
-            <h2><Link to='/create-post'>Create a new post...</Link></h2>
-        </div>
+        <Link to='/create-post' className='post create-post'>
+            <h2>Create a new post...</h2>
+        </Link>
     )
 }
 
