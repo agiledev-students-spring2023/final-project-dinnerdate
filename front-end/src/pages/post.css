@@ -3,7 +3,7 @@
     text-align: center;
 }
 
-.post-form label {
+.post-form label > p {
     margin-top: 30px;
     font-weight: bold;
     display: block;
@@ -16,6 +16,10 @@
     width: 100%;
     resize: vertical;
     transition-duration: 0.4s;
+}
+
+.post-form textarea {
+    height: 300px;
 }
 
 .post-form .post-btn {

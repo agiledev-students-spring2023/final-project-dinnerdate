@@ -37,32 +37,36 @@ const EditPost = () => {
             <h1>Edit Your Post</h1>
             <h3>Revise your post for [Resturant Name].</h3>
             <form>
-                <label>Title</label>
-                <input className="input" 
-                    type="text" 
-                    value={title} 
-                    onChange={changeTitle}
-                    required />
+                <label>
+                    <p>Title</p>
+                    <input className="input" 
+                        type="text" 
+                        value={title} 
+                        onChange={changeTitle}
+                        required />
+                </label>
 
-                <label>Date and Time</label>
-                <DateTimePicker
-                    defaultValue={dayjs().add(1, 'hour')}
-                    disablePast
-                    onError={(newError) => setError(newError)}
-                    slotProps={{
-                        textField: {
-                        helperText: errorMessage,
-                        },
-                    }}
-                    />
+                <label>
+                    <p>Date and Time</p>
+                    <DateTimePicker
+                        defaultValue={dayjs().add(1, 'hour')}
+                        disablePast
+                        onError={(newError) => setError(newError)}
+                        slotProps={{
+                            textField: {
+                            helperText: errorMessage,
+                            },
+                        }}/>
+                </label>
                 
-                <label>Description</label>
-                <textarea 
-                    className="input"
-                    value={description} 
-                    onChange={changeDescription}
-                    required />
-
+                <label>
+                    <p>Description</p>
+                    <textarea 
+                        className="input"
+                        value={description} 
+                        onChange={changeDescription}
+                        required />
+                </label>
                 <button className="post-btn"><Link to="home-lfd">Confirm</Link></button>
             </form>
         </div>
