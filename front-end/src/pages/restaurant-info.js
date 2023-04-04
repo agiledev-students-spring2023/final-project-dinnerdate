@@ -4,7 +4,6 @@ import Axios from 'axios';
 import { useParams } from 'react-router-dom';
 import './restaurant-info.css';
 import Button from '../components/Button.js'
-import DinerPosts from '../components/DinerPosts.js'
 
 // only used in case mockaroo API does not work
 const sampleRestaurantData = {
@@ -21,7 +20,8 @@ const sampleDinerData = [
     "datetime": "MM/DD/YY HH:MM PM",
     "full_name": "Johnny Appleseed",
     "rating": "4.8",
-    "num_ratings": "23"
+    "num_ratings": "23",
+    "avatar_url": "https://picsum.photos/50/50"
     },
     {
     "id": 1,
@@ -29,7 +29,8 @@ const sampleDinerData = [
     "datetime": "MM/DD/YY HH:MM PM",
     "full_name": "Johnny Peachseed",
     "rating": "4.5",
-    "num_ratings": "7"
+    "num_ratings": "7",
+    "avatar_url": "https://picsum.photos/50/50"
     }];
 
 const RestaurantInfo = ( props ) => {
@@ -69,7 +70,8 @@ const RestaurantInfo = ( props ) => {
                         "full_name": post["full_name"],
                         "description": post["description"],
                         "rating": post["rating"],
-                        "num_ratings": post["num_ratings"]
+                        "num_ratings": post["num_ratings"],
+                        "avatar_url": "https://picsum.photos/50/50"
                     })
                     dinerPosts.append(dinerPost);
                 })
@@ -86,33 +88,65 @@ const RestaurantInfo = ( props ) => {
     }, [])
     
     return (
-        <div className="location-info">
-            <h1>{restaurantData.name}</h1>
-            <h3>{restaurantData.address} • {restaurantData.rating}⭐</h3>
+        <div className="restaurant-info">
+            {/* Restaurant Information */}
+            <div className="restaurant-information">
+                <h1>{restaurantData.name}</h1>
+                <h3>{restaurantData.address} • {restaurantData.rating}⭐</h3>
+                <p className='description'>{restaurantData.description}</p>
+            </div>
 
-            <p className='description'>{restaurantData.description}</p>
-
-            <h2>Select a diner below (or create your own post)!</h2>
-
-            <CreatePost />
-
-            {diners.length > 0 ? <DinerPosts diners={diners} 
-                                             onClick={(id) => setSelectedDiner(id)} 
-                                             selectedDiner={selectedDiner}/>
-                               : <p>There are currently no diners for this restaurant.</p>}
-
-            <div className="left-btn"><Button text="Back"/></div>
-            <div className="right-btn">{selectedDiner != -1 ? <Link to="/user:userId"><Button text="Select" /></Link> : <p></p>}</div>
-            {/* Select onClick should link to appropriate page */}
+            {/* Diner Posts */}
+            <div className="diner-posts">
+                {diners.length > 0 ? <h2>Select a diner below (or create your own post)!</h2>
+                                   : <h2>There are no diners at this restaurant. Create your own post!</h2>}
+                <div>
+                    <CreatePost />
+                    <DinerPosts diners = {diners}/>
+                </div>
+            </div>
         </div>
     );
 }
 
 const CreatePost = () => {
     return (
-        <div className='createPost'>
-            <Link to='/create-post'>Create a new post...</Link>
+        <div className='post create-post'>
+            <h2><Link to='/create-post'>Create a new post...</Link></h2>
         </div>
+    )
+}
+
+const DinerPost = ( props ) => {
+    return (
+            <Link to="/" className="post diner-post">
+                <img className="avatar" src={props.avatar_url}></img> 
+                <div className="diner-info"> 
+                    <h2>{props.title}</h2>
+                    <h5>{props.datetime}</h5>
+                    <h3>{props.full_name} {props.rating}⭐ ({props.num_ratings} reviews)</h3>
+                </div>
+            </Link>
+    )
+}
+
+const DinerPosts = ( props ) => {
+    return (
+        <>
+            {props.diners.map((dinerPost) => (
+                <DinerPost 
+                    key={dinerPost.id}
+                    id={dinerPost.id}
+                    title={dinerPost.title}
+                    datetime={dinerPost.datetime}
+                    full_name={dinerPost.full_name}
+                    rating={dinerPost.rating}
+                    num_ratings={dinerPost.num_ratings}
+                    avatar_url={dinerPost.avatar_url}
+                    isSelected={dinerPost.id === props.selectedDiner}
+                />
+            ))}
+        </>
     )
 }
 

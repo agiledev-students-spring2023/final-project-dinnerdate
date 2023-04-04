@@ -1,35 +1,41 @@
-h2, h3, h4, h5 {
-    text-align: center
+.restaurant-info > *, .diner-posts > * {
+    margin-bottom: 20px;
 }
 
-.description {
-    padding: 20px;
-}
-
-Button {
-    margin: 20px 0px;
-}
-.left-btn { float: left; }
-.right-btn { float: right; }
-
-.createPost {
-    padding: 26px;
-    font-weight: bold;
+.restaurant-information > *, .diner-posts > h2 {
     text-align: center;
+}
+
+.post {
+    height: 100px;
     border: 2px solid black;
-    transition-duration: 0.4s;
-    /* cursor: pointer; */
-}
-
-.createPost a {
+    margin-top: -2px; 
     transition-duration: 0.4s;
 }
-
-/* .createPost:hover {
-    border: 2px solid #f1356d;
-    color: #f1356d;
-} */
-
-.createPost:hover a {
+/* When post is hovered over, post (and everything in it) changes color */
+.post:hover { 
+    border: 2px solid #9690ce;
+}
+.post * { 
+    transition-duration: 0.4s;
+}
+.post:hover * {
     color: #9690ce;
 }
+.post:hover > .avatar {
+    filter: brightness(110%);
+ }
+
+.create-post {
+    font-weight: bold;
+    text-align: center;
+}
+
+.diner-post {
+    display: flex;
+}
+
+.diner-post > * {
+    padding: 10px 0px 10px 15px;
+}
+
