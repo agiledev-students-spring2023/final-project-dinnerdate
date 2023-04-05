@@ -87,7 +87,7 @@ app.get("/diner-post/:id", (req, res, next) => {
 
 // serve diner request data
 app.get("/diner-request/requestId", (req, res, next) => {
-  const url = "https://my.api.mockaroo.com/diner_posts.json?key=85d24ca0";
+  const url = "https://my.api.mockaroo.com/diner_requests.json?key=85d24ca0";
   axios
     .get(url)
     .then(apiResponse => {
