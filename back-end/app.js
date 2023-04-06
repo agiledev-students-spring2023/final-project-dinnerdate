@@ -114,8 +114,8 @@ app.get("/static/", (req, res, next) => {
 })
 
 // serve chat data
-app.get("/chat/:id", (req, res, next) => {
-  const url = "https://api.mockaroo.com/api/901ad060?count=1000&key=987d00a0";
+app.get("/chatdata/:id.json", (req, res, next) => {
+  const url = "https://my.api.mockaroo.com/chatdata.json?key=987d00a0";
   axios
     .get(url)
     .then(apiResponse => {
