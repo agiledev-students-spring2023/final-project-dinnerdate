@@ -85,6 +85,27 @@ app.get("/diner-post/:id", (req, res, next) => {
     .catch(err => next(err)) // pass any errors to express
 })
 
+// serve diner request data
+app.get("/diner-request/requestId", (req, res, next) => {
+  const url = "https://my.api.mockaroo.com/diner_requests.json?key=85d24ca0";
+  axios
+    .get(url)
+    .then(apiResponse => {
+      const postString = JSON.stringify(apiResponse.data).split(",");
+      const post = {
+        "id": postString[0],
+        "full_name": postString[1],
+        "rating": postString[2],
+        "num_ratings": postString[3],
+        "message": postString[4]
+      };
+
+      res.json(post);
+    })
+    .catch(err => next(err)) // pass any errors to express
+})
+
+
 // serve images from picsum
 // route: localhost:3000/static?width=200&height=300
 app.get("/static/", (req, res, next) => {
