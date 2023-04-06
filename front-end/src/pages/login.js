@@ -8,7 +8,7 @@ const Login = () => {
             
             <form>
                 <label>
-                    <p>Email</p>
+                    <p>Email or Username</p>
                     <input className="input" type="text" required/>
                 </label>
                 <label>

@@ -1,9 +1,10 @@
 import './login.css';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { Link } from "react-router-dom";
 
 const Register = () => {
     return (
-        <div className="login">
+        <div className="register">
             <h1>Register</h1>
 
             <form>
@@ -19,7 +20,28 @@ const Register = () => {
                 </div>
                 <label>
                     <p>Email</p>
-                    <input className="input" type="password" required/>
+                    <input className="input" type="text" required/>
+                </label>
+                <label>
+                    <p>Username</p>
+                    <input className="input" type="text" required/>
+                </label>
+                <label>
+                    <p>Mobile Number</p>
+                    <input className="input" type="text" required/>
+                </label>
+                <label>
+                    <p>DOB</p>
+                    <DatePicker disableFuture/>
+                </label>
+                <label>
+                    <p>Gender</p>
+                    <select className="gender">
+                        <option>Male</option>
+                        <option>Female</option>
+                        <option>Other</option>
+                        <option>Prefer not to say</option>
+                    </select>
                 </label>
                 <label>
                     <p>Password</p>
