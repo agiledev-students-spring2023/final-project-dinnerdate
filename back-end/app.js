@@ -92,6 +92,28 @@ app.get("/static/", (req, res, next) => {
   res.send(`<img src=${url}>`);
 })
 
+// serve chat data
+app.get("/chat/:id", (req, res, next) => {
+  const url = "https://api.mockaroo.com/api/901ad060?count=1000&key=987d00a0";
+  axios
+    .get(url)
+    .then(apiResponse => {
+      const chatString = JSON.stringify(apiResponse.data).split(",");
+      const chat = {
+        "user": chatString[0],
+        "other_user": chatString[1],
+        "messages": chatString[2],
+        "messages.text": chatString[3],
+        "messages.message_id": chatString[4],
+        "rating": chatString[5],
+        "num_ratings": chatString[6]
+      };
+
+      res.json(chat);
+    })
+    .catch(err => next(err)) // pass any errors to express
+})
+
 // export the express app we created to make it available to other modules
 module.exports = app
 
