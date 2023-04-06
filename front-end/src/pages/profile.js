@@ -16,6 +16,10 @@ const Profile = () => {
                     <input type="text" placeholder="User Name"/>
                     </label>
                     <label>
+                    <p>User Name</p>
+                    <input type="text" placeholder="username"/>
+                    </label>
+                    <label>
                     <p>Email</p>
                     <input type="text" placeholder="email@email.com"/>
                     </label>

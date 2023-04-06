@@ -31,3 +31,37 @@
 }
 
 .login-btn { float: right; }
+
+.register label {
+    padding: 10px 0px 0px 0px;
+    font-weight: bold;
+    text-align: left;
+    display: block;
+}
+
+.register input {
+    width: 100%;
+    padding: 7px 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+.register select {
+    width: 30%;
+    padding: 7px 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+.register .name {
+    display: flex;
+    align-items: center;
+}
+
+.register .name * {
+    width: 100%;
+}
