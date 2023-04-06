@@ -126,8 +126,6 @@ app.get("/chat/:id", (req, res, next) => {
         "messages": chatString[2],
         "messages.text": chatString[3],
         "messages.message_id": chatString[4],
-        "rating": chatString[5],
-        "num_ratings": chatString[6]
       };
 
       res.json(chat);
