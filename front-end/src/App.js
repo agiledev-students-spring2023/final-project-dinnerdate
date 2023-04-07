@@ -17,7 +17,7 @@ import OtherProfile from './pages/otherprofile'
 import Profile from './pages/profile'
 import Register from './pages/register'
 
-import Map from './pages/map'
+import NewHome from './pages/new_home'
 
 function App() {
   return (
@@ -44,7 +44,7 @@ function App() {
               <Route path="/date"><HomeConfirmed /></Route>
               <Route path="/home-lfd"><HomeLFD /></Route>
 
-              <Route path="/map"><Map /></Route>
+              <Route path="/map"><NewHome /></Route>
 
               <Route path="/"><Home /></Route>
             </Switch>
