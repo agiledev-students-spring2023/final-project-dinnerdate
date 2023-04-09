@@ -6,7 +6,7 @@ const Profile = () => {
         <div className="profile">
             <div class="box" style={{ paddingBottom: "30px" }}>
                     <img style={{ width: "200px", height: "200px", borderRadius: "80px", paddingBottom: "30px" }}
-                        src="https://www.nicepng.com/png/detail/933-9332131_profile-picture-default-png.png" alt="" />
+                        src="https://www.freeiconspng.com/thumbs/profile-icon-png/am-a-19-year-old-multimedia-artist-student-from-manila--21.png" alt="" />
                     <button>Edit</button>
             </div>
             <div className='editProfile'>
