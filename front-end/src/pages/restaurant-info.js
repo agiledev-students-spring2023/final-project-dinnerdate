@@ -3,6 +3,9 @@ import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { useParams } from 'react-router-dom';
 import Axios from 'axios';
+import Popup from "../components/Popup.js";
+
+// import Popup from 'reactjs-popup';
 
 // only used in case mockaroo API does not work
 const sampleRestaurantData = {
@@ -33,10 +36,16 @@ const sampleDinerData = [
     }];
 
 const RestaurantInfo = ( props ) => {
+    const [visibility, setVisibility] = useState(false);
+ 
+  const popupCloseHandler = (e) => {
+    setVisibility(e);
+  };
+
     const [restaurantData, setRestaurantData] = useState(sampleRestaurantData);
     const [diners, setDiners] = useState([...sampleDinerData]);
     const [selectedDiner, setSelectedDiner] = useState([-1]);
-
+    const [buttonPopup, setButtonPopup] = useState(false);
     const { restaurantId } = useParams();
 
     const fetchRestaurantInfo = () => {
@@ -81,12 +90,45 @@ const RestaurantInfo = ( props ) => {
         }
     };
 
+    const DinerPost = ( props ) => {
+        return (
+                <div onClick={() => setButtonPopup(true)} className="post diner-post">
+                    <img className="avatar" src={props.avatar_url}></img> 
+                    <div className="diner-info"> 
+                        <h2>{props.title}</h2>
+                        <h5>{props.datetime}</h5>
+                        <h3>{props.full_name} {props.rating}⭐ ({props.num_ratings} reviews)</h3>
+                    </div>
+                </div>
+        )
+    }
+    
+    const DinerPosts = ( props ) => {
+        return (
+            <>
+                {props.diners.map((dinerPost) => (
+                    <DinerPost 
+                        key={dinerPost.id}
+                        id={dinerPost.id}
+                        title={dinerPost.title}
+                        datetime={dinerPost.datetime}
+                        full_name={dinerPost.full_name}
+                        rating={dinerPost.rating}
+                        num_ratings={dinerPost.num_ratings}
+                        avatar_url={dinerPost.avatar_url}
+                        isSelected={dinerPost.id === props.selectedDiner}
+                    />
+                ))}
+            </>
+        )
+    }
+
     useEffect(() => {
         fetchRestaurantInfo();
         fetchDinerPosts();
     }, [])
-    
-    return (
+      
+    return (        
         <div className="restaurant-info">
             {/* Restaurant Information */}
             <div className="restaurant-information">
@@ -102,6 +144,9 @@ const RestaurantInfo = ( props ) => {
                 <div>
                     <CreatePost />
                     <DinerPosts diners = {diners}/>
+                    <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
+                        <h3>POPUP!!</h3>
+                    </Popup>
                 </div>
             </div>
         </div>
@@ -113,39 +158,6 @@ const CreatePost = () => {
         <Link to='/create-post' className='post create-post'>
             <h2>Create a new post...</h2>
         </Link>
-    )
-}
-
-const DinerPost = ( props ) => {
-    return (
-            <Link to="/user/:userId" className="post diner-post">
-                <img className="avatar" src={props.avatar_url}></img> 
-                <div className="diner-info"> 
-                    <h2>{props.title}</h2>
-                    <h5>{props.datetime}</h5>
-                    <h3>{props.full_name} {props.rating}⭐ ({props.num_ratings} reviews)</h3>
-                </div>
-            </Link>
-    )
-}
-
-const DinerPosts = ( props ) => {
-    return (
-        <>
-            {props.diners.map((dinerPost) => (
-                <DinerPost 
-                    key={dinerPost.id}
-                    id={dinerPost.id}
-                    title={dinerPost.title}
-                    datetime={dinerPost.datetime}
-                    full_name={dinerPost.full_name}
-                    rating={dinerPost.rating}
-                    num_ratings={dinerPost.num_ratings}
-                    avatar_url={dinerPost.avatar_url}
-                    isSelected={dinerPost.id === props.selectedDiner}
-                />
-            ))}
-        </>
     )
 }
 
