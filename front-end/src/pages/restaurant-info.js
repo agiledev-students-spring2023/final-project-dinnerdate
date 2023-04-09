@@ -145,7 +145,16 @@ const RestaurantInfo = ( props ) => {
                     <CreatePost />
                     <DinerPosts diners = {diners}/>
                     <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
-                        <h3>POPUP!!</h3>
+                        <div className="otherUserProfile">
+                            <h1>[Diner Name], [Age]</h1>
+                            <div id="wrapper">
+                                <div id="first"><img style={{ width: "200px", height: "200px", borderRadius: "80px", paddingBottom: "30px" }}
+                                        src="https://www.nicepng.com/png/detail/933-9332131_profile-picture-default-png.png" alt="" /></div>
+                                <div id="second">The User bio will appear here...</div>
+                            </div>
+                            <div className="dec-btn"><div onClick={() => setButtonPopup(false)}><button>Decline</button></div></div>
+                            <div className="acc-btn"><Link to="/date"><button>Accept</button></Link></div>
+                        </div>
                     </Popup>
                 </div>
             </div>

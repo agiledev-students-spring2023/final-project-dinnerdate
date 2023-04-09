@@ -1,3 +1,5 @@
+// DELETE AFTER POPUPS IMPLEMENTED ON BOTH 
+
 import { Link } from "react-router-dom";
 import './otherprofile.css'
 
