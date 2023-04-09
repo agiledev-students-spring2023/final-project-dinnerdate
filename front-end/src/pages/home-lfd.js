@@ -66,15 +66,15 @@ const HomeLFD = () => {
         );
     }
 
+    
+
     return (
         <div className="homeLFD">
             <h1>Your Post</h1>
 
             <h2>{diners.length} people would like to go on the date with you!  Select the lucky diner who would be joining you!</h2>
 
-            {diners.length > 0 ? <DinerRequests diners={diners} 
-                                                onClick={(id) => setSelectedDiner(id)} 
-                                                selectedDiner={selectedDiner}/>: 
+            {diners.length > 0 ? <DinerRequests diners={diners} onClick={(id) => setSelectedDiner(id)} selectedDiner={selectedDiner}/>: 
                                 <p>There's currently no one available, tough love :c</p>}
             <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
                         <div className="otherUserProfile">
