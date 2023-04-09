@@ -13,7 +13,6 @@ import {
 } from "@reach/combobox";
 
 import "@reach/combobox/styles.css";
-
 const mapContainerStyle = {
     width: "100%",
     height: "600px",
@@ -33,7 +32,7 @@ function NewHome() {
     );
 }
 
-function Map() {
+function Map() { 
     const [currPosition, setCurrPosition] = useState(null);
     useEffect(() => { // get current position once
         if (navigator.geolocation) {
@@ -54,7 +53,6 @@ function Map() {
     const [selected, setSelected] = useState(null); // selected = {placeId, lat, lng}
     useEffect(() => { // when a location is selected, set it as current position
         if (selected) {
-            console.log(selected);
             setCurrPosition( {lat: selected.lat, lng: selected.lng} );
         }
     }, [selected])
@@ -79,6 +77,10 @@ function Map() {
             >
                 {selected && <Marker position={ {lat: selected.lat, lng: selected.lng} } />}   {/* set a marker on selected position */}
             </GoogleMap>
+
+            <div>
+                <h1>{selected ? selected.placeId : "No location selected." }</h1>
+            </div>
         </>
     );
 }
