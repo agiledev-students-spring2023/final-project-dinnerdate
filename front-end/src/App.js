@@ -13,7 +13,6 @@ import HomeLFD from './pages/home-lfd'
 import Inbox from './pages/inbox'
 import RestaurantInfo from './pages/restaurant-info'
 import Login from './pages/login'
-import OtherProfile from './pages/otherprofile'
 import Profile from './pages/profile'
 import Register from './pages/register'
 
@@ -34,7 +33,6 @@ function App() {
               <Route path="/create-post"><CreatePost /></Route>
               <Route path="/edit-post"><EditPost /></Route>
               
-              <Route path="/user/:userId"><OtherProfile /></Route>
               <Route path="/profile"><Profile /></Route>
 
               <Route path="/login"><Login /></Route>           
