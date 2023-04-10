@@ -69,6 +69,7 @@ function Map() {
     return (
         <>
             <h1>Find / Create a Date</h1>
+            <h4>Select or search for a restaurant, then press "Go"!</h4>
             <div className="places-container">
                 <PlacesAutocomplete setSelected={setSelected} />
             </div>
@@ -112,7 +113,7 @@ const PlacesAutocomplete = ({ setSelected }) => {
             onChange={e => setValue(e.target.value)}
             disabled={!ready}
             className="combobox-input"
-            placeholder="Search a restaurant"
+            placeholder="Search for a restaurant"
             />
             <ComboboxPopover>
                 <ComboboxList>
