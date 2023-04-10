@@ -30,7 +30,7 @@ app.get('/demo', (req, res) => {
 
 // serve user data
 app.get("/user/:id", (req, res, next) => {
-  const url = "https://my.api.mockaroo.com/users.json?key=85d24ca0";
+  const url = "https://my.api.mocokaroo.com/users.json?key=85d24ca0";
   axios
   .get(url)
   .then(apiResponse => {
@@ -159,6 +159,8 @@ app.get("/static/", (req, res, next) => {
   //   })
   // }
 // })
+
+
 // serve chat data
 app.get("/chatdata/", (req, res, next) => {
   const url = "https://my.api.mockaroo.com/chatdata.json?key=987d00a0";
