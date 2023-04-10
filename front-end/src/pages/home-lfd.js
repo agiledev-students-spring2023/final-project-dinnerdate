@@ -17,14 +17,14 @@ const sampleDinerData = [
     "message": "hi there!",
     "author": "Johnny Peachseed",
     "rating": "4.5",
-    "num_rating": "7"
+    "num_ratings": "7"
     },
     {
     "id": 2,
     "message": "would really like to go on this date!",
     "author": "Johnny Noseed",
     "rating": "1.1",
-    "num_rating": "44"
+    "num_ratings": "44"
     }];
 
 
