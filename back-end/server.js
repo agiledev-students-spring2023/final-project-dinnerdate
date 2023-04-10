@@ -10,16 +10,6 @@ const close = () => {
   listener.close()
 }
 
-app.post('/chat', (req, res) => {
-  var message = new Message(req.body);
-  message.save((err) =>{
-    if(err)
-      sendStatus(500);
-    io.emit('message', req.body);
-    res.sendStatus(200);
-  })
-})
-
 module.exports = {
   close: close,
 }

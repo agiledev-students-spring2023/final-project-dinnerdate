@@ -135,5 +135,15 @@ app.post('/create-post', (req, res) => {
   console.log('We Posting!')
 });
 
+app.post('/chat', (req, res) => {
+  var message = new Message(req.body);
+  message.save((err) =>{
+    if(err)
+      sendStatus(500);
+    io.emit('message', req.body);
+    res.sendStatus(200);
+  })
+})
+
 // export the express app we created to make it available to other modules
 module.exports = app
