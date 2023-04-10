@@ -79,7 +79,7 @@ app.get("/diner-post/:id", (req, res, next) => {
     .catch(err => { // if mockaroo doesn't work, serve static sample data
       console.log(err);
       res.json({
-        "id": "id",
+        "id": Math.random().toString(36),
         "title": "Mockaroo API rate limit reached",
         "datetime": "",
         "full_name": "Johnny Appleseed",
@@ -110,7 +110,7 @@ app.get("/diner-request/:requestId", (req, res, next) => {
     .catch(err => { // if mockaroo doesn't work, serve static sample data
       console.log(err);
       res.json({
-        "id": "id",
+        "id": Math.random().toString(36),
         "full_name": "Johnny Appleseed",
         "rating": 1,
         "num_ratings": 2,
@@ -160,7 +160,7 @@ app.get("/profile", function (req, res) {
   .catch(err => { // if mockaroo doesn't work, serve static sample data
     console.log(err);
     res.json({
-      "id": "id",
+      "id": Math.random().toString(36),
       "email": "appleseedj@nyu.edu",
       "username": "mockaroo_api_limit_reached",
       "password": "verysecurepassword1234",
