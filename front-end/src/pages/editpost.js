@@ -3,6 +3,8 @@ import { useMemo, useState } from 'react'
 import { Link } from "react-router-dom";
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import dayjs from 'dayjs';
+import axios from 'axios';
+
 
 const samplePostData = [
     {
@@ -15,7 +17,30 @@ const samplePostData = [
 const EditPost = () => {
     const [error, setError] = useState(null);
     const [title, setTitle] = useState(samplePostData[0].title || '');
+    const [dateTime, setDateTime] = useState('');
     const [description, setDescription] = useState(samplePostData[0].description || '');
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+          const response = await axios.post('http://localhost:3000/create-post', {
+            title,
+            dateTime,
+            description,
+          });
+          console.log(response.data);
+          // Reset form after successful submission
+          setTitle('');
+          setDateTime('');
+          setDescription('');
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      const handleDateTimeChange = (date) => {
+        setDateTime(date);
+      };
 
     const errorMessage = useMemo(() => {
         if (error == 'disablePast'){
@@ -25,6 +50,7 @@ const EditPost = () => {
             return '';
         }
     }, [error]);
+
     const changeTitle = (event) => {
         setTitle(event.target.value);
     };
@@ -36,19 +62,21 @@ const EditPost = () => {
         <div className="edit-post-form post-form">
             <h1>Edit Your Post</h1>
             <h3>Revise your post for [Resturant Name].</h3>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <label>
                     <p>Title</p>
                     <input className="input" 
                         type="text" 
                         value={title} 
-                        onChange={changeTitle}
+                        onChange = {(e) => setTitle(e.target.value)} 
                         required />
                 </label>
 
                 <label>
                     <p>Date and Time</p>
                     <DateTimePicker
+                        value = {dateTime}
+                        onChange = {handleDateTimeChange}
                         defaultValue={dayjs().add(1, 'hour')}
                         disablePast
                         onError={(newError) => setError(newError)}
@@ -62,12 +90,12 @@ const EditPost = () => {
                 <label>
                     <p>Description</p>
                     <textarea 
-                        className="input"
                         value={description} 
-                        onChange={changeDescription}
-                        required />
+                        className="input" 
+                        required 
+                        onChange={(e) => setDescription(e.target.value)} />
                 </label>
-                <button className="post-btn"><Link to="home-lfd">Confirm</Link></button>
+                <button className="post-btn" type='submit'>Confirm</button>
             </form>
         </div>
     );
