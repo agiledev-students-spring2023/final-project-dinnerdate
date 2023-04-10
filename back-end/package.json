@@ -2,7 +2,7 @@
   "name": "back-end",
   "version": "1.0.0",
   "description": "The back-end of your project will live in this directory.",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
@@ -13,5 +13,8 @@
     "axios": "^1.3.5",
     "cors": "^2.8.5",
     "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.3"
   }
 }
