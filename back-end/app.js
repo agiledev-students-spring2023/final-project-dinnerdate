@@ -11,23 +11,6 @@ app.use(cors());
 app.use(express.json()) // decode JSON-formatted incoming POST data
 app.use(express.urlencoded({ extended: true })) // decode url-encoded incoming POST data
 
-app.get("/", (req, res) => {
-    const presentation = ["a", "b"];
-    const body = {
-        title: "Hello!",
-        layout: presentation,
-        categories: ["course-notes"],
-        heading: "Hello!",
-        message: "Welcome to this JSON document, served up by Express",
-        imagePath: "/static/images/donkey.jpg",
-      }
-    res.json(body);
-});
-
-app.get('/demo', (req, res) => {
-  res.send('hello world')
-});
-
 // serve user data
 app.get("/user/:id", (req, res, next) => {
   const url = "https://my.api.mocokaroo.com/users.json?key=85d24ca0";
@@ -37,13 +20,17 @@ app.get("/user/:id", (req, res, next) => {
     const userString = JSON.stringify(apiResponse.data).split(",");
     const user = {
       "id": userString[0],
-      "name": userString[1],
-      "address": userString[2],
-      "rating": userString[3],
-      "description": userString[4]
+      "email": userString[1],
+      "username": userString[2],
+      "password": userString[3],
+      "first_name": userString[4],
+      "last_name": userString[5],
+      "birthdate": userString[6],
+      "gender": userString[7],
+      "mobile": userString[8]
     };
-
-    res.json(restaurant);
+    console.log(user);
+    res.json(user);
   })
   .catch(err => next(err)) // pass any errors to express
 })
@@ -115,7 +102,6 @@ app.get("/diner-request/requestId", (req, res, next) => {
     .catch(err => next(err)) // pass any errors to express
 })
 
-
 // serve images from picsum
 // route: localhost:3000/static?width=200&height=300
 app.get("/static/", (req, res, next) => {
@@ -123,15 +109,7 @@ app.get("/static/", (req, res, next) => {
   res.send(`<img src=${url}>`);
 })
 
-app.post('/chat', (req, res) => {
-  var message = new Message(req.body);
-  message.save((err) =>{
-    if(err)
-      sendStatus(500);
-    io.emit('message', req.body);
-    res.sendStatus(200);
-  })
-})
+
 
 
 
@@ -154,7 +132,12 @@ app.get("/chatdata/:chatId", (req, res, next) => {
     .catch((err) => next(err));
 });
 
+app.post('/create-post', (req, res) => {
+  const { title, dateTime, description } = req.body;
+  console.log(title, dateTime, description);
+  res.status(201).json({message: 'Post created successfully'});
+  console.log('We Posting!')
+});
 
 // export the express app we created to make it available to other modules
 module.exports = app
-
