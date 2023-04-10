@@ -4,7 +4,6 @@ require('dotenv').config();
 const cors = require('cors')
 const axios = require("axios");
 const express = require("express") // CommonJS import style!
-
 const app = express() // instantiate an Express object
 
 app.use(cors());
@@ -43,7 +42,7 @@ app.get("/restaurant/:placeId", (req, res, next) => {
     .get(url)
     .then(apiResponse => {
       const restaurant_data = apiResponse.data.result;
-      console.log(apiResponse.data)
+      console.log(apiResponse.data);
       const restaurant = {
         "name": restaurant_data['name'],
         "address": restaurant_data['formatted_address'],
@@ -51,13 +50,13 @@ app.get("/restaurant/:placeId", (req, res, next) => {
         "num_ratings": restaurant_data['user_ratings_total'],
         "phone_number": restaurant_data['formatted_phone_number'],
         "rating": restaurant_data['rating'],
-        
         "url": restaurant_data['url']
-      }
+      };
+      console.log(restaurant["url"]);
       res.json(restaurant);
     })
     .catch(err => next(err)) // pass any errors to express
-})
+});
 
 // serve diner post data
 app.get("/diner-post/:id", (req, res, next) => {
