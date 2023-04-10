@@ -1,4 +1,4 @@
-// import './restaurant-info.css';
+import './chat.css'
 import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { useParams } from 'react-router-dom';
@@ -27,11 +27,11 @@ const Chat = () => {
   };
   
   return (
-    <div class="chat-box">
-    <div class="message-area">
+    <div className="chat-box">
+    <div className="message-area">
       <p>Messages Appear Here</p>
     </div>
-    <div class="input-area">
+    <div className="input-area">
       <input type="text" placeholder="Type messages here..." />
       <input type="submit" value="Send" />
    </div> 
