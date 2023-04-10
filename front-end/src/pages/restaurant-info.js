@@ -43,7 +43,7 @@ const RestaurantInfo = ( props ) => {
 
     const [restaurantData, setRestaurantData] = useState(sampleRestaurantData);
     const [diners, setDiners] = useState([...sampleDinerData]);
-    const [selectedDiner, setSelectedDiner] = useState([-1]);
+    const [selectedDiner, setSelectedDiner] = useState(0);
     const [buttonPopup, setButtonPopup] = useState(false);
     const { placeId } = useParams();
 
@@ -92,7 +92,7 @@ const RestaurantInfo = ( props ) => {
 
     const DinerPost = ( props ) => {
         return (
-                <div onClick={() => setButtonPopup(true)} className="post diner-post">
+            <div onClick={() => {setButtonPopup(true); setSelectedDiner(props.id);}} className="post diner-post">
                     <img className="avatar" src={props.avatar_url}></img> 
                     <div className="diner-info"> 
                         <h2>{props.title}</h2>
@@ -146,14 +146,15 @@ const RestaurantInfo = ( props ) => {
                     <DinerPosts diners = {diners}/>
                     <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
                         <div className="otherUserProfile">
-                            <h1>[Diner Name], [Age]</h1>
-                            <div id="wrapper">
-                                <div id="first"><img style={{ width: "200px", height: "200px", borderRadius: "80px", paddingBottom: "30px" }}
-                                        src="https://www.freeiconspng.com/thumbs/profile-icon-png/am-a-19-year-old-multimedia-artist-student-from-manila--21.png" alt="" /></div>
-                                <div id="second">The User bio will appear here...</div>
-                            </div>
-                            <div className="dec-btn"><div onClick={() => setButtonPopup(false)}><button>Decline</button></div></div>
-                            <div className="acc-btn"><Link to="/date"><button>Accept</button></Link></div>
+                            {diners.length > 0 ? <h1> {diners[parseInt(selectedDiner)].full_name}, {diners[parseInt(selectedDiner)].datetime}</h1>
+                                   : <h1>""</h1>}
+                            {diners.length > 0 ? <div id="wrapper">
+                                    <div id="first"><img style={{ width: "200px", height: "200px", borderRadius: "80px", paddingBottom: "30px" }}
+                                            src={diners[parseInt(selectedDiner)].avatar_url} alt="" /></div>
+                                    <div id="second">{diners[parseInt(selectedDiner)].description}</div>
+                                </div>
+                                   : <h1>""</h1>}
+                            <div className="acc-btn"><div onClick={() => setButtonPopup(false)}><button>Request</button></div></div>
                         </div>
                     </Popup>
                 </div>
@@ -171,3 +172,4 @@ const CreatePost = () => {
 }
 
 export default RestaurantInfo;
+

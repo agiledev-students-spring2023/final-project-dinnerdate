@@ -71,12 +71,13 @@ const Profile = () => {
             <button>Save</button>
           </div>
         </form>
+        {/* <button>Logout</button> */}
       </div>
-      <div style={{ padding: '30px' }}>
+      {/* <div style={{ padding: '30px' }}>
         <h3>Your last post:</h3>
         <p>User's last post they uploaded for date</p>
         <p style={{ fontSize: '10px' }}>Date and time post was created</p>
-      </div>
+      </div> */}
     </div>
   );
 };
