@@ -4,22 +4,10 @@ import { Link } from "react-router-dom";
 import { useParams } from 'react-router-dom';
 import Axios from 'axios';
 
-const fetchChatInfo = () => {
-  Axios.get(`http://localhost:3000/chatdata/${chatId}`)
-      .then((res) => {
-          const chat = res.data;
-          setChatData({
-              "user": chat["chat"],
-              "otherUser": chat["otherUser"],
-              "messages": chat["messages"],
-              "message.text": chat["message.text"],
-              "message.message_id": chat["message.message_id"]
-          });
-      })
-      .catch(err => console.log("Error: " + err ? err : "Unexpected error occurred."));
-};
-const Chat = () => {
 
+
+const Chat = () => {
+  
     const routeParams = useParams();
     return (
       <div class="chat-box">
@@ -37,6 +25,25 @@ const Chat = () => {
     </div>
     );
   }
+
+
+
+const fetchChatInfo = () => {
+  Axios.get(`http://localhost:3000/chatdata/${chatId}`)
+      .then((res) => {
+          const chat = res.data;
+           setChatData({
+              "user": chat["chat"],
+              "otherUser": chat["otherUser"],
+              "messages": chat["messages"],
+              "message.text": chat["message.text"],
+              "message.message_id": chat["message.message_id"]
+          });
+      })
+      .catch(err => console.log("Error: " + err ? err : "Unexpected error occurred."));
+};
+
+
 
 
   
