@@ -1,3 +1,4 @@
+import './new_home.css';
 import { useState, useEffect } from "react";
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 import { Link } from "react-router-dom";
@@ -16,7 +17,7 @@ import {
 
 import "@reach/combobox/styles.css";
 const mapContainerStyle = {
-    width: "100%",
+    width: "600px",
     height: "600px",
 };
 
@@ -67,6 +68,7 @@ function Map() {
 
     return (
         <>
+            <h1>Find / Create a Date</h1>
             <div className="places-container">
                 <PlacesAutocomplete setSelected={setSelected} />
             </div>

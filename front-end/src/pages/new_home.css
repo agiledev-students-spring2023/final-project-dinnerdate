@@ -1,4 +1,8 @@
 .combobox-input {
-    width: 100%;
+    width: 580px;
     padding: 0.5rem;
+}
+
+Link {
+    text-decoration: underline;
 }
