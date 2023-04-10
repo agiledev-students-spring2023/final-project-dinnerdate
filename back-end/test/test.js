@@ -22,4 +22,21 @@ describe('GET /user/:id', () => {
     });
 });
 
+describe('GET /diner-request/:id', () => {
+    it('should return a diner request object with the correct properties', (done) => {
+    chai.request(app)
+        .get('/diner-request/:id')
+        .end(function(err, res) {
+        expect(err).to.be.null;
+        expect(res).to.have.status(200);
+        expect(res.body).to.be.an('object');
+        const properties = ['id', 'full_name', 'rating', 'num_ratings', 'message'];
+        properties.forEach((p) => {
+            expect(res.body).to.have.property(p);
+        });
+        done();
+        });
+    });
+});
+
 
