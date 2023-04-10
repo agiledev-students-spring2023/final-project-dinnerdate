@@ -131,9 +131,10 @@ app.get("/chatdata/:chatId", (req, res, next) => {
       const chat = {
         "user": chatString[0],
         "other_user": chatString[1],
-        "messages": chatString[2],
-        "messages.text": chatString[3],
-        "messages.message_id": chatString[4],
+        "chatId": chatString[2],
+        "messages": chatString[3],
+        "text": chatString[4],
+        "messageID": chatString[5],
       };
       res.json(chat);
     })
