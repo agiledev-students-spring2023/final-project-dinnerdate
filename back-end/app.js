@@ -11,19 +11,6 @@ app.use(cors());
 app.use(express.json()) // decode JSON-formatted incoming POST data
 app.use(express.urlencoded({ extended: true })) // decode url-encoded incoming POST data
 
-app.get("/", (req, res) => {
-    const presentation = ["a", "b"];
-    const body = {
-        title: "Hello!",
-        layout: presentation,
-        categories: ["course-notes"],
-        heading: "Hello!",
-        message: "Welcome to this JSON document, served up by Express",
-        imagePath: "/static/images/donkey.jpg",
-      }
-    res.json(body);
-});
-
 // serve user data
 app.get("/user/:id", (req, res, next) => {
   const url = "https://my.api.mockaroo.com/users.json?key=85d24ca0";
