@@ -23,6 +23,10 @@ app.get("/", (req, res) => {
     res.json(body);
 });
 
+app.get('/demo', (req, res) => {
+  res.send('hello world')
+});
+
 // serve user data
 app.get("/user/:id", (req, res, next) => {
   const url = "https://my.api.mockaroo.com/users.json?key=85d24ca0";
@@ -85,6 +89,7 @@ app.get("/diner-post/:id", (req, res, next) => {
     .catch(err => next(err)) // pass any errors to express
 })
 
+
 // serve diner request data
 app.get("/diner-request/requestId", (req, res, next) => {
   const url = "https://my.api.mockaroo.com/diner_requests.json?key=85d24ca0";
@@ -114,24 +119,26 @@ app.get("/static/", (req, res, next) => {
 })
 
 // serve chat data
-app.get("/chatdata/:id.json", (req, res, next) => {
+app.get("/chatdata/", (req, res, next) => {
   const url = "https://my.api.mockaroo.com/chatdata.json?key=987d00a0";
+  console.log("Calling chat data")
   axios
-    .get(url)
+    .get('https://my.api.mockaroo.com/chatdata.json?key=987d00a0')
     .then(apiResponse => {
-      const chatString = JSON.stringify(apiResponse.data).split(",");
-      const chat = {
-        "user": chatString[0],
-        "other_user": chatString[1],
-        "messages": chatString[2],
-        "messages.text": chatString[3],
-        "messages.message_id": chatString[4],
-      };
+      console.log(apiResponse.data)
+       const chatString = JSON.stringify(apiResponse.data).split(",");
+         const chat = {
+          "user": chatString[0],
+           "other_user": chatString[1],
+             "messages": chatString[2],
+             "messages.text": chatString[3],
+               "messages.message_id": chatString[4],
+             };
 
-      res.json(chat);
+      res.json(apiResponse.data);
     })
     .catch(err => next(err)) // pass any errors to express
-})
+});
 
 // export the express app we created to make it available to other modules
 module.exports = app
