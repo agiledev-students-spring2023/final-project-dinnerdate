@@ -20,13 +20,17 @@ app.get("/user/:id", (req, res, next) => {
     const userString = JSON.stringify(apiResponse.data).split(",");
     const user = {
       "id": userString[0],
-      "name": userString[1],
-      "address": userString[2],
-      "rating": userString[3],
-      "description": userString[4]
+      "email": userString[1],
+      "username": userString[2],
+      "password": userString[3],
+      "first_name": userString[4],
+      "last_name": userString[5],
+      "birthdate": userString[6],
+      "gender": userString[7],
+      "mobile": userString[8]
     };
-
-    res.json(restaurant);
+    console.log(user);
+    res.json(user);
   })
   .catch(err => next(err)) // pass any errors to express
 })
@@ -96,7 +100,6 @@ app.get("/diner-request/requestId", (req, res, next) => {
     })
     .catch(err => next(err)) // pass any errors to express
 })
-
 
 // serve images from picsum
 // route: localhost:3000/static?width=200&height=300
