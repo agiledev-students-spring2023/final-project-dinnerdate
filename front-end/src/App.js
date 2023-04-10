@@ -7,7 +7,7 @@ import Navbar from './components/Navbar'
 import Chat from './pages/chat'
 import CreatePost from './pages/createpost'
 import EditPost from './pages/editpost'
-import Home from './pages/home'
+import Home from './pages/new_home'
 import HomeConfirmed from './pages/homeConfirmed'
 import HomeLFD from './pages/home-lfd'
 import Inbox from './pages/inbox'
@@ -15,8 +15,6 @@ import RestaurantInfo from './pages/restaurant-info'
 import Login from './pages/login'
 import Profile from './pages/profile'
 import Register from './pages/register'
-
-import NewHome from './pages/new_home'
 
 function App() {
   return (
@@ -41,8 +39,6 @@ function App() {
               <Route path="/restaurant/:placeId"><RestaurantInfo /></Route>
               <Route path="/date"><HomeConfirmed /></Route>
               <Route path="/home-lfd"><HomeLFD /></Route>
-
-              <Route path="/map"><NewHome /></Route>
 
               <Route path="/"><Home /></Route>
             </Switch>

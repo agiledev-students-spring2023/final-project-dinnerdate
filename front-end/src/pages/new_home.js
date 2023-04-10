@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
+import { Link } from "react-router-dom";
+
 import usePlacesAutocomplete, {
     getGeocode,
     getLatLng,
@@ -18,7 +20,7 @@ const mapContainerStyle = {
     height: "600px",
 };
 
-function NewHome() {
+function Home() {
     const { isLoaded } = useLoadScript({ 
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
         libraries: ["places"],
@@ -78,9 +80,7 @@ function Map() {
                 {selected && <Marker position={ {lat: selected.lat, lng: selected.lng} } />}   {/* set a marker on selected position */}
             </GoogleMap>
 
-            <div>
-                <h1>{selected ? selected.placeId : "No location selected." }</h1>
-            </div>
+            {selected ? <h1><Link to={`/restaurant/${selected.placeId}`}> Go </Link></h1> : ""}
         </>
     );
 }
@@ -124,4 +124,4 @@ const PlacesAutocomplete = ({ setSelected }) => {
     )
 }
 
-export default NewHome;
+export default Home;
