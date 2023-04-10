@@ -3,14 +3,16 @@ import { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import { useParams } from 'react-router-dom';
 import Axios from 'axios';
+import Popup from "../components/Popup.js";
 
-// only used in case mockaroo API does not work
+// import Popup from 'reactjs-popup';
+
 const sampleRestaurantData = {
-    "name": 'Restaurant Name',
-    "address": '5 University Pl, New York, NY 10003',
-    "rating": '4.2',
-    "description": 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-  };
+    "name": '',
+    "address": '',
+    "rating": '',
+    "description": '',
+};
   
 const sampleDinerData = [
     {
@@ -33,23 +35,30 @@ const sampleDinerData = [
     }];
 
 const RestaurantInfo = ( props ) => {
+    const [visibility, setVisibility] = useState(false);
+ 
+  const popupCloseHandler = (e) => {
+    setVisibility(e);
+  };
+
     const [restaurantData, setRestaurantData] = useState(sampleRestaurantData);
     const [diners, setDiners] = useState([...sampleDinerData]);
     const [selectedDiner, setSelectedDiner] = useState([-1]);
-
-    const { restaurantId } = useParams();
+    const [buttonPopup, setButtonPopup] = useState(false);
+    const { placeId } = useParams();
 
     const fetchRestaurantInfo = () => {
-        Axios.get(`http://localhost:3000/restaurant/${restaurantId}`)
+        Axios.get(`http://localhost:3000/restaurant/${placeId}`)
             .then((res) => {
-                const restaurant = res.data;
                 setRestaurantData({
-                    "id": restaurant["id"],
-                    "name": restaurant["name"],
-                    "address": restaurant["address"],
-                    "rating": restaurant["rating"],
-                    "description": restaurant["description"]
-                });
+                    "name":res.data["name"],
+                    "address":res.data["address"],
+                    "description":res.data["description"],
+                    "num_ratings": res.data['num_ratings'],
+                    "phone_number": res.data['phone_number'],
+                    "rating":res.data["rating"],
+                    "url":res.data["url"]
+                })
             })
             .catch(err => console.log("Error: " + err ? err : "Unexpected error occurred."));
     };
@@ -72,7 +81,7 @@ const RestaurantInfo = ( props ) => {
                         "num_ratings": post["num_ratings"],
                         "avatar_url": "https://picsum.photos/50/50"
                     })
-                    dinerPosts.append(dinerPost);
+                    dinerPosts.push(dinerPost);
                 })
                 .catch(err => console.log("Error: " + err ? err : "Unexpected error occurred."));
         }
@@ -81,12 +90,45 @@ const RestaurantInfo = ( props ) => {
         }
     };
 
+    const DinerPost = ( props ) => {
+        return (
+                <div onClick={() => setButtonPopup(true)} className="post diner-post">
+                    <img className="avatar" src={props.avatar_url}></img> 
+                    <div className="diner-info"> 
+                        <h2>{props.title}</h2>
+                        <h5>{props.datetime}</h5>
+                        <h3>{props.full_name} {props.rating}⭐ ({props.num_ratings} reviews)</h3>
+                    </div>
+                </div>
+        )
+    }
+    
+    const DinerPosts = ( props ) => {
+        return (
+            <>
+                {props.diners.map((dinerPost) => (
+                    <DinerPost 
+                        key={dinerPost.id}
+                        id={dinerPost.id}
+                        title={dinerPost.title}
+                        datetime={dinerPost.datetime}
+                        full_name={dinerPost.full_name}
+                        rating={dinerPost.rating}
+                        num_ratings={dinerPost.num_ratings}
+                        avatar_url={dinerPost.avatar_url}
+                        isSelected={dinerPost.id === props.selectedDiner}
+                    />
+                ))}
+            </>
+        )
+    }
+
     useEffect(() => {
         fetchRestaurantInfo();
         fetchDinerPosts();
     }, [])
-    
-    return (
+      
+    return (        
         <div className="restaurant-info">
             {/* Restaurant Information */}
             <div className="restaurant-information">
@@ -102,6 +144,18 @@ const RestaurantInfo = ( props ) => {
                 <div>
                     <CreatePost />
                     <DinerPosts diners = {diners}/>
+                    <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
+                        <div className="otherUserProfile">
+                            <h1>[Diner Name], [Age]</h1>
+                            <div id="wrapper">
+                                <div id="first"><img style={{ width: "200px", height: "200px", borderRadius: "80px", paddingBottom: "30px" }}
+                                        src="https://www.freeiconspng.com/thumbs/profile-icon-png/am-a-19-year-old-multimedia-artist-student-from-manila--21.png" alt="" /></div>
+                                <div id="second">The User bio will appear here...</div>
+                            </div>
+                            <div className="dec-btn"><div onClick={() => setButtonPopup(false)}><button>Decline</button></div></div>
+                            <div className="acc-btn"><Link to="/date"><button>Accept</button></Link></div>
+                        </div>
+                    </Popup>
                 </div>
             </div>
         </div>
@@ -113,39 +167,6 @@ const CreatePost = () => {
         <Link to='/create-post' className='post create-post'>
             <h2>Create a new post...</h2>
         </Link>
-    )
-}
-
-const DinerPost = ( props ) => {
-    return (
-            <Link to="/user/:userId" className="post diner-post">
-                <img className="avatar" src={props.avatar_url}></img> 
-                <div className="diner-info"> 
-                    <h2>{props.title}</h2>
-                    <h5>{props.datetime}</h5>
-                    <h3>{props.full_name} {props.rating}⭐ ({props.num_ratings} reviews)</h3>
-                </div>
-            </Link>
-    )
-}
-
-const DinerPosts = ( props ) => {
-    return (
-        <>
-            {props.diners.map((dinerPost) => (
-                <DinerPost 
-                    key={dinerPost.id}
-                    id={dinerPost.id}
-                    title={dinerPost.title}
-                    datetime={dinerPost.datetime}
-                    full_name={dinerPost.full_name}
-                    rating={dinerPost.rating}
-                    num_ratings={dinerPost.num_ratings}
-                    avatar_url={dinerPost.avatar_url}
-                    isSelected={dinerPost.id === props.selectedDiner}
-                />
-            ))}
-        </>
     )
 }
 
