@@ -1,4 +1,5 @@
 // import and instantiate express
+require('dotenv').config();
 
 const cors = require('cors')
 const axios = require("axios");
@@ -44,20 +45,24 @@ app.get("/user/:id", (req, res, next) => {
 })
 
 // serve restaurant data
-app.get("/restaurant/:id", (req, res, next) => {
-  const url = "https://my.api.mockaroo.com/restaurants.json?key=85d24ca0";
+app.get("/restaurant/:placeId", (req, res, next) => {
+  const placeId = req.params.placeId;
+  const url = `https://maps.googleapis.com/maps/api/place/details/json?placeid=${placeId}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
   axios
     .get(url)
     .then(apiResponse => {
-      const restaurantString = JSON.stringify(apiResponse.data).split(",");
+      const restaurant_data = apiResponse.data.result;
+      console.log(apiResponse.data)
       const restaurant = {
-        "id": restaurantString[0],
-        "name": restaurantString[1],
-        "address": restaurantString[2],
-        "rating": restaurantString[3],
-        "description": restaurantString[4]
-      };
-
+        "name": restaurant_data['name'],
+        "address": restaurant_data['formatted_address'],
+        "description": restaurant_data['editorial_summary'].overview,
+        "num_ratings": restaurant_data['user_ratings_total'],
+        "phone_number": restaurant_data['formatted_phone_number'],
+        "rating": restaurant_data['rating'],
+        
+        "url": restaurant_data['url']
+      }
       res.json(restaurant);
     })
     .catch(err => next(err)) // pass any errors to express
