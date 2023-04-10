@@ -50,14 +50,18 @@ const CreatePost = () => {
             <form onSubmit={handleSubmit}>
                 <label>
                     <p>Title</p>
-                    <input className="input" type="text" value={title} onChange = {(e) => setTitle(e.target.value)} required />
+                    <input className="input" 
+                    type="text" 
+                    value={title} 
+                    onChange = {(e) => setTitle(e.target.value)} 
+                    required />
                 </label>
 
                 <label>
                     <p>Date and Time</p>
                     <DateTimePicker
-                    value = {dateTime}
-                    onChange = {handleDateTimeChange}
+                      value = {dateTime}
+                      onChange = {handleDateTimeChange}
                         defaultValue={dayjs().add(1, 'hour')}
                         disablePast
                         onError={(newError) => setError(newError)}
@@ -70,7 +74,11 @@ const CreatePost = () => {
 
                 <label>
                     <p>Description</p>
-                    <textarea value={description} className="input" required onChange={(e) => setDescription(e.target.value)} />
+                    <textarea 
+                      value={description} 
+                      className="input" 
+                      required 
+                      onChange={(e) => setDescription(e.target.value)} />
                 </label>
                 <button className="post-btn" type="submit">Post</button>
             </form>
