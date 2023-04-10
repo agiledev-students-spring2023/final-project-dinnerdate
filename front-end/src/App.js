@@ -38,7 +38,7 @@ function App() {
               <Route path="/login"><Login /></Route>           
               <Route path="/register"><Register /></Route>
 
-              <Route path="/restaurant/:restaurantId"><RestaurantInfo /></Route>
+              <Route path="/restaurant/:placeId"><RestaurantInfo /></Route>
               <Route path="/date"><HomeConfirmed /></Route>
               <Route path="/home-lfd"><HomeLFD /></Route>
 

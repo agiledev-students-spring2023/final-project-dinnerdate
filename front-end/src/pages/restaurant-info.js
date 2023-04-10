@@ -7,13 +7,12 @@ import Popup from "../components/Popup.js";
 
 // import Popup from 'reactjs-popup';
 
-// only used in case mockaroo API does not work
 const sampleRestaurantData = {
-    "name": 'Restaurant Name',
-    "address": '5 University Pl, New York, NY 10003',
-    "rating": '4.2',
-    "description": 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-  };
+    "name": '',
+    "address": '',
+    "rating": '',
+    "description": '',
+};
   
 const sampleDinerData = [
     {
@@ -46,19 +45,20 @@ const RestaurantInfo = ( props ) => {
     const [diners, setDiners] = useState([...sampleDinerData]);
     const [selectedDiner, setSelectedDiner] = useState([-1]);
     const [buttonPopup, setButtonPopup] = useState(false);
-    const { restaurantId } = useParams();
+    const { placeId } = useParams();
 
     const fetchRestaurantInfo = () => {
-        Axios.get(`http://localhost:3000/restaurant/${restaurantId}`)
+        Axios.get(`http://localhost:3000/restaurant/${placeId}`)
             .then((res) => {
-                const restaurant = res.data;
                 setRestaurantData({
-                    "id": restaurant["id"],
-                    "name": restaurant["name"],
-                    "address": restaurant["address"],
-                    "rating": restaurant["rating"],
-                    "description": restaurant["description"]
-                });
+                    "name":res.data["name"],
+                    "address":res.data["address"],
+                    "description":res.data["description"],
+                    "num_ratings": res.data['num_ratings'],
+                    "phone_number": res.data['phone_number'],
+                    "rating":res.data["rating"],
+                    "url":res.data["url"]
+                })
             })
             .catch(err => console.log("Error: " + err ? err : "Unexpected error occurred."));
     };
@@ -81,7 +81,7 @@ const RestaurantInfo = ( props ) => {
                         "num_ratings": post["num_ratings"],
                         "avatar_url": "https://picsum.photos/50/50"
                     })
-                    dinerPosts.append(dinerPost);
+                    dinerPosts.push(dinerPost);
                 })
                 .catch(err => console.log("Error: " + err ? err : "Unexpected error occurred."));
         }

@@ -51,13 +51,17 @@ app.get("/restaurant/:placeId", (req, res, next) => {
   axios
     .get(url)
     .then(apiResponse => {
-      const resturant_data = apiResponse.data.result;
+      const restaurant_data = apiResponse.data.result;
+      console.log(apiResponse.data)
       const restaurant = {
-        "name": resturant_data['name'],
-        "description": resturant_data['editorial_summary'].overview,
-        "rating": resturant_data['rating'],
-        "num_ratings": resturant_data['user_ratings_total'],
-        "url": resturant_data['url']
+        "name": restaurant_data['name'],
+        "address": restaurant_data['formatted_address'],
+        "description": restaurant_data['editorial_summary'].overview,
+        "num_ratings": restaurant_data['user_ratings_total'],
+        "phone_number": restaurant_data['formatted_phone_number'],
+        "rating": restaurant_data['rating'],
+        
+        "url": restaurant_data['url']
       }
       res.json(restaurant);
     })
