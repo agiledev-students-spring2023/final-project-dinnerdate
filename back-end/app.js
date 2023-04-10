@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: true })) // decode url-encoded incoming P
 
 // serve user data
 app.get("/user/:id", (req, res, next) => {
-  const url = "https://my.api.mockaroo.com/users.json?key=85d24ca0";
+  const url = "https://my.api.mocokaroo.com/users.json?key=85d24ca0";
   axios
   .get(url)
   .then(apiResponse => {
@@ -81,6 +81,7 @@ app.get("/diner-post/:id", (req, res, next) => {
     .catch(err => next(err)) // pass any errors to express
 })
 
+
 // serve diner request data
 app.get("/diner-request/requestId", (req, res, next) => {
   const url = "https://my.api.mockaroo.com/diner_requests.json?key=85d24ca0";
@@ -107,6 +108,25 @@ app.get("/static/", (req, res, next) => {
   const url = `https://picsum.photos/${req.query.width}/${req.query.height}`;
   res.send(`<img src=${url}>`);
 })
+
+//fetch chat data
+app.get("/chatdata/:chatId", (req, res, next) => {
+  const url = "https://my.api.mockaroo.com/chatdata.json?key=987d00a0";
+  axios
+    .get(url)
+    .then((apiResponse) => {
+      const chatString = JSON.stringify(apiResponse.data).split(",");
+      const chat = {
+        "user": chatString[0],
+        "other_user": chatString[1],
+        "messages": chatString[2],
+        "messages.text": chatString[3],
+        "messages.message_id": chatString[4],
+      };
+      res.json(chat);
+    })
+    .catch((err) => next(err));
+});
 
 app.post('/create-post', (req, res) => {
   const { title, dateTime, description } = req.body;
