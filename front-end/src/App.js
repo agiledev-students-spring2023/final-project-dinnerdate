@@ -4,7 +4,6 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import Navbar from './components/Navbar'
 
-import Chat from './pages/chat'
 import CreatePost from './pages/createpost'
 import EditPost from './pages/editpost'
 import Home from './pages/new_home'
@@ -26,8 +25,6 @@ function App() {
           <div className="content">
             <Switch>
               <Route path="/inbox"><Inbox /></Route>
-              <Route path="/chat/:userId"><Chat /></Route>
-
               <Route path="/create-post"><CreatePost /></Route>
               <Route path="/edit-post"><EditPost /></Route>
               
