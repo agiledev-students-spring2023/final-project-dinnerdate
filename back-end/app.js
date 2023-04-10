@@ -124,64 +124,28 @@ app.get("/static/", (req, res, next) => {
 })
 
 
-// a route to handle fetching all messages
-//app.get('/chat', async (req, res) => {
-  // load all messages from database
- // try {
-   // const chat = await Chat.find({})
-  //  res.json({
-   //   chat: chat,
-   //   status: 'good',
-   // })
-  //} catch (err) {
-  //  console.error(err)
-  //  res.status(400).json({
-  //    error: err,
-  //    status: 'failed to retrieve messages from the database',
- //   })
- // }
-// })
-
-// a route to handle fetching a single message by its id
-// app.get('/chat/:message.message_id', async (req, res) => {
-  // load all messages from database
- //  try {
-  //  const chat = await chat.find({ _id: req.params.message.message_id })
-   // res.json({
-   //   chat: chat,
-   //   status: 'good',
-   // })
-  // } catch (err) {
-  //  console.error(err)
-   // res.status(400).json({
-   //   error: err,
-   //   status: 'failed to retrieve messages from the database',
-  //   })
-  // }
-// })
 
 
-// serve chat data
-app.get("/chatdata/", (req, res, next) => {
+
+//fetch chat data
+app.get("/chatdata/:chatId", (req, res, next) => {
   const url = "https://my.api.mockaroo.com/chatdata.json?key=987d00a0";
-  console.log("Calling chat data")
   axios
-    .get('https://my.api.mockaroo.com/chatdata.json?key=987d00a0')
-    .then(apiResponse => {
-      console.log(apiResponse.data)
-       const chatString = JSON.stringify(apiResponse.data).split(",");
-         const chat = {
-          "user": chatString[0],
-           "other_user": chatString[1],
-             "messages": chatString[2],
-             "messages.text": chatString[3],
-               "messages.message_id": chatString[4],
-             };
-
-      res.json(apiResponse.data);
+    .get(url)
+    .then((apiResponse) => {
+      const chatString = JSON.stringify(apiResponse.data).split(",");
+      const chat = {
+        "user": chatString[0],
+        "other_user": chatString[1],
+        "messages": chatString[2],
+        "messages.text": chatString[3],
+        "messages.message_id": chatString[4],
+      };
+      res.json(chat);
     })
-    .catch(err => next(err)) // pass any errors to express
+    .catch((err) => next(err));
 });
+
 
 // export the express app we created to make it available to other modules
 module.exports = app
