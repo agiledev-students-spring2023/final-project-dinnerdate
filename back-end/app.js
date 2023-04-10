@@ -74,15 +74,24 @@ app.get("/diner-post/:id", (req, res, next) => {
         "rating": postString[5],
         "num_ratings": postString[6]
       };
-
       res.json(post);
     })
-    .catch(err => next(err)) // pass any errors to express
+    .catch(err => { // if mockaroo doesn't work, serve static sample data
+      console.log(err);
+      res.json({
+        "id": Math.random().toString(36),
+        "title": "Mockaroo API rate limit reached",
+        "datetime": "04/01/2023",
+        "full_name": "Johnny Appleseed",
+        "description": "I am lonely.",
+        "rating": 1,
+        "num_ratings": 2,
+      });
+    })
 })
 
-
 // serve diner request data
-app.get("/diner-request/requestId", (req, res, next) => {
+app.get("/diner-request/:requestId", (req, res, next) => {
   const url = "https://my.api.mockaroo.com/diner_requests.json?key=85d24ca0";
   axios
     .get(url)
@@ -98,11 +107,75 @@ app.get("/diner-request/requestId", (req, res, next) => {
 
       res.json(post);
     })
-    .catch(err => next(err)) // pass any errors to express
+    .catch(err => { // if mockaroo doesn't work, serve static sample data
+      console.log(err);
+      res.json({
+        "id": Math.random().toString(36),
+        "full_name": "Johnny Appleseed",
+        "rating": 1,
+        "num_ratings": 2,
+        "message": "Mockaroo API rate limit reached",
+      });
+    })
 })
+//fetch chat data [broken]
+app.get("/chatdata/:chatId", (req, res, next) => {
+  const url = "https://my.api.mockaroo.com/chatdata.json?key=987d00a0";
+  axios
+    .get(url)
+    .then((apiResponse) => {
+      const chatString = JSON.stringify(apiResponse.data).split(",");
+      const chat = {
+        "user": chatString[0],
+        "other_user": chatString[1],
+        "messages": chatString[2],
+        "messages.text": chatString[3],
+        "messages.message_id": chatString[4],
+      };
+      res.json(chat);
+    })
+    .catch((err) => next(err));
+});
+
+app.get("/profile", function (req, res) {
+  const url = "https://my.api.mocokaroo.com/users.json?key=85d24ca0";
+  axios
+  .get(url)
+  .then(apiResponse => {
+    const userString = JSON.stringify(apiResponse.data).split(",");
+    const user = {
+      "id": userString[0],
+      "email": userString[1],
+      "username": userString[2],
+      "password": userString[3],
+      "first_name": userString[4],
+      "last_name": userString[5],
+      "birthdate": userString[6],
+      "gender": userString[7],
+      "mobile": userString[8]
+    };
+    console.log(user);
+    res.json(user);
+  })
+  .catch(err => { // if mockaroo doesn't work, serve static sample data
+    console.log(err);
+    res.json({
+      "id": Math.random().toString(36),
+      "email": "appleseedj@nyu.edu",
+      "username": "mockaroo_api_limit_reached",
+      "password": "verysecurepassword1234",
+      "first_name": "Johnny",
+      "last_name": "Appleseed",
+      "birthdate": "01/01/1983",
+      "gender": "male",
+      "mobile": "212998222",
+      "rating": 1,
+      "num_ratings": 2,
+    });
+  })
+});
 
 // serve images from picsum
-// route: localhost:3000/static?width=200&height=300
 app.get("/static/", (req, res, next) => {
   const url = `https://picsum.photos/${req.query.width}/${req.query.height}`;
   res.send(`<img src=${url}>`);
@@ -125,48 +198,6 @@ app.post('/login', (req, res) => {
     res.status(401).send({ status: 'error', message: 'invalid username or password' });
   }
 })
-
-app.get("/profile", function (req, res) {
-  const url = "https://my.api.mocokaroo.com/users.json?key=85d24ca0";
-  axios
-  .get(url)
-  .then(apiResponse => {
-    const userString = JSON.stringify(apiResponse.data).split(",");
-    const user = {
-      "id": userString[0],
-      "email": userString[1],
-      "username": userString[2],
-      "password": userString[3],
-      "first_name": userString[4],
-      "last_name": userString[5],
-      "birthdate": userString[6],
-      "gender": userString[7],
-      "mobile": userString[8]
-    };
-    console.log(user);
-    res.json(user);
-  })
-  .catch(err => next(err))
-});
-
-//fetch chat data
-app.get("/chatdata/:chatId", (req, res, next) => {
-  const url = "https://my.api.mockaroo.com/chatdata.json?key=987d00a0";
-  axios
-    .get(url)
-    .then((apiResponse) => {
-      const chatString = JSON.stringify(apiResponse.data).split(",");
-      const chat = {
-        "user": chatString[0],
-        "other_user": chatString[1],
-        "messages": chatString[2],
-        "messages.text": chatString[3],
-        "messages.message_id": chatString[4],
-      };
-      res.json(chat);
-    })
-    .catch((err) => next(err));
-});
 
 app.post('/create-post', (req, res) => {
   const { title, dateTime, description } = req.body;

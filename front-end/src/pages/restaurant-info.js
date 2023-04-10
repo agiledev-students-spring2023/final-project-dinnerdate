@@ -13,26 +13,6 @@ const sampleRestaurantData = {
     "rating": '',
     "description": '',
 };
-  
-const sampleDinerData = [
-    {
-    "id": 0,
-    "title": "Looking for a Valentines",
-    "datetime": "MM/DD/YY HH:MM PM",
-    "full_name": "Johnny Appleseed",
-    "rating": "4.8",
-    "num_ratings": "23",
-    "avatar_url": "https://picsum.photos/50/50"
-    },
-    {
-    "id": 1,
-    "title": "hi there!",
-    "datetime": "MM/DD/YY HH:MM PM",
-    "full_name": "Johnny Peachseed",
-    "rating": "4.5",
-    "num_ratings": "7",
-    "avatar_url": "https://picsum.photos/50/50"
-    }];
 
 const RestaurantInfo = ( props ) => {
     const [visibility, setVisibility] = useState(false);
@@ -42,10 +22,15 @@ const RestaurantInfo = ( props ) => {
   };
 
     const [restaurantData, setRestaurantData] = useState(sampleRestaurantData);
-    const [diners, setDiners] = useState([...sampleDinerData]);
+    const [diners, setDiners] = useState([]);
     const [selectedDiner, setSelectedDiner] = useState(0);
     const [buttonPopup, setButtonPopup] = useState(false);
     const { placeId } = useParams();
+
+    useEffect(() => {
+        fetchRestaurantInfo();
+        fetchDinerPosts();
+    }, [])
 
     const fetchRestaurantInfo = () => {
         Axios.get(`http://localhost:3000/restaurant/${placeId}`)
@@ -63,12 +48,12 @@ const RestaurantInfo = ( props ) => {
             .catch(err => console.log("Error: " + err ? err : "Unexpected error occurred."));
     };
 
-    const fetchDinerPosts = () => {
+    const fetchDinerPosts = async () => {
         const randInt = Math.floor(Math.random() * (4) + 1);
         const dinerPosts = [];
         for(let i = 0; i < randInt; i++){
             // slug should be id of diner post in the future
-            Axios.get(`http://localhost:3000/diner-post/${randInt}`)
+            await Axios.get(`http://localhost:3000/diner-post/${randInt}`)
                 .then((res) => {
                     const post = res.data;
                     const dinerPost = ({
@@ -80,15 +65,17 @@ const RestaurantInfo = ( props ) => {
                         "rating": post["rating"],
                         "num_ratings": post["num_ratings"],
                         "avatar_url": "https://picsum.photos/50/50"
-                    })
+                    });
                     dinerPosts.push(dinerPost);
                 })
                 .catch(err => console.log("Error: " + err ? err : "Unexpected error occurred."));
         }
         if(dinerPosts.length != 0) {
-            setDiners(dinerPosts);
+            setDiners([...dinerPosts]);
         }
+
     };
+
 
     const DinerPost = ( props ) => {
         return (
@@ -122,11 +109,6 @@ const RestaurantInfo = ( props ) => {
             </>
         )
     }
-
-    useEffect(() => {
-        fetchRestaurantInfo();
-        fetchDinerPosts();
-    }, [])
       
     return (        
         <div className="restaurant-info">

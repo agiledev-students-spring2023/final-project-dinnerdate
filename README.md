@@ -18,4 +18,19 @@ New York City arguably has the most prominent food scene in the wrold. The city 
 If you are interesting in contributing, please refer to [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ## Building & Testing 
-TBD
+To build and test this project, follow these instructions:
+1. Go to /back-end
+2. Create an `.env` file with the following line:
+GOOGLE_MAPS_API_KEY=AIzaSyB8VORRZ3mEDvFhU8z9cxkZM4Bqautc85s
+3. Run `npm install --force`
+4. Run `nodemon`
+5. Open a new terminal and go to /front-end
+6. Create an `.env` file with the following line:
+REACT_APP_GOOGLE_MAPS_API_KEY=AIzaSyB8VORRZ3mEDvFhU8z9cxkZM4Bqautc85s
+7. Run `npm install --force`
+8. Run `npm start`
+
+Notes: 
+- Sometimes we reach the rate limit for the Mockaroo API. When this happens, we serve static data instead.
+- It may a take a while for data on `/restaurant-info` and `/home-lfd` to load. Please give it some time.
+- It is impossible to generate a random placeId for a random restaurant, so we've used static data for sample restaurant info. 

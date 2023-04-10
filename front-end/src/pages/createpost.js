@@ -80,7 +80,7 @@ const CreatePost = () => {
                       required 
                       onChange={(e) => setDescription(e.target.value)} />
                 </label>
-                <button className="post-btn" type="submit">Post</button>
+                <Link to="/home-lfd"><button className="post-btn" type="submit">Post</button></Link>
             </form>
         </div>
     );

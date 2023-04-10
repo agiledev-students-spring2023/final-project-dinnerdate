@@ -95,7 +95,7 @@ const EditPost = () => {
                         required 
                         onChange={(e) => setDescription(e.target.value)} />
                 </label>
-                <button className="post-btn" type='submit'>Confirm</button>
+                <Link to="/home-lfd"><button className="post-btn" type='submit'>Confirm</button></Link>
             </form>
         </div>
     );
