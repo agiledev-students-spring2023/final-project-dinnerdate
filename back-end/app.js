@@ -118,6 +118,42 @@ app.get("/static/", (req, res, next) => {
   res.send(`<img src=${url}>`);
 })
 
+
+// a route to handle fetching all messages
+app.get('/chat', async (req, res) => {
+  // load all messages from database
+  try {
+    const chat = await Chat.find({})
+    res.json({
+      chat: chat,
+      status: 'good',
+    })
+  } catch (err) {
+    console.error(err)
+    res.status(400).json({
+      error: err,
+      status: 'failed to retrieve messages from the database',
+    })
+  }
+})
+
+// a route to handle fetching a single message by its id
+app.get('/chat/:chatId', async (req, res) => {
+  // load all messages from database
+  try {
+    const chat = await chat.find({ _id: req.params.chatId })
+    res.json({
+      chat: chat,
+      status: 'good',
+    })
+  } catch (err) {
+    console.error(err)
+    res.status(400).json({
+      error: err,
+      status: 'failed to retrieve messages from the database',
+    })
+  }
+})
 // serve chat data
 app.get("/chatdata/", (req, res, next) => {
   const url = "https://my.api.mockaroo.com/chatdata.json?key=987d00a0";
