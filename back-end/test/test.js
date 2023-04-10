@@ -56,4 +56,21 @@ describe('GET /diner-request/:id', () => {
     });
 });
 
+describe('GET /diner-post/:id', () => {
+    it('should return a diner post object with the correct properties', (done) => {
+    chai.request(app)
+        .get('/diner-post/:id')
+        .end(function(err, res) {
+        expect(err).to.be.null;
+        expect(res).to.have.status(200);
+        expect(res.body).to.be.an('object');
+        const properties = ['id', 'title', 'datetime', 'full_name', 'description', 'rating', 'num_ratings'];
+        properties.forEach((p) => {
+            expect(res.body).to.have.property(p);
+        });
+        done();
+        });
+    });
+});
+
 

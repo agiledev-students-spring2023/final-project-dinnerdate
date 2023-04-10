@@ -11,28 +11,28 @@ app.use(express.json()) // decode JSON-formatted incoming POST data
 app.use(express.urlencoded({ extended: true })) // decode url-encoded incoming POST data
 
 // serve user data
-app.get("/user/:id", (req, res, next) => {
-  const url = "https://my.api.mocokaroo.com/users.json?key=85d24ca0";
-  axios
-  .get(url)
-  .then(apiResponse => {
-    const userString = JSON.stringify(apiResponse.data).split(",");
-    const user = {
-      "id": userString[0],
-      "email": userString[1],
-      "username": userString[2],
-      "password": userString[3],
-      "first_name": userString[4],
-      "last_name": userString[5],
-      "birthdate": userString[6],
-      "gender": userString[7],
-      "mobile": userString[8]
-    };
-    console.log(user);
-    res.json(user);
-  })
-  .catch(err => next(err)) // pass any errors to express
-})
+// app.get("/user/:id", (req, res, next) => {
+//   const url = "https://my.api.mocokaroo.com/users.json?key=85d24ca0";
+//   axios
+//   .get(url)
+//   .then(apiResponse => {
+//     const userString = JSON.stringify(apiResponse.data).split(",");
+//     const user = {
+//       "id": userString[0],
+//       "email": userString[1],
+//       "username": userString[2],
+//       "password": userString[3],
+//       "first_name": userString[4],
+//       "last_name": userString[5],
+//       "birthdate": userString[6],
+//       "gender": userString[7],
+//       "mobile": userString[8]
+//     };
+//     console.log(user);
+//     res.json(user);
+//   })
+//   .catch(err => next(err)) // pass any errors to express
+// })
 
 // serve restaurant data
 app.get("/restaurant/:placeId", (req, res, next) => {
@@ -107,6 +107,47 @@ app.get("/static/", (req, res, next) => {
   const url = `https://picsum.photos/${req.query.width}/${req.query.height}`;
   res.send(`<img src=${url}>`);
 })
+
+app.post('/register', (req, res) => {
+  var user = new User(req.body);
+  user.save((err) =>{
+    if(err)
+      sendStatus(500);
+    io.emit('user', req.body);
+    res.sendStatus(200);
+  })
+})
+
+app.post('/login', (req, res) => {
+  if (true) { //validate login 
+    res.send({ status: 'success', message: 'success' });
+  } else {
+    res.status(401).send({ status: 'error', message: 'invalid username or password' });
+  }
+})
+
+app.get("/profile", function (req, res) {
+  const url = "https://my.api.mocokaroo.com/users.json?key=85d24ca0";
+  axios
+  .get(url)
+  .then(apiResponse => {
+    const userString = JSON.stringify(apiResponse.data).split(",");
+    const user = {
+      "id": userString[0],
+      "email": userString[1],
+      "username": userString[2],
+      "password": userString[3],
+      "first_name": userString[4],
+      "last_name": userString[5],
+      "birthdate": userString[6],
+      "gender": userString[7],
+      "mobile": userString[8]
+    };
+    console.log(user);
+    res.json(user);
+  })
+  .catch(err => next(err))
+});
 
 //fetch chat data
 app.get("/chatdata/:chatId", (req, res, next) => {
