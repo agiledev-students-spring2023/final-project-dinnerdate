@@ -3,9 +3,36 @@ import { useMemo, useState } from 'react'
 import { Link } from "react-router-dom";
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import dayjs from 'dayjs';
+import axios from 'axios';
 
 const CreatePost = () => {
     const [error, setError] = useState(null);
+    const [title, setTitle] = useState('');
+    const [dateTime, setDateTime] = useState('');
+    const [description, setDescription] = useState('');
+
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+          const response = await axios.post('http://localhost:3000/create-post', {
+            title,
+            dateTime,
+            description,
+          });
+          console.log(response.data);
+          // Reset form after successful submission
+          setTitle('');
+          setDateTime('');
+          setDescription('');
+        } catch (error) {
+          console.error(error);
+        }
+      };
+
+      const handleDateTimeChange = (date) => {
+        setDateTime(date);
+      };
 
     const errorMessage = useMemo(() => {
         if (error == 'disablePast'){
@@ -20,15 +47,17 @@ const CreatePost = () => {
         <div className="create-post-form post-form">
             <h1>Create a Post</h1>
             <h3>Create a post to find a date to eat with at [Restaurant Name]!</h3>
-            <form>
+            <form onSubmit={handleSubmit}>
                 <label>
                     <p>Title</p>
-                    <input className="input" type="text" required />
+                    <input className="input" type="text" value={title} onChange = {(e) => setTitle(e.target.value)} required />
                 </label>
 
                 <label>
                     <p>Date and Time</p>
                     <DateTimePicker
+                    value = {dateTime}
+                    onChange = {handleDateTimeChange}
                         defaultValue={dayjs().add(1, 'hour')}
                         disablePast
                         onError={(newError) => setError(newError)}
@@ -41,9 +70,9 @@ const CreatePost = () => {
 
                 <label>
                     <p>Description</p>
-                    <textarea className="input" required />
+                    <textarea value={description} className="input" required onChange={(e) => setDescription(e.target.value)} />
                 </label>
-                <button className="post-btn"><Link to="home-lfd">Post</Link></button>
+                <button className="post-btn" type="submit">Post</button>
             </form>
         </div>
     );

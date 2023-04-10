@@ -10,6 +10,14 @@ app.use(cors());
 app.use(express.json()) // decode JSON-formatted incoming POST data
 app.use(express.urlencoded({ extended: true })) // decode url-encoded incoming POST data
 
+// server responds to POST requests made by create-post
+app.post('/create-post', (req, res) => {
+  const { title, dateTime, description } = req.body;
+  console.log(title, dateTime, description);
+  res.status(201).json({message: 'Post created successfully'});
+  console.log('We Posting!')
+});
+
 app.get("/", (req, res) => {
     const presentation = ["a", "b"];
     const body = {
@@ -105,7 +113,6 @@ app.get("/diner-request/requestId", (req, res, next) => {
     .catch(err => next(err)) // pass any errors to express
 })
 
-
 // serve images from picsum
 // route: localhost:3000/static?width=200&height=300
 app.get("/static/", (req, res, next) => {
@@ -113,6 +120,6 @@ app.get("/static/", (req, res, next) => {
   res.send(`<img src=${url}>`);
 })
 
+
 // export the express app we created to make it available to other modules
 module.exports = app
-
