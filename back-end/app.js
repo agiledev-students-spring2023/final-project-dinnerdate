@@ -108,6 +108,12 @@ app.get("/static/", (req, res, next) => {
   res.send(`<img src=${url}>`);
 })
 
+app.post('/create-post', (req, res) => {
+  const { title, dateTime, description } = req.body;
+  console.log(title, dateTime, description);
+  res.status(201).json({message: 'Post created successfully'});
+  console.log('We Posting!')
+});
+
 // export the express app we created to make it available to other modules
 module.exports = app
-
