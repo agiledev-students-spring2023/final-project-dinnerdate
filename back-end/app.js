@@ -81,7 +81,7 @@ app.get("/diner-post/:id", (req, res, next) => {
       res.json({
         "id": Math.random().toString(36),
         "title": "Mockaroo API rate limit reached",
-        "datetime": "",
+        "datetime": "04/01/2023",
         "full_name": "Johnny Appleseed",
         "description": "I am lonely.",
         "rating": 1,
