@@ -1,5 +1,7 @@
 import './login.css'
 import { Link } from "react-router-dom";
+// const serverUrl = process.env.REACT_APP_SERVER_URL;
+// const serverPort = process.env.REACT_APP_SERVER_PORT;
 
 const Login = () => {
     return (

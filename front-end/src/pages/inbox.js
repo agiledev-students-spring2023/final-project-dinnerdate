@@ -3,7 +3,8 @@ import Chat from '../components/chat';
 import { Link } from "react-router-dom";
 import React from 'react';
 import { useState } from 'react';
-
+// const serverUrl = process.env.REACT_APP_SERVER_URL;
+// const serverPort = process.env.REACT_APP_SERVER_PORT;
 
 function Inbox() {
     // const [activeIndex, setActiveIndex] = useState(null);

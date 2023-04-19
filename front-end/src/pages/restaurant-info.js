@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { useParams } from 'react-router-dom';
 import Axios from 'axios';
 import Popup from "../components/Popup.js";
+const serverUrl = process.env.REACT_APP_SERVER_URL;
+const serverPort = process.env.REACT_APP_SERVER_PORT;
 
 // import Popup from 'reactjs-popup';
 
@@ -33,7 +35,7 @@ const RestaurantInfo = ( props ) => {
     }, [])
 
     const fetchRestaurantInfo = () => {
-        Axios.get(`http://localhost:3000/restaurant/${placeId}`)
+        Axios.get(`${serverUrl}:${serverPort}/restaurant/${placeId}`)
             .then((res) => {
                 setRestaurantData({
                     "name":res.data["name"],
@@ -53,7 +55,7 @@ const RestaurantInfo = ( props ) => {
         const dinerPosts = [];
         for(let i = 0; i < randInt; i++){
             // slug should be id of diner post in the future
-            await Axios.get(`http://localhost:3000/diner-post/${randInt}`)
+            await Axios.get(`${serverUrl}:${serverPort}/diner-post/${randInt}`)
                 .then((res) => {
                     const post = res.data;
                     const dinerPost = ({

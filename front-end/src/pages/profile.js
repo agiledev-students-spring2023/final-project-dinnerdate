@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import './profile.css';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+// const serverUrl = process.env.REACT_APP_SERVER_URL;
+// const serverPort = process.env.REACT_APP_SERVER_PORT;
 
 const Profile = () => {
   const [image, setImage] = useState('https://www.freeiconspng.com/thumbs/profile-icon-png/am-a-19-year-old-multimedia-artist-student-from-manila--21.png');

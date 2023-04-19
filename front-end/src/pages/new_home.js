@@ -2,7 +2,6 @@ import './new_home.css';
 import { useState, useEffect } from "react";
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 import { Link } from "react-router-dom";
-
 import usePlacesAutocomplete, {
     getGeocode,
     getLatLng,
@@ -20,6 +19,9 @@ const mapContainerStyle = {
     width: "600px",
     height: "600px",
 };
+
+const serverUrl = process.env.REACT_APP_SERVER_URL;
+const serverPort = process.env.REACT_APP_SERVER_PORT;
 
 function Home() {
     const { isLoaded } = useLoadScript({ 
