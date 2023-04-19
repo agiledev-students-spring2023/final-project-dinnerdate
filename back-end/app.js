@@ -10,30 +10,6 @@ app.use(cors());
 app.use(express.json()) // decode JSON-formatted incoming POST data
 app.use(express.urlencoded({ extended: true })) // decode url-encoded incoming POST data
 
-// serve user data
-// app.get("/user/:id", (req, res, next) => {
-//   const url = "https://my.api.mocokaroo.com/users.json?key=85d24ca0";
-//   axios
-//   .get(url)
-//   .then(apiResponse => {
-//     const userString = JSON.stringify(apiResponse.data).split(",");
-//     const user = {
-//       "id": userString[0],
-//       "email": userString[1],
-//       "username": userString[2],
-//       "password": userString[3],
-//       "first_name": userString[4],
-//       "last_name": userString[5],
-//       "birthdate": userString[6],
-//       "gender": userString[7],
-//       "mobile": userString[8]
-//     };
-//     console.log(user);
-//     res.json(user);
-//   })
-//   .catch(err => next(err)) // pass any errors to express
-// })
-
 // serve restaurant data
 app.get("/restaurant/:placeId", (req, res, next) => {
   const placeId = req.params.placeId;
@@ -52,7 +28,6 @@ app.get("/restaurant/:placeId", (req, res, next) => {
         "rating": restaurant_data['rating'],
         "url": restaurant_data['url']
       };
-      console.log(restaurant["url"]);
       res.json(restaurant);
     })
     .catch(err => next(err)) // pass any errors to express
@@ -64,7 +39,9 @@ app.get("/diner-post/:id", (req, res, next) => {
   axios
     .get(url)
     .then(apiResponse => {
-      const postString = JSON.stringify(apiResponse.data).split(",");
+      console.log(JSON.stringify(apiResponse.data).replace(/["\\n]/g, ''));
+      const postString = JSON.stringify(apiResponse.data).replace(/["\\n]/g, '').split(",");
+      console.log(postString)
       const post = {
         "id": postString[0],
         "title": postString[1],
@@ -96,7 +73,7 @@ app.get("/diner-request/:requestId", (req, res, next) => {
   axios
     .get(url)
     .then(apiResponse => {
-      const postString = JSON.stringify(apiResponse.data).split(",");
+      const postString = JSON.stringify(apiResponse.data).replace(/["\\n]/g, '').split(",");
       const post = {
         "id": postString[0],
         "full_name": postString[1],
@@ -124,7 +101,7 @@ app.get("/chatdata/:chatId", (req, res, next) => {
   axios
     .get(url)
     .then((apiResponse) => {
-      const chatString = JSON.stringify(apiResponse.data).split(",");
+      const chatString = JSON.stringify(apiResponse.data).replace(/["\\n]/g, '').split(",");
       const chat = {
         "user": chatString[0],
         "other_user": chatString[1],
@@ -142,7 +119,7 @@ app.get("/profile", function (req, res) {
   axios
   .get(url)
   .then(apiResponse => {
-    const userString = JSON.stringify(apiResponse.data).split(",");
+    const userString = JSON.stringify(apiResponse.data).replace(/["\\n]/g, '').split(",");
     const user = {
       "id": userString[0],
       "email": userString[1],

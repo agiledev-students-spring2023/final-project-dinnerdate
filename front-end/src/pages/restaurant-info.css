@@ -31,6 +31,12 @@
     filter: brightness(110%);
 }
 
+.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .create-post, .diner-post {
     display: flex;
 }

@@ -55,7 +55,7 @@ const RestaurantInfo = ( props ) => {
         const dinerPosts = [];
         for(let i = 0; i < randInt; i++){
             // slug should be id of diner post in the future
-            await Axios.get(`${serverUrl}:${serverPort}/diner-post/${randInt}`)
+            await Axios.get(`${serverUrl}:${serverPort}/diner-post/${placeId}`)
                 .then((res) => {
                     const post = res.data;
                     const dinerPost = ({
@@ -84,7 +84,7 @@ const RestaurantInfo = ( props ) => {
             <div onClick={() => {setButtonPopup(true); setSelectedDiner(props.id);}} className="post diner-post">
                     <img className="avatar" src={props.avatar_url}></img> 
                     <div className="diner-info"> 
-                        <h2>{props.title}</h2>
+                        <h2 className="truncate">{props.title}</h2>
                         <h5>{props.datetime}</h5>
                         <h3>{props.full_name} {props.rating}⭐ ({props.num_ratings} reviews)</h3>
                     </div>
