@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import dayjs from 'dayjs';
 import axios from 'axios';
+const serverUrl = process.env.REACT_APP_SERVER_URL;
+const serverPort = process.env.REACT_APP_SERVER_PORT;
 
 const CreatePost = () => {
     const [error, setError] = useState(null);
@@ -15,7 +17,7 @@ const CreatePost = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-          const response = await axios.post('http://localhost:3000/create-post', {
+          const response = await axios.post(`${serverUrl}:${serverPort}/create-post`, {
             title,
             dateTime,
             description,

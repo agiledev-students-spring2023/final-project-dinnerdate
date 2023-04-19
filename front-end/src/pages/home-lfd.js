@@ -3,6 +3,8 @@ import './home-lfd.css';
 import { useEffect, useState } from 'react'
 import Popup from "../components/Popup.js";
 import Axios from 'axios';
+const serverUrl = process.env.REACT_APP_SERVER_URL;
+const serverPort = process.env.REACT_APP_SERVER_PORT;
 
 const HomeLFD = () => {
     const [diners, setDiners] = useState([])
@@ -18,7 +20,7 @@ const HomeLFD = () => {
         const dinerRequests = [];
         for(let i = 0; i < randInt; i++){
             // slug should be id of diner post in the future
-            await Axios.get(`http://localhost:3000/diner-request/${randInt}`)
+            await Axios.get(`${serverUrl}:${serverPort}/diner-request/${randInt}`)
                 .then((res) => {
                     const request = res.data;
                     const dinerPost = ({

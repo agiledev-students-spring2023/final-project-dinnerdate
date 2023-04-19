@@ -2,6 +2,8 @@ import './homeConfirmed.css';
 import { useEffect, useState } from 'react';
 import { Link } from "react-router-dom";
 import Axios from 'axios';
+const serverUrl = process.env.REACT_APP_SERVER_URL;
+const serverPort = process.env.REACT_APP_SERVER_PORT;
 
 const HomeConfirmed = () => {
     const [diner, setDiner] = useState(null);
@@ -12,7 +14,7 @@ const HomeConfirmed = () => {
 
     const fetchDinerInfo = () => {
         // temporary display info
-        Axios.get(`http://localhost:3000/diner-post/-1`)
+        Axios.get(`${serverUrl}:${serverPort}/diner-post/-1`)
             .then((res) => {
                 setDiner({
                     "full_name": res.data["full_name"],
