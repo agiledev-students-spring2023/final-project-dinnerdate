@@ -1,14 +1,26 @@
-// import and instantiate express
 require('dotenv').config();
 
 const cors = require('cors')
 const axios = require("axios");
 const express = require("express") // CommonJS import style!
-const app = express() // instantiate an Express object
 
+const jwt = require("jsonwebtoken");
+// const auth = require("./auth");
+
+// set up express
+const app = express()
+app.use(express.json())
 app.use(cors());
-app.use(express.json()) // decode JSON-formatted incoming POST data
 app.use(express.urlencoded({ extended: true })) // decode url-encoded incoming POST data
+
+const User = require('./db');
+
+/*************************** Routes ***************************/
+// serve user data
+app.get("/user/:username", async (req, res, next) => {
+  const user = await User.findOne({username: req.params.username});
+  res.send(JSON.stringify(user));
+});
 
 // serve restaurant data
 app.get("/restaurant/:placeId", (req, res, next) => {
@@ -157,22 +169,55 @@ app.get("/static/", (req, res, next) => {
   res.send(`<img src=${url}>`);
 })
 
-app.post('/register', (req, res) => {
-  var user = new User(req.body);
-  user.save((err) =>{
-    if(err)
-      sendStatus(500);
-    io.emit('user', req.body);
-    res.sendStatus(200);
-  })
+app.post('/register', async (req, res) => {
+  try {
+    const { firstName, lastName, email, mobile, birthdate, gender } = req.body;
+
+    // check if any fields are missing
+    if (!email || !password || !passwordCheck || !firstName || !lastName ){
+      return res.status(400).json({ msg: "Not all fields have been entered." });
+    }
+
+    // double-check password
+    if (password != passwordCheck) {
+      return res
+        .status(400)
+        .json({ msg: "Passwords must match " });
+    }
+
+    // check if email is used
+    const existingEmail = await User.findOne({ email: email });
+    if (existingEmail) {
+      return res
+        .status(400)
+        .json( { msg: "An account is already registered with this email." });
+    }
+
+    // hash passwords using bcrypt
+    const salt = await bcrypt.genSalt();
+    const passwordHash = await bcrypt.hash(password, salt);
+
+    // create new user with hashed password
+    const newUser = new User({
+      email: email,
+      password: passwordHash,
+      firstName: firstName,
+      lastName: lastName,
+      birthdate: birthdate,
+      mobile: mobile,
+      createdAt: Date.now()
+    });
+
+    // save and return new user
+    const savedUser = await newUser.save();
+    res.json(savedUser);
+  } catch(e) {
+    res.status(500).json({ err: error.message });
+  }
 })
 
 app.post('/login', (req, res) => {
-  if (true) { //validate login 
-    res.send({ status: 'success', message: 'success' });
-  } else {
-    res.status(401).send({ status: 'error', message: 'invalid username or password' });
-  }
+
 })
 
 app.post('/create-post', (req, res) => {

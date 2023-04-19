@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 // const serverPort = process.env.REACT_APP_SERVER_PORT;
 
 const Register = () => {
+
     return (
         <div className="register">
             <h1>Register</h1>
