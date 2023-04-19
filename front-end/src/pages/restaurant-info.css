@@ -35,6 +35,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    max-width: 475px;
 }
 
 .create-post, .diner-post {

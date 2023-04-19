@@ -10,10 +10,21 @@ const serverPort = process.env.REACT_APP_SERVER_PORT;
 // import Popup from 'reactjs-popup';
 
 const sampleRestaurantData = {
-    "name": '',
+    "name": 'Loading...',
     "address": '',
     "rating": '',
     "description": '',
+};
+
+const sampleDinerPost = {
+    "id": -1,
+    "title": 'Loading...',
+    "datetime": '',
+    "full_name": '',
+    "description": '',
+    "rating": '',
+    "num_ratings": '',
+    "avatar_url": "https://picsum.photos/50/50"
 };
 
 const RestaurantInfo = ( props ) => {
@@ -24,7 +35,7 @@ const RestaurantInfo = ( props ) => {
   };
 
     const [restaurantData, setRestaurantData] = useState(sampleRestaurantData);
-    const [diners, setDiners] = useState([]);
+    const [diners, setDiners] = useState([sampleDinerPost]);
     const [selectedDiner, setSelectedDiner] = useState(0);
     const [buttonPopup, setButtonPopup] = useState(false);
     const { placeId } = useParams();
@@ -86,7 +97,7 @@ const RestaurantInfo = ( props ) => {
                     <div className="diner-info"> 
                         <h2 className="truncate">{props.title}</h2>
                         <h5>{props.datetime}</h5>
-                        <h3>{props.full_name} {props.rating}⭐ ({props.num_ratings} reviews)</h3>
+                        {props.rating && props.num_ratings && <h3>{props.full_name} {props.rating}⭐ ({props.num_ratings} reviews)</h3>}
                     </div>
                 </div>
         )

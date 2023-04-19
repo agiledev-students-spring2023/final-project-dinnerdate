@@ -18,7 +18,6 @@ app.get("/restaurant/:placeId", (req, res, next) => {
     .get(url)
     .then(apiResponse => {
       const restaurant_data = apiResponse.data.result;
-      console.log(apiResponse.data);
       const restaurant = {
         "name": restaurant_data['name'],
         "address": restaurant_data['formatted_address'],
