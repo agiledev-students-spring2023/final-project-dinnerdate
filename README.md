@@ -2,7 +2,7 @@
 Dinner Date is a social networking app that provides a platform for users to find others to dine with. 
 
 ## Team Members
-[Andrew Huang](https://github.com/andrew0022), [Claire Guo](https://github.com/clairekguo), [Frank Weng](https://github.com/wengf2086), [Jeffrey Chen](https://github.com/FrozenEclipse), [Victoria Carroll](https://github.com/victoriacarroll323)
+[Andrew Huang](https://github.com/andrew0022), [Claire Guo](https://github.com/clairekguo), [Frank Weng](https://github.com/wengf2086), [Jeffrey Chen](https://github.com/FrozenEclipse), [Victoria Carroll](https://github.com/victoriacarroll323) 
 
 ## Product Vision Statement
 With Dinner Date, users will need to register with an account. Once logged in, they will gain access to all the resturants and invitations in their geographic area. A map will display pins marking resturants that the user can click on to view exisitng invitations along with the creators' profiles and rating. The user has the option of accepting the invitation of another user or to post one of their own by filling out a form with time and description information. If the user has an active post, they will be able to view a list of other users that have accepted their invitation. The original creator of the post can either "accept" or "decline" each user. Once a date is set, the two parties will be able to engage in conversation over our app with our chat feature. The details of the date can also be edited or cancelled by either user. Following the scheduled time of the date, both users will be prompted to rate the other on a scale of 1-5 stars based on punctuality, behavior, etc. Users will also be allowed access to their chat history and to edit their own profile settings.
