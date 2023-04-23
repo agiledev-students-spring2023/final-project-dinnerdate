@@ -21,5 +21,15 @@ const userSchema = new mongoose.Schema({
     gender: { type: String, required: true },
     createdAt: { type: Date, required: true },
 });
-      
+
 module.exports = mongoose.model('User', userSchema);
+
+const postSchema = new mongoose.Schema({
+    location: { type: String, required: true },
+    title: { type: String, required: true },
+    createdBy: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    date: { type: Date, required: true }, 
+    description: { type: String, required: true },
+});
+      
+module.exports = mongoose.model('Post', userSchema);
