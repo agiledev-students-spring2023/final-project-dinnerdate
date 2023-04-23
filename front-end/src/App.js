@@ -1,6 +1,7 @@
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, useHistory } from 'react-router-dom';
+import { Navigate } from "react-router-dom";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import Navbar from './components/Navbar'
 
@@ -15,36 +16,48 @@ import Login from './pages/login'
 import Profile from './pages/profile'
 import Register from './pages/register'
 
+import './index.css'
+
 function App() {
   return (
     <>
-      <Router>
+      <BrowserRouter>
       <div className="App">
         <Navbar />
+
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <div className="content">
             <Switch>
               <Route path="/login"><Login /></Route>           
               <Route path="/register"><Register /></Route>
 
-              <Route exact path="/"><Home /></Route>
-              <Route path="/restaurant/:placeId"><RestaurantInfo /></Route>
+              <ProtectedRoute exact path="/"><Home /></ProtectedRoute>
+              <ProtectedRoute path="/restaurant/:placeId"><RestaurantInfo /></ProtectedRoute>
 
-              <Route path="/create-post"><CreatePost /></Route>
-              <Route path="/edit-post"><EditPost /></Route>
+              <ProtectedRoute path="/create-post"><CreatePost /></ProtectedRoute>
+              <ProtectedRoute path="/edit-post"><EditPost /></ProtectedRoute>
 
-              <Route path="/profile"><Profile /></Route>
-              <Route path="/inbox"><Inbox /></Route>
+              <ProtectedRoute path="/profile"><Profile /></ProtectedRoute>
+              <ProtectedRoute path="/inbox"><Inbox /></ProtectedRoute>
 
-              <Route path="/date"><HomeConfirmed /></Route>
-              <Route path="/home-lfd"><HomeLFD /></Route>
+              <ProtectedRoute path="/date"><HomeConfirmed /></ProtectedRoute>
+              <ProtectedRoute path="/home-lfd"><HomeLFD /></ProtectedRoute>
+
             </Switch>
           </div>
         </LocalizationProvider>
       </div>
-    </Router>
+    </BrowserRouter>
     </>
   );
 }
+
+const ProtectedRoute = ( { children } ) => {
+  const history = useHistory();
+  const token = localStorage.getItem('token');
+  const user = localStorage.getItem('user');
+  if (!user || !token) history.push('/login');
+  return children;
+};
 
 export default App;
