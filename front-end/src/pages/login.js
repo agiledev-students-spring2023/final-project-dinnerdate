@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import Axios from "axios";
 import React, { useState } from 'react';
 import './login.css'
@@ -8,6 +8,8 @@ const serverPort = process.env.REACT_APP_SERVER_PORT;
 
 
 const Login = () => {
+    const history = useHistory();
+
     const [formData, setFormData] = useState({
         email: '',
         password: '',
@@ -21,6 +23,14 @@ const Login = () => {
       async function handleSubmit(event) {
         event.preventDefault();
         await Axios.post(`${serverUrl}:${serverPort}/login`, formData, {params: {}})
+            .then((response) => {
+                // Store token and user data in localStorage
+                localStorage.setItem('token', response.data.token);
+                localStorage.setItem('user', JSON.stringify(response.data.user));
+
+                // Redirect to home page
+                history.push('/');
+            })
             .catch(e => console.error(e.response.data.msg));
       }
 

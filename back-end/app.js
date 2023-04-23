@@ -1,10 +1,8 @@
 require('dotenv').config();
-
 const bcrypt = require("bcryptjs")
 const cors = require('cors')
 const axios = require("axios");
 const express = require("express") // CommonJS import style!
-
 const jwt = require("jsonwebtoken");
 // const auth = require("./auth");
 
@@ -212,10 +210,21 @@ app.post('/register', async (req, res) => {
       createdAt: new Date(Date.now()).toLocaleDateString()
     });
 
-    // save, return, and log new user
+    // save and log new user
     const savedUser = await newUser.save();
-    res.json(savedUser);
     console.log(`Registered new user: ${savedUser}`)
+
+    // create and return json web token
+    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
+    res.json({
+      token,
+      user: {
+        id: newUser._id,
+        firstName: newUser.firstName,
+        lastName: newUser.lastName,
+        email: newUser.email,
+      }
+    });
 
   } catch(e) { res.status(500).json({ err: e.message }); }
 })
@@ -243,10 +252,8 @@ app.post('/login', async (req, res) => {
         email: user.email,
       }
     });
-    console.log(process.env.JWT_SECRET)
   }
   catch (error) { res.status(500).json({ err: error.message }); }
-
 })
 
 // export the express app we created to make it available to other modules
