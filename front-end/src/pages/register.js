@@ -30,7 +30,7 @@ const Register = () => {
       async function handleSubmit(event) {
         formData.birthday = new Date(formData.birthday).toLocaleDateString();
         event.preventDefault();
-        await Axios.post(`${serverUrl}:${serverPort}/register`, formData)
+        await Axios.post(`${serverUrl}:${serverPort}/register`, formData, {params: {}})
             .catch(e => console.error(e.response.data.msg));
       }
 
