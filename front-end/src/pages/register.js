@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import axios from '../axiosInstance';
 import React, { useState } from 'react';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -8,6 +8,7 @@ const serverUrl = process.env.REACT_APP_SERVER_URL;
 const serverPort = process.env.REACT_APP_SERVER_PORT;
 
 const Register = () => {
+    const history = useHistory();
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -30,6 +31,14 @@ const Register = () => {
         formData.birthday = new Date(formData.birthday).toLocaleDateString();
         event.preventDefault();
         await axios.post(`/register`, formData, {params: {}})
+            .then((response) => {
+                // Store token and user data in localStorage
+                localStorage.setItem('token', response.data.token);
+                localStorage.setItem('user', JSON.stringify(response.data.user));
+
+                // Redirect to home page
+                history.push('/');
+            })
             .catch(e => console.error(e.response.data.msg));
       }
 
