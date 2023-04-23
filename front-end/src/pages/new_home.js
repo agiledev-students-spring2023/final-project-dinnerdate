@@ -1,4 +1,5 @@
-import './new_home.css';
+
+import jwt from 'jsonwebtoken';
 import { useState, useEffect } from "react";
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 import { Link } from "react-router-dom";
@@ -14,16 +15,32 @@ import {
     ComboboxOption,
 } from "@reach/combobox";
 import "@reach/combobox/styles.css";
+
+import './new_home.css';
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 const serverPort = process.env.REACT_APP_SERVER_PORT;
 
 const libraries = ["places"];
-
 function Home() {
     const { isLoaded } = useLoadScript({ 
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
         libraries: libraries,
     });
+
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            console.log(token);
+          try {
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            setUser(decoded.user);
+          } catch (error) {
+            console.error(error);
+          }
+        }
+      }, []);
 
     if (!isLoaded) return <div>Loading...</div>;
     return (
