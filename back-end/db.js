@@ -13,14 +13,13 @@ mongoose.connect(
     });
 
 const userSchema = new mongoose.Schema({
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
     email: { type: String, required: true },
-    username: { type: String, required: true },
-    first_name: { type: String, required: true },
-    last_name: { type: String, required: true },
+    password: { type: String, required: true },
+    birthdate: { type: Date }, // temporarily not required until we figure out how to make it required
     gender: { type: String, required: true },
-    mobile: { type: String, required: true },
-    birthdate: { type: Date, required: true },
-    joindate: { type: Date, required: true },
+    createdAt: { type: Date, required: true },
 });
       
 module.exports = mongoose.model('User', userSchema);

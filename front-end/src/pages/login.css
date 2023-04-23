@@ -30,7 +30,7 @@
     font-weight: bold;
 }
 
-.login-btn { float: right; }
+.register-btn .login-btn { float: right; }
 
 .register label {
     padding: 10px 0px 0px 0px;

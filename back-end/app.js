@@ -1,5 +1,6 @@
 require('dotenv').config();
 
+const bcrypt = require("bcryptjs")
 const cors = require('cors')
 const axios = require("axios");
 const express = require("express") // CommonJS import style!
@@ -171,48 +172,37 @@ app.get("/static/", (req, res, next) => {
 
 app.post('/register', async (req, res) => {
   try {
-    const { firstName, lastName, email, mobile, birthdate, gender } = req.body;
-
-    // check if any fields are missing
-    if (!email || !password || !passwordCheck || !firstName || !lastName ){
-      return res.status(400).json({ msg: "Not all fields have been entered." });
-    }
-
-    // double-check password
-    if (password != passwordCheck) {
-      return res
-        .status(400)
-        .json({ msg: "Passwords must match " });
-    }
-
+    const { firstName, lastName, email, birthday, gender, password, passwordCheck } = req.body;
+    
     // check if email is used
     const existingEmail = await User.findOne({ email: email });
-    if (existingEmail) {
-      return res
-        .status(400)
-        .json( { msg: "An account is already registered with this email." });
-    }
+    if (existingEmail) return res.status(400).json( { msg: "An account is already registered with this email." });
+    // double-check password
+    if (password != passwordCheck) return res.status(400).json({ msg: "Passwords must match" });
 
     // hash passwords using bcrypt
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
 
-    // create new user with hashed password
+    // create user using hashed password
     const newUser = new User({
-      email: email,
-      password: passwordHash,
       firstName: firstName,
       lastName: lastName,
-      birthdate: birthdate,
-      mobile: mobile,
-      createdAt: Date.now()
+      email: email,
+      password: passwordHash,
+      birthdate: birthday,
+      gender: gender,
+      createdAt: new Date(Date.now()).toLocaleDateString()
     });
 
-    // save and return new user
+    // save, return, and log new user
     const savedUser = await newUser.save();
     res.json(savedUser);
+    console.log(`Registered new user: ${savedUser}`)
+
   } catch(e) {
-    res.status(500).json({ err: error.message });
+    console.log(e)
+    res.status(500).json({ err: e.message });
   }
 })
 
