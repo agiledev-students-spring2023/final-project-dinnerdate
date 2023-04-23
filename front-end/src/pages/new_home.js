@@ -6,7 +6,6 @@ import usePlacesAutocomplete, {
     getLatLng,
 } from "use-places-autocomplete";
 import useOnclickOutside from "react-cool-onclickoutside";
-import axios from '../axiosInstance';
 import './new_home.css';
 
 const libraries = ["places"];

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import Axios from "axios";
+import axios from '../axiosInstance';
 import React, { useState } from 'react';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import './login.css';
@@ -29,7 +29,7 @@ const Register = () => {
       async function handleSubmit(event) {
         formData.birthday = new Date(formData.birthday).toLocaleDateString();
         event.preventDefault();
-        await Axios.post(`${serverUrl}:${serverPort}/register`, formData, {params: {}})
+        await axios.post(`/register`, formData, {params: {}})
             .catch(e => console.error(e.response.data.msg));
       }
 

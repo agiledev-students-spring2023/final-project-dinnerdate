@@ -5,7 +5,7 @@ const serverPort = process.env.REACT_APP_SERVER_PORT;
 const instance = axios.create({
   baseURL: `${serverUrl}:${serverPort}`,
   headers: {
-    'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`
+    'Authorization': `Bearer ${localStorage.getItem('token')}`
   }
 });
 
