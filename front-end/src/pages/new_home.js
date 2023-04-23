@@ -13,25 +13,23 @@ import {
     ComboboxList,
     ComboboxOption,
 } from "@reach/combobox";
-
 import "@reach/combobox/styles.css";
-const mapContainerStyle = {
-    width: "600px",
-    height: "600px",
-};
-
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 const serverPort = process.env.REACT_APP_SERVER_PORT;
+
+const libraries = ["places"];
 
 function Home() {
     const { isLoaded } = useLoadScript({ 
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-        libraries: ["places"],
+        libraries: libraries,
     });
 
     if (!isLoaded) return <div>Loading...</div>;
     return (
         <>
+            <h1>Find / Create a Date</h1>
+            <h4>Select or search for a restaurant, then press "Go"!</h4>
             <Map />
         </>
     );
@@ -70,21 +68,17 @@ function Map() {
 
     return (
         <>
-            <h1>Find / Create a Date</h1>
-            <h4>Select or search for a restaurant, then press "Go"!</h4>
             <div className="places-container">
                 <PlacesAutocomplete setSelected={setSelected} />
             </div>
-
             <GoogleMap 
                 zoom={15} 
                 center={currPosition} 
-                mapContainerStyle={mapContainerStyle}
+                mapContainerStyle={ { width: "600px", height: "600px" } }
                 onClick={onClick}
             >
                 {selected && <Marker position={ {lat: selected.lat, lng: selected.lng} } />}   {/* set a marker on selected position */}
             </GoogleMap>
-
             {selected ? <h1><Link to={`/restaurant/${selected.placeId}`}> Go </Link></h1> : ""}
         </>
     );
