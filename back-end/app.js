@@ -170,6 +170,23 @@ app.get("/static/", (req, res, next) => {
   res.send(`<img src=${url}>`);
 })
 
+app.post('/create-post', (req, res) => {
+  const { title, dateTime, description } = req.body;
+  console.log(title, dateTime, description);
+  res.status(201).json({message: 'Post created successfully'});
+  console.log('We Posting!')
+});
+
+app.post('/chat', (req, res) => {
+  var message = new Message(req.body);
+  message.save((err) =>{
+    if(err)
+      sendStatus(500);
+    io.emit('message', req.body);
+    res.sendStatus(200);
+  })
+})
+
 app.post('/register', async (req, res) => {
   try {
     const { firstName, lastName, email, birthday, gender, password, passwordCheck } = req.body;
@@ -200,31 +217,36 @@ app.post('/register', async (req, res) => {
     res.json(savedUser);
     console.log(`Registered new user: ${savedUser}`)
 
-  } catch(e) {
-    console.log(e)
-    res.status(500).json({ err: e.message });
+  } catch(e) { res.status(500).json({ err: e.message }); }
+})
+
+app.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // find email in database
+    const user = await User.findOne({ email: email });
+    if(!user) return res.status(400).json({ msg: "No account with this email has been registered. "});
+    
+    // compare passwords
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(400).json({ msg: "Password is incorrect." });
+
+    // create json web token
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    res.json({
+      token,
+      user: {
+        id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+      }
+    });
+    console.log(process.env.JWT_SECRET)
   }
-})
+  catch (error) { res.status(500).json({ err: error.message }); }
 
-app.post('/login', (req, res) => {
-
-})
-
-app.post('/create-post', (req, res) => {
-  const { title, dateTime, description } = req.body;
-  console.log(title, dateTime, description);
-  res.status(201).json({message: 'Post created successfully'});
-  console.log('We Posting!')
-});
-
-app.post('/chat', (req, res) => {
-  var message = new Message(req.body);
-  message.save((err) =>{
-    if(err)
-      sendStatus(500);
-    io.emit('message', req.body);
-    res.sendStatus(200);
-  })
 })
 
 // export the express app we created to make it available to other modules
