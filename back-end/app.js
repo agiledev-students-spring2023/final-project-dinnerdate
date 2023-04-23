@@ -21,10 +21,17 @@ app.get("/user/:username", async (req, res, next) => {
   res.send(JSON.stringify(user));
 });
 
+// serve user data
+app.get("/user/:username", async (req, res, next) => {
+  const user = await User.findOne({username: req.params.username});
+  res.send(JSON.stringify(user));
+});
+
 // serve restaurant data
 app.get("/restaurant/:placeId", (req, res, next) => {
   const placeId = req.params.placeId;
   const url = `https://maps.googleapis.com/maps/api/place/details/json?placeid=${placeId}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
+  console.log(url);
   axios
     .get(url)
     .then(apiResponse => {
@@ -49,9 +56,7 @@ app.get("/diner-post/:id", (req, res, next) => {
   axios
     .get(url)
     .then(apiResponse => {
-      console.log(JSON.stringify(apiResponse.data).replace(/["\\n]/g, ''));
       const postString = JSON.stringify(apiResponse.data).replace(/["\\n]/g, '').split(",");
-      console.log(postString)
       const post = {
         "id": postString[0],
         "title": postString[1],

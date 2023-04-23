@@ -32,7 +32,7 @@ function App() {
               <Route path="/register"><Register /></Route>
 
               <ProtectedRoute exact path="/"><Home /></ProtectedRoute>
-              <ProtectedRoute path="/restaurant/:placeId"><RestaurantInfo /></ProtectedRoute>
+              <Route path="/restaurant/:placeId"><RestaurantInfo /></Route>
 
               <ProtectedRoute path="/create-post"><CreatePost /></ProtectedRoute>
               <ProtectedRoute path="/edit-post"><EditPost /></ProtectedRoute>
