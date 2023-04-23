@@ -1,5 +1,5 @@
 import { useHistory, Link } from "react-router-dom";
-import Axios from "axios";
+import axios from '../axiosInstance';
 import React, { useState } from 'react';
 import './login.css'
 
@@ -22,7 +22,7 @@ const Login = () => {
 
       async function handleSubmit(event) {
         event.preventDefault();
-        await Axios.post(`${serverUrl}:${serverPort}/login`, formData, {params: {}})
+        await axios.post(`/login`, formData, {params: {}})
             .then((response) => {
                 // Store token and user data in localStorage
                 localStorage.setItem('token', response.data.token);

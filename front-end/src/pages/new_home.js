@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 import { Link } from "react-router-dom";
@@ -20,15 +19,9 @@ function Home() {
 
     useEffect(() => {
         const token = localStorage.getItem('token');
-        // if (token) {
-        //     console.log(token);
-        //   try {
-        //     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        //     setUser(decoded.user);
-        //   } catch (error) {
-        //     console.error(error);
-        //   }
-        // }
+        if (token) {
+            // console.log(token);
+        }
       }, []);
 
     if (!isLoaded) return <div>Loading...</div>;
