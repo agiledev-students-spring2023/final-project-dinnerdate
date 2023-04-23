@@ -1,9 +1,8 @@
 require('dotenv').config();
-
+const bcrypt = require("bcryptjs")
 const cors = require('cors')
 const axios = require("axios");
 const express = require("express") // CommonJS import style!
-
 const jwt = require("jsonwebtoken");
 // const auth = require("./auth");
 
@@ -169,57 +168,6 @@ app.get("/static/", (req, res, next) => {
   res.send(`<img src=${url}>`);
 })
 
-app.post('/register', async (req, res) => {
-  try {
-    const { firstName, lastName, email, mobile, birthdate, gender } = req.body;
-
-    // check if any fields are missing
-    if (!email || !password || !passwordCheck || !firstName || !lastName ){
-      return res.status(400).json({ msg: "Not all fields have been entered." });
-    }
-
-    // double-check password
-    if (password != passwordCheck) {
-      return res
-        .status(400)
-        .json({ msg: "Passwords must match " });
-    }
-
-    // check if email is used
-    const existingEmail = await User.findOne({ email: email });
-    if (existingEmail) {
-      return res
-        .status(400)
-        .json( { msg: "An account is already registered with this email." });
-    }
-
-    // hash passwords using bcrypt
-    const salt = await bcrypt.genSalt();
-    const passwordHash = await bcrypt.hash(password, salt);
-
-    // create new user with hashed password
-    const newUser = new User({
-      email: email,
-      password: passwordHash,
-      firstName: firstName,
-      lastName: lastName,
-      birthdate: birthdate,
-      mobile: mobile,
-      createdAt: Date.now()
-    });
-
-    // save and return new user
-    const savedUser = await newUser.save();
-    res.json(savedUser);
-  } catch(e) {
-    res.status(500).json({ err: error.message });
-  }
-})
-
-app.post('/login', (req, res) => {
-
-})
-
 app.post('/create-post', (req, res) => {
   const { title, dateTime, description } = req.body;
   console.log(title, dateTime, description);
@@ -235,6 +183,77 @@ app.post('/chat', (req, res) => {
     io.emit('message', req.body);
     res.sendStatus(200);
   })
+})
+
+app.post('/register', async (req, res) => {
+  try {
+    const { firstName, lastName, email, birthday, gender, password, passwordCheck } = req.body;
+    
+    // check if email is used
+    const existingEmail = await User.findOne({ email: email });
+    if (existingEmail) return res.status(400).json( { msg: "An account is already registered with this email." });
+    // double-check password
+    if (password != passwordCheck) return res.status(400).json({ msg: "Passwords must match" });
+
+    // hash passwords using bcrypt
+    const salt = await bcrypt.genSalt();
+    const passwordHash = await bcrypt.hash(password, salt);
+
+    // create user using hashed password
+    const newUser = new User({
+      firstName: firstName,
+      lastName: lastName,
+      email: email,
+      password: passwordHash,
+      birthdate: birthday,
+      gender: gender,
+      createdAt: new Date(Date.now()).toLocaleDateString()
+    });
+
+    // save and log new user
+    const savedUser = await newUser.save();
+    console.log(`Registered new user: ${savedUser}`)
+
+    // create and return json web token
+    const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET);
+    res.json({
+      token,
+      user: {
+        id: newUser._id,
+        firstName: newUser.firstName,
+        lastName: newUser.lastName,
+        email: newUser.email,
+      }
+    });
+
+  } catch(e) { res.status(500).json({ err: e.message }); }
+})
+
+app.post('/login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // find email in database
+    const user = await User.findOne({ email: email });
+    if(!user) return res.status(400).json({ msg: "No account with this email has been registered. "});
+    
+    // compare passwords
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(400).json({ msg: "Password is incorrect." });
+
+    // create json web token
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    res.json({
+      token,
+      user: {
+        id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+      }
+    });
+  }
+  catch (error) { res.status(500).json({ err: error.message }); }
 })
 
 // export the express app we created to make it available to other modules

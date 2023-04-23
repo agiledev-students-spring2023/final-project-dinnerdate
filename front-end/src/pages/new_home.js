@@ -1,4 +1,4 @@
-import './new_home.css';
+
 import { useState, useEffect } from "react";
 import { GoogleMap, useLoadScript, Marker } from "@react-google-maps/api";
 import { Link } from "react-router-dom";
@@ -6,32 +6,36 @@ import usePlacesAutocomplete, {
     getGeocode,
     getLatLng,
 } from "use-places-autocomplete";
-import {
-    Combobox,
-    ComboboxInput,
-    ComboboxPopover,
-    ComboboxList,
-    ComboboxOption,
-} from "@reach/combobox";
+import useOnclickOutside from "react-cool-onclickoutside";
+import './new_home.css';
 
-import "@reach/combobox/styles.css";
-const mapContainerStyle = {
-    width: "600px",
-    height: "600px",
-};
-
-const serverUrl = process.env.REACT_APP_SERVER_URL;
-const serverPort = process.env.REACT_APP_SERVER_PORT;
-
+const libraries = ["places"];
 function Home() {
     const { isLoaded } = useLoadScript({ 
         googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
-        libraries: ["places"],
+        libraries: libraries,
     });
+
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        // if (token) {
+        //     console.log(token);
+        //   try {
+        //     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        //     setUser(decoded.user);
+        //   } catch (error) {
+        //     console.error(error);
+        //   }
+        // }
+      }, []);
 
     if (!isLoaded) return <div>Loading...</div>;
     return (
         <>
+            <h1>Find / Create a Date</h1>
+            <h4>Select or search for a restaurant, then press "Go"!</h4>
             <Map />
         </>
     );
@@ -70,21 +74,17 @@ function Map() {
 
     return (
         <>
-            <h1>Find / Create a Date</h1>
-            <h4>Select or search for a restaurant, then press "Go"!</h4>
             <div className="places-container">
                 <PlacesAutocomplete setSelected={setSelected} />
             </div>
-
             <GoogleMap 
                 zoom={15} 
                 center={currPosition} 
-                mapContainerStyle={mapContainerStyle}
+                mapContainerStyle={ { width: "600px", height: "600px" } }
                 onClick={onClick}
             >
                 {selected && <Marker position={ {lat: selected.lat, lng: selected.lng} } />}   {/* set a marker on selected position */}
             </GoogleMap>
-
             {selected ? <h1><Link to={`/restaurant/${selected.placeId}`}> Go </Link></h1> : ""}
         </>
     );
@@ -92,41 +92,52 @@ function Map() {
 
 const PlacesAutocomplete = ({ setSelected }) => {
     const {
-        ready,
-        value,
-        setValue,
-        suggestions: { status, data },
-        clearSuggestions,
+      ready,
+      value,
+      suggestions: { status, data },
+      setValue,
+      clearSuggestions,
     } = usePlacesAutocomplete();
 
-    const handleSelect = async (address) => { // when a place is chosen, select it
-        setValue(address, false);
+    const handleSelect = ({ description }) => () => {
+        setValue(description, false);
         clearSuggestions();
 
-        const results = await getGeocode({ address });
-        const {lat, lng} = await getLatLng(results[0]);
-        setSelected({ placeId: results[0].place_id, lat: lat, lng: lng }); 
-    }
+        getGeocode({ address: description }).then((results) => {
+          const { lat, lng } = getLatLng(results[0]);
+          setSelected({ placeId: results[0].place_id, lat: lat, lng: lng }); 
+        });
+      };
 
+    const ref = useOnclickOutside(() => { clearSuggestions(); });
+  
+    const handleInput = (e) => { setValue(e.target.value); }; // Update the keyword of the input element
+  
+    const renderSuggestions = () =>
+      data.map((suggestion) => {
+        const {
+          place_id,
+          structured_formatting: { main_text, secondary_text },
+        } = suggestion;
+  
+        return (
+          <li key={place_id} onClick={handleSelect(suggestion)}>
+            <strong>{main_text}</strong> <small>{secondary_text}</small>
+          </li>
+        );
+      });
+  
     return (
-        <Combobox onSelect={handleSelect}>
-        <ComboboxInput 
-            value={value} 
-            onChange={e => setValue(e.target.value)}
-            disabled={!ready}
-            className="combobox-input"
-            placeholder="Search for a restaurant"
-            />
-            <ComboboxPopover>
-                <ComboboxList>
-                    {status === "OK" && 
-                        data.map(({ place_id, description }) => (
-                            <ComboboxOption key={place_id} value={description}/>
-                        ))}
-                </ComboboxList>
-            </ComboboxPopover>
-        </Combobox>
-    )
-}
+      <div ref={ref}>
+        <input
+          value={value}
+          onChange={handleInput}
+          disabled={!ready}
+          placeholder="Search for a restaurant"
+        />
+        {status === "OK" && <ul>{renderSuggestions()}</ul>}
+      </div>
+    );
+  };
 
 export default Home;

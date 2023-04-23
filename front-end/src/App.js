@@ -24,20 +24,20 @@ function App() {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <div className="content">
             <Switch>
-              <Route path="/inbox"><Inbox /></Route>
-              <Route path="/create-post"><CreatePost /></Route>
-              <Route path="/edit-post"><EditPost /></Route>
-              
-              <Route path="/profile"><Profile /></Route>
-
               <Route path="/login"><Login /></Route>           
               <Route path="/register"><Register /></Route>
 
+              <Route exact path="/"><Home /></Route>
               <Route path="/restaurant/:placeId"><RestaurantInfo /></Route>
+
+              <Route path="/create-post"><CreatePost /></Route>
+              <Route path="/edit-post"><EditPost /></Route>
+
+              <Route path="/profile"><Profile /></Route>
+              <Route path="/inbox"><Inbox /></Route>
+
               <Route path="/date"><HomeConfirmed /></Route>
               <Route path="/home-lfd"><HomeLFD /></Route>
-
-              <Route path="/"><Home /></Route>
             </Switch>
           </div>
         </LocalizationProvider>

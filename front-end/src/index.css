@@ -48,14 +48,14 @@ a:hover {
 }
 
 /* Styling for all input and textarea elements */
-.input {
+input, select {
   border: 1px solid var(--color-2);
   border-radius:8px;
 }
-.input:hover, .input:focus {
+input:hover, input:focus, select:hover, select:focus {
   outline: none !important;
   border: 1px solid var(--color-1); 
 }
-.input:focus {
+input:focus, select:focus {
   box-shadow: 0 0 10px var(--color-1); 
 }
