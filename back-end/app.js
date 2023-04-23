@@ -231,7 +231,7 @@ app.post('/register', async (req, res) => {
       }
     });
 
-  } catch(e) { res.status(500).json({ err: e.message }); }
+  } catch(e) { res.status(500).json({ err: e.message }); console.log(e.message) }
 })
 
 app.post('/login', async (req, res) => {
