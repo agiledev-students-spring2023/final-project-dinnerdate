@@ -32,8 +32,7 @@ const CreatePost = () => {
       await axios.post(`/create-post`, formData, {params: {}})
           .then((response) => {
               // Redirect to home page
-              // history.push('/home-lfd');
-              console.log("DONE")
+              history.push('/home-lfd');
           })
           .catch(e => console.error(e.response.data.msg));
   }
