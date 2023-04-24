@@ -217,11 +217,7 @@ app.post("/profile", validateProfile, async (req, res) => {
   }
 });
 
-
-
-app.listen(PORT, () => {
-  console.log(`Server started on port ${3000}`);
-});
+// remove broken piece
 
 // serve images from picsum
 app.get("/static/", (req, res, next) => {
