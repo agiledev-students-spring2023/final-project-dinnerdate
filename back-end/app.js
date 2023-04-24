@@ -14,17 +14,27 @@ app.use(express.urlencoded({ extended: true })) // decode url-encoded incoming P
 
 const { User, Post } = require('./db');
 
-/*************************** Routes ***************************/
-// serve user data
-app.get("/user/:username", async (req, res, next) => {
-  const user = await User.findOne({username: req.params.username});
-  res.send(JSON.stringify(user));
-});
 
-// serve user data
-app.get("/user/:username", async (req, res, next) => {
-  const user = await User.findOne({username: req.params.username});
-  res.send(JSON.stringify(user));
+/*************************** Middleware ***************************/
+function verifyToken(req, res, next) {
+  const token = req.headers['authorization'].replace(/^Bearer\s+/, "");;
+  if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
+  try {
+    const decoded = jwt.verify(token,process.env.JWT_SECRET);
+    req.userId = decoded.id;
+  } catch (e) {
+    return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+  }
+  next();
+}
+
+/*************************** Routes ***************************/
+// serve logged-in user data
+app.get("/api/user", verifyToken, async (req, res, next) => {
+  const userId = req.userId; // the logged-in users id, defined by verifyToken
+  const user = await User.findOne({ _id:  userId});
+  if(!user) return res.status(400).json({ message: "User could not be found! "});
+  res.json(user);
 });
 
 // serve restaurant data
@@ -275,9 +285,9 @@ app.post('/register', async (req, res) => {
     
     // check if email is used
     const existingEmail = await User.findOne({ email: email });
-    if (existingEmail) return res.status(400).json( { msg: "An account is already registered with this email." });
+    if (existingEmail) return res.status(400).json( { message: "An account is already registered with this email." });
     // double-check password
-    if (password != passwordCheck) return res.status(400).json({ msg: "Passwords must match" });
+    if (password != passwordCheck) return res.status(400).json({ message: "Passwords must match" });
 
     // hash passwords using bcrypt
     const salt = await bcrypt.genSalt();
@@ -310,7 +320,7 @@ app.post('/register', async (req, res) => {
       }
     });
 
-  } catch(e) { res.status(500).json({ err: e.message }); console.log(e.message) }
+  } catch(e) { res.status(500).json({ err: e.message }); }
 })
 
 app.post('/login', async (req, res) => {
@@ -319,11 +329,11 @@ app.post('/login', async (req, res) => {
 
     // find email in database
     const user = await User.findOne({ email: email });
-    if(!user) return res.status(400).json({ msg: "No account with this email has been registered. "});
+    if(!user) return res.status(400).json({ message: "No account with this email has been registered. "});
     
     // compare passwords
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ msg: "Password is incorrect." });
+    if (!isMatch) return res.status(400).json({ message: "Password is incorrect." });
 
     // create json web token
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
