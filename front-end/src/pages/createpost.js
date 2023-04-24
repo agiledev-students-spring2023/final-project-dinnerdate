@@ -58,7 +58,7 @@ const CreatePost = () => {
                     required />
                 </label>
 
-                <label>
+                <label className="datetime-label">
                     <p>Date and Time</p>
                     <DateTimePicker
                       value={formData.datetime} 

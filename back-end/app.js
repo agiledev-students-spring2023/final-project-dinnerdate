@@ -4,6 +4,7 @@ const cors = require('cors')
 const axios = require("axios");
 const express = require("express") // CommonJS import style!
 const jwt = require("jsonwebtoken");
+const chats = require("./data/data")
 // const auth = require("./auth");
 
 // set up express
@@ -29,6 +30,23 @@ function verifyToken(req, res, next) {
 }
 
 /*************************** Routes ***************************/
+// check if api is running
+app.get("/", (req, res) => {
+  res.send("API is Running");
+});
+
+// serve sample chat data
+app.get("/api/chat", (req, res) => {
+  res.send(chats);
+});
+
+// retrieve single chat info from id
+app.get("/api/chat/:id", (req, res) => {
+  // console.log(req.params.id);
+  const singleChat = chats.find(c => c._id === req.params.id);
+  res.send(singleChat);
+});
+
 // serve logged-in user data
 app.get("/user/:userId", async (req, res, next) => {
   const userId = req.params.userId;
