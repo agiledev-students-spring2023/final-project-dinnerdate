@@ -23,11 +23,10 @@ const userSchema = new mongoose.Schema({
 });
 
 const postSchema = new mongoose.Schema({
-    location: { type: String, required: true },
+    placeId: { type: String, required: true },
+    author: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     title: { type: String, required: true },
-    // createdBy: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    createdBy: { type: String, required: true },
-    date: { type: Date, required: true }, 
+    datetime: { type: Date, required: true }, 
     description: { type: String, required: true },
 });
       

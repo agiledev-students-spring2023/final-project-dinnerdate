@@ -30,9 +30,9 @@ function verifyToken(req, res, next) {
 
 /*************************** Routes ***************************/
 // serve logged-in user data
-app.get("/api/user", verifyToken, async (req, res, next) => {
-  const userId = req.userId; // the logged-in users id, defined by verifyToken
-  const user = await User.findOne({ _id:  userId});
+app.get("/user/:userId", async (req, res, next) => {
+  const userId = req.params.userId;
+  const user = await User.findById(userId);
   if(!user) return res.status(400).json({ message: "User could not be found! "});
   res.json(user);
 });
@@ -69,6 +69,11 @@ app.get("/restaurant/:placeId", (req, res, next) => {
       res.json(restaurant);
     })
     .catch(err => next(err)) // pass any errors to express
+});
+
+// serve post data for restaurant
+app.get("/restaurant/:placeId/posts", (req, res, next) => {
+  const placeId = req.params.placeId;
 });
 
 // serve diner post data
@@ -212,88 +217,10 @@ function validateProfile(req, res, next) {
   next();
 }
 
-app.post("/profile", validateProfile, async (req, res) => {
-  // Get data from request body
-  const { id, email, username, password, first_name, last_name, birthdate, gender, mobile } = req.body;
-
-  // Save user data to database
-  const user = new User({
-    firstName: first_name,
-    lastName: last_name,
-    email: email,
-    password: password,
-    birthdate: birthdate,
-    gender: gender,
-    createdAt: new Date()
-  });
-
-  try {
-    await user.save();
-    console.log("User saved to database:", user);
-    res.json({ success: true });
-  } catch (err) {
-    console.error("Error saving user to database:", err);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-
-// serve images from picsum
-app.get("/static/", (req, res, next) => {
-  const url = `https://picsum.photos/${req.query.width}/${req.query.height}`;
-  res.send(`<img src=${url}>`);
-})
-
-app.post('/create-post/:placeId', async(req, res) => {
-  try {
-    const { title, date, description } = req.body;
-
-    const placeId = req.params.placeId;
-    const url = `https://maps.googleapis.com/maps/api/place/details/json?placeid=${placeId}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
-    console.log(url);
-
-    axios
-    .get(url)
-    .then(async apiResponse => {
-      const restaurant_data = apiResponse.data.result;
-
-      const restaurant = {
-        "name": restaurant_data['name'],
-        "address": restaurant_data['formatted_address'],
-        "description": restaurant_data['editorial_summary'].overview,
-        "num_ratings": restaurant_data['user_ratings_total'],
-        "phone_number": restaurant_data['formatted_phone_number'],
-        "rating": restaurant_data['rating'],
-        "url": restaurant_data['url']
-      };
-  
-      const newPost = new Post({
-        location: restaurant['address'],
-        title: title,
-        createdBy: "USER",
-        date: date,
-        description: description
-      });
-  
-      // save and log new post
-      const savedPost = await newPost.save();
-      console.log(`Added new post: ${savedPost}`)
-  
-      // create and return json web token
-      const token = jwt.sign({ id: newPost._id }, process.env.JWT_SECRET);
-      res.json({
-        token,
-        post: {
-          id: newPost._id,
-          title: newPost.title,
-          date: newPost.date,
-          description: newPost.description,
-        }
-      });
-    })
-
-    
-
-  } catch(e) { res.status(500).json({ err: e.message }); console.log(e.message) }
+app.post('/create-post', async(req, res) => {
+  const newPost = new Post(req.body);
+  const savedPost = await newPost.save();
+  console.log(`Registered new post: ${savedPost}`);
 });
 
 app.post('/chat', (req, res) => {

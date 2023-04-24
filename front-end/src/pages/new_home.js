@@ -101,15 +101,13 @@ const RestaurantInfo = ({ selected }) => {
       .catch(err => console.log(err ? err : "Unexpected error occurred."));
   }, [selected])
 
+  if(!restaurantData) return (<></>)
   return (
-    <>
-      {restaurantData ? (
-          <div className="restaurant-info">
+    <div className="restaurant-info">
             <h2>{restaurantData.name} • {restaurantData.rating}⭐ • {'$'.repeat(restaurantData.price_level)}</h2>
             <p>📞 {restaurantData.phone_number}</p>
             <p>{restaurantData.description}</p>
-          </div>) : null}
-    </>
+    </div>
   )
 
 }
@@ -117,7 +115,7 @@ const Posts = ({ selected }) => {
   const [posts, setPosts] = useState([]);
   const [selectedPost, setSelectedPost] = useState();
   const [buttonPopup, setButtonPopup] = useState(false);
-  
+
   useEffect(() => {
     if (!selected) return
     axios.get(`/restaurant/${selected.placeId}/posts`)
@@ -125,14 +123,15 @@ const Posts = ({ selected }) => {
       .catch(err => console.log(err ? err : "Unexpected error occurred."));
   })
 
+  if(!selected) return (<></>)
   return (
-    <>
+    <div className="posts">
       {posts.length ? (
         <div className="posts">
           <>Posts exist</>
         </div>) : "There are no posts for this restaurant."}
 
-        <Link to='/create-post' className='post create-post'>
+        <Link to={`/create-post/${selected.placeId}`} className='post create-post'>
             <h2>Create a new post...</h2>
         </Link>
 
@@ -149,7 +148,7 @@ const Posts = ({ selected }) => {
           ))}
         </>
         
-    </>
+    </div>
   )
 }
 
