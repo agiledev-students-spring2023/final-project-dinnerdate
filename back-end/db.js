@@ -56,10 +56,10 @@ const messageSchema = mongoose.Schema(
     }
 );
 
-const Message = mongoose.model("message", messageSchema);
-const Chat = mongoose.model("chat", chatSchema);
-const User = mongoose.model("user", userSchema);
-const Post = mongoose.model("post", postSchema);
+const Message = mongoose.model("Message", messageSchema);
+const Chat = mongoose.model("Chat", chatSchema);
+const User = mongoose.model("User", userSchema);
+const Post = mongoose.model("Post", postSchema);
   
 // Exporting our model objects
 module.exports = {
