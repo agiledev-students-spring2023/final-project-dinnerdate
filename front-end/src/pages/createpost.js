@@ -91,7 +91,7 @@ const CreatePost = (props) => {
                     required />
                 </label>
 
-                <label>
+                <label className="datetime-label">
                     <p>Date and Time</p>
                     <DateTimePicker
                       value={formData.date} 
@@ -103,7 +103,9 @@ const CreatePost = (props) => {
                             textField: {
                             helperText: errorMessage,
                             },
-                        }}/>
+                        }}
+                        style={{ width: 600 }} 
+                        />
                 </label>
 
                 <label>
