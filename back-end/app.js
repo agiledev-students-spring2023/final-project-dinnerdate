@@ -238,33 +238,55 @@ app.get("/static/", (req, res, next) => {
   res.send(`<img src=${url}>`);
 })
 
-app.post('/create-post', async(req, res) => {
+app.post('/create-post/:placeId', async(req, res) => {
   try {
     const { title, date, description } = req.body;
 
-    const newPost = new Post({
-      location: "RESTURANT NAME",
-      title: title,
-      createdBy: "USER",
-      date: date,
-      description: description
-    });
+    const placeId = req.params.placeId;
+    const url = `https://maps.googleapis.com/maps/api/place/details/json?placeid=${placeId}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
+    console.log(url);
 
-    // save and log new post
-    const savedPost = await newPost.save();
-    console.log(`Added new post: ${savedPost}`)
+    axios
+    .get(url)
+    .then(async apiResponse => {
+      const restaurant_data = apiResponse.data.result;
 
-    // create and return json web token
-    const token = jwt.sign({ id: newPost._id }, process.env.JWT_SECRET);
-    res.json({
-      token,
-      post: {
-        id: newPost._id,
-        title: newPost.title,
-        date: newPost.date,
-        description: newPost.description,
-      }
-    });
+      const restaurant = {
+        "name": restaurant_data['name'],
+        "address": restaurant_data['formatted_address'],
+        "description": restaurant_data['editorial_summary'].overview,
+        "num_ratings": restaurant_data['user_ratings_total'],
+        "phone_number": restaurant_data['formatted_phone_number'],
+        "rating": restaurant_data['rating'],
+        "url": restaurant_data['url']
+      };
+  
+      const newPost = new Post({
+        location: restaurant['address'],
+        title: title,
+        createdBy: "USER",
+        date: date,
+        description: description
+      });
+  
+      // save and log new post
+      const savedPost = await newPost.save();
+      console.log(`Added new post: ${savedPost}`)
+  
+      // create and return json web token
+      const token = jwt.sign({ id: newPost._id }, process.env.JWT_SECRET);
+      res.json({
+        token,
+        post: {
+          id: newPost._id,
+          title: newPost.title,
+          date: newPost.date,
+          description: newPost.description,
+        }
+      });
+    })
+
+    
 
   } catch(e) { res.status(500).json({ err: e.message }); console.log(e.message) }
 });

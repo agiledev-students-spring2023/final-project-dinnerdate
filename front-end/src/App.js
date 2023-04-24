@@ -34,7 +34,7 @@ function App() {
               <ProtectedRoute exact path="/"><Home /></ProtectedRoute>
               <Route path="/restaurant/:placeId"><RestaurantInfo /></Route>
 
-              <ProtectedRoute path="/create-post"><CreatePost /></ProtectedRoute>
+              <Route path="/create-post/:placeId"><CreatePost /></Route>
               <ProtectedRoute path="/edit-post"><EditPost /></ProtectedRoute>
 
               <ProtectedRoute path="/profile"><Profile /></ProtectedRoute>
