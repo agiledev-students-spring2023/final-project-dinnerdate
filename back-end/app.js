@@ -363,5 +363,6 @@ function verifyToken (req, res, next){
  });
 
  app.listen(3000,() => console.log('Server started on port 3000'));
+ 
 // export the express app we created to make it available to other modules
 module.exports = app
