@@ -14,7 +14,29 @@ app.use(express.urlencoded({ extended: true })) // decode url-encoded incoming P
 
 const { User, Post } = require('./db');
 
+
+/*************************** Middleware ***************************/
+function verifyToken(req, res, next) {
+  const token = req.headers['authorization'].replace(/^Bearer\s+/, "");;
+  if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
+  try {
+    const decoded = jwt.verify(token,process.env.JWT_SECRET);
+    req.userId = decoded.id;
+  } catch (e) {
+    return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+  }
+  next();
+}
+
 /*************************** Routes ***************************/
+// serve logged-in user data
+app.get("/api/user", verifyToken, async (req, res, next) => {
+  const userId = req.userId; // the logged-in users id, defined by verifyToken
+  const user = await User.findOne({ _id:  userId});
+  if(!user) return res.status(400).json({ message: "User could not be found! "});
+  res.json(user);
+});
+
 // serve restaurant data
 app.get("/restaurant/:placeId", (req, res, next) => {
   const placeId = req.params.placeId;
