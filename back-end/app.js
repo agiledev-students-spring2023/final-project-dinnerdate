@@ -338,34 +338,7 @@ app.post('/login', async (req, res) => {
   catch (error) { res.status(500).json({ err: error.message }); }
 })
 
-/* sample middleware that verifies JWT token
-const key='key';
-function verifyToken (req, res, next){
-  const authorizationHeader= req.headers['authorization'];
-  const token = authorizationHeader && authorizationHeader.split(' ')[1];
 
-  if (!token){
-    return res.status(401).send({message: 'Unauthorized'});
-  }
-
-  try {
-    const decoded = jwt.verify(token, key);
-    req.user=decoded;
-    next();
-  }
-  catch(err){
-    return res.status(401).send({ message: 'Unauthorized'});
-  }
-}
-
-//protected route that requires jwt token
- app.get('./me', verifyToken, (req,res) => {
-  const user =req.user;
-  res.send(user);
- });
-
- app.listen(3000,() => console.log('Server started on port 3000'));
- */
 
 // export the express app we created to make it available to other modules
 module.exports = app
