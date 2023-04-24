@@ -1,40 +1,42 @@
 import './post.css'
 import { useMemo, useState } from 'react'
-import { Link } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import dayjs from 'dayjs';
-import axios from 'axios';
+import axios from '../axiosInstance';
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 const serverPort = process.env.REACT_APP_SERVER_PORT;
 
 const CreatePost = () => {
     const [error, setError] = useState(null);
-    const [title, setTitle] = useState('');
-    const [dateTime, setDateTime] = useState('');
-    const [description, setDescription] = useState('');
 
+    const [formData, setFormData] = useState({
+      title: '',
+      date: '',
+      description: ''
+    });
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        try {
-          const response = await axios.post(`${serverUrl}:${serverPort}/create-post`, {
-            title,
-            dateTime,
-            description,
-          });
-          console.log(response.data);
-          // Reset form after successful submission
-          setTitle('');
-          setDateTime('');
-          setDescription('');
-        } catch (error) {
-          console.error(error);
-        }
-      };
+    const history = useHistory();
 
-      const handleDateTimeChange = (date) => {
-        setDateTime(date);
-      };
+    function handleChange(event) {
+      const { name, value } = event.target;
+      setFormData({ ...formData, [name]: value });
+    }
+    function handleDateChange(date) {
+      handleChange({ target: { name: 'date', value: date }});
+    }
+    
+    async function handleSubmit(event) {
+      formData.date = new Date(formData.date).toLocaleDateString();
+      event.preventDefault();
+      await axios.post(`/create-post`, formData, {params: {}})
+          .then((response) => {
+              // Redirect to home page
+              // history.push('/home-lfd');
+              console.log("DONE")
+          })
+          .catch(e => console.error(e.response.data.msg));
+  }
 
     const errorMessage = useMemo(() => {
         if (error == 'disablePast'){
@@ -46,24 +48,25 @@ const CreatePost = () => {
       }, [error]);
     
     return (
-        <div className="create-post-form post-form">
+        <div className="create-post-form post-form" onSubmit={handleSubmit}>
             <h1>Create a Post</h1>
             <h3>Create a post to find a date to eat with at [Restaurant Name]!</h3>
-            <form onSubmit={handleSubmit}>
+            <form>
                 <label>
                     <p>Title</p>
                     <input className="input" 
                     type="text" 
-                    value={title} 
-                    onChange = {(e) => setTitle(e.target.value)} 
+                    name="title"
+                    value={formData.title} 
+                    onChange={handleChange}
                     required />
                 </label>
 
                 <label>
                     <p>Date and Time</p>
                     <DateTimePicker
-                      value = {dateTime}
-                      onChange = {handleDateTimeChange}
+                      value={formData.date} 
+                      onChange={handleDateChange}
                         defaultValue={dayjs().add(1, 'hour')}
                         disablePast
                         onError={(newError) => setError(newError)}
@@ -77,12 +80,13 @@ const CreatePost = () => {
                 <label>
                     <p>Description</p>
                     <textarea 
-                      value={description} 
+                      name="description"
+                      value={formData.description} 
                       className="input" 
                       required 
-                      onChange={(e) => setDescription(e.target.value)} />
+                      onChange={handleChange}/>
                 </label>
-                <Link to="/home-lfd"><button className="post-btn" type="submit">Post</button></Link>
+                <button className="post-btn" type="submit">Post</button>
             </form>
         </div>
     );
