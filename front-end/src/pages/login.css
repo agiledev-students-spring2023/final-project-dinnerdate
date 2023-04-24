@@ -10,6 +10,26 @@
     width: 100%;
 }
 
+.login-btn {
+    margin-left: 200px;
+  }
+
+  .register-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .register-btn {
+    margin-right: 20px;
+  }
+
+  .login-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
 .login input {
     box-sizing: border-box;
     padding: 7px 10px;
