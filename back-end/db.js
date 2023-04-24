@@ -64,6 +64,7 @@ const Post = mongoose.model("post", postSchema);
 
 // Exporting our model objects
 module.exports = {
+    Message,
     Chat,
     User,
     Post,
