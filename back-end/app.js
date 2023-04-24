@@ -193,28 +193,30 @@ function validateProfile(req, res, next) {
 
 app.post("/profile", validateProfile, async (req, res) => {
   // Get data from request body
-  const { id, email, username, password, first_name, last_name, birthdate, gender, mobile } = req.body;
+  const { email, username, first_name, last_name, birthdate, gender, mobile } = req.body;
 
   // Save user data to database
-  const user = new User({
+  const profile = new Profile({
+    email: email, 
+    username: username,
     firstName: first_name,
     lastName: last_name,
-    email: email,
-    password: password,
     birthdate: birthdate,
     gender: gender,
-    screatedAt: new Date()
+    mobile: mobile,
+    createdAt: new Date()
   });
 
   try {
-    await user.save();
-    console.log("User saved to database:", user);
+    await profile.save();
+    console.log("Profile saved to database:", profile);
     res.json({ success: true });
   } catch (err) {
     console.error("Error saving user to database:", err);
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
 
 
 
@@ -364,5 +366,6 @@ function verifyToken (req, res, next){
 
  app.listen(3000,() => console.log('Server started on port 3000'));
  */
+
 // export the express app we created to make it available to other modules
 module.exports = app
