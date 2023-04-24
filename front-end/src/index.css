@@ -15,8 +15,7 @@
 /* Unique content of the page, excluding NavBar */
 .content {
   max-width: 600px;
-  margin: 30px auto;
-  padding: 20px;
+  margin: 0 auto; /* sets top and bottom margins to 0 and left and right to auto */
 }
 
 /* When button is hovered over, it changes color */

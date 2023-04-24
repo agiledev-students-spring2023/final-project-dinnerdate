@@ -29,7 +29,6 @@ const Register = () => {
 
       async function handleSubmit(event) {
         const formDataCopy = {...formData};
-
         formDataCopy.birthday = new Date(formDataCopy.birthday).toLocaleDateString();
         event.preventDefault();
         await axios.post(`/register`, formDataCopy, {params: {}})

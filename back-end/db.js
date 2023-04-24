@@ -24,11 +24,10 @@ const userSchema = new mongoose.Schema({
 });
 
 const postSchema = new mongoose.Schema({
-    location: { type: String, required: true },
+    placeId: { type: String, required: true },
+    author: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     title: { type: String, required: true },
-    // createdBy: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-    createdBy: { type: String, required: true },
-    date: { type: Date, required: true },
+    datetime: { type: Date, required: true }, 
     description: { type: String, required: true },
 });
 
@@ -57,11 +56,11 @@ const messageSchema = mongoose.Schema(
     }
 );
 
-const Message = mongoose.model("message", messageSchema);
-const Chat = mongoose.model("chat", chatSchema);
-const User = mongoose.model("user", userSchema);
-const Post = mongoose.model("post", postSchema);
-
+const Message = mongoose.model("Message", messageSchema);
+const Chat = mongoose.model("Chat", chatSchema);
+const User = mongoose.model("User", userSchema);
+const Post = mongoose.model("Post", postSchema);
+  
 // Exporting our model objects
 module.exports = {
     Message,
