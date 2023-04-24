@@ -218,10 +218,6 @@ app.post("/profile", validateProfile, async (req, res) => {
 
 
 
-app.listen(PORT, () => {
-  console.log(`Server started on port ${3000}`);
-});
-
 // serve images from picsum
 app.get("/static/", (req, res, next) => {
   const url = `https://picsum.photos/${req.query.width}/${req.query.height}`;
