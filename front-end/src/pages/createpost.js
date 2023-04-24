@@ -1,15 +1,22 @@
 import './post.css'
-import { useMemo, useState } from 'react'
-import { useHistory, Link } from "react-router-dom";
+import { useMemo, useState, useEffect } from 'react'
+import { useHistory, Link, useParams } from "react-router-dom";
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import dayjs from 'dayjs';
 import axios from '../axiosInstance';
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 const serverPort = process.env.REACT_APP_SERVER_PORT;
 
-const CreatePost = () => {
-    const [error, setError] = useState(null);
+const sampleRestaurantData = {
+  "name": 'Loading...',
+  "address": '',
+  "rating": '',
+  "description": '',
+};
 
+const CreatePost = (props) => {
+    const [error, setError] = useState(null);
+    const [restaurantData, setRestaurantData] = useState(sampleRestaurantData);
     const [formData, setFormData] = useState({
       title: '',
       date: '',
@@ -17,6 +24,29 @@ const CreatePost = () => {
     });
 
     const history = useHistory();
+    const { placeId } = useParams();
+
+    useEffect(() => {
+      fetchRestaurantInfo();
+    }, [])
+
+    const fetchRestaurantInfo = () => {
+      console.log(placeId);
+      console.log("hello?");
+      axios.get(`${serverUrl}:${serverPort}/restaurant/${placeId}`)
+          .then((res) => {
+              setRestaurantData({
+                  "name":res.data["name"],
+                  "address":res.data["address"],
+                  "description":res.data["description"],
+                  "num_ratings": res.data['num_ratings'],
+                  "phone_number": res.data['phone_number'],
+                  "rating":res.data["rating"],
+                  "url":res.data["url"]
+              })
+          })
+          .catch(err => console.log("Error: " + err ? err : "Unexpected error occurred."));
+    };
 
     function handleChange(event) {
       const { name, value } = event.target;
@@ -29,7 +59,7 @@ const CreatePost = () => {
     async function handleSubmit(event) {
       formData.date = new Date(formData.date).toLocaleDateString();
       event.preventDefault();
-      await axios.post(`/create-post`, formData, {params: {}})
+      await axios.post(`/create-post/${placeId}`, formData, {params: {}})
           .then((response) => {
               // Redirect to home page
               history.push('/home-lfd');
@@ -49,7 +79,7 @@ const CreatePost = () => {
     return (
         <div className="create-post-form post-form" onSubmit={handleSubmit}>
             <h1>Create a Post</h1>
-            <h3>Create a post to find a date to eat with at [Restaurant Name]!</h3>
+            <h3>Create a post to find a date to eat with at {restaurantData.name}!</h3>
             <form>
                 <label>
                     <p>Title</p>
