@@ -15,18 +15,6 @@ app.use(express.urlencoded({ extended: true })) // decode url-encoded incoming P
 const { User, Post } = require('./db');
 
 /*************************** Routes ***************************/
-// serve user data
-app.get("/user/:username", async (req, res, next) => {
-  const user = await User.findOne({username: req.params.username});
-  res.send(JSON.stringify(user));
-});
-
-// serve user data
-app.get("/user/:username", async (req, res, next) => {
-  const user = await User.findOne({username: req.params.username});
-  res.send(JSON.stringify(user));
-});
-
 // serve restaurant data
 app.get("/restaurant/:placeId", (req, res, next) => {
   const placeId = req.params.placeId;
