@@ -159,8 +159,9 @@ const Posts = ({ selected }) => {
             <div id="second">{posts[selectedPost].description}</div>
           </div>
           <div className="acc-btn">
-            <div onClick={() => setButtonPopup(false)}>
+            <div onClick={() => { setSelectedPost(-1); setButtonPopup(false);}}>
               <button>Request</button> {/* Should add a request to the logged-in user's data. */}
+              <button className="close-btn">close</button>
             </div>
           </div>
         </div>
