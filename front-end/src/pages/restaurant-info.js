@@ -46,7 +46,6 @@ const RestaurantInfo = ( props ) => {
     }, [])
 
     const fetchRestaurantInfo = () => {
-        console.log(placeId);
         Axios.get(`${serverUrl}:${serverPort}/restaurant/${placeId}`)
             .then((res) => {
                 setRestaurantData({

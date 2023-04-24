@@ -113,41 +113,58 @@ const RestaurantInfo = ({ selected }) => {
 }
 const Posts = ({ selected }) => {
   const [posts, setPosts] = useState([]);
-  const [selectedPost, setSelectedPost] = useState();
-  const [buttonPopup, setButtonPopup] = useState(false);
+  const [selectedPost, setSelectedPost] = useState(-1);
+  const [buttonPopup, setButtonPopup] = useState();
 
   useEffect(() => {
     if (!selected) return
     axios.get(`/restaurant/${selected.placeId}/posts`)
-      .then(res => setPosts(res.data))
+      .then(res => setPosts(res.data.map(e => ({key: e._id, ...e}))))
       .catch(err => console.log(err ? err : "Unexpected error occurred."));
-  })
+  }, [selected])
+
+  useEffect(() => {
+    if(selectedPost == -1) return;
+  }, [selectedPost])
 
   if(!selected) return (<></>)
   return (
     <div className="posts">
-      {posts.length ? (
-        <div className="posts">
-          <>Posts exist</>
-        </div>) : "There are no posts for this restaurant."}
-
+      {posts.length ? "" : "There are no posts for this restaurant."}
         <Link to={`/create-post/${selected.placeId}`} className='post create-post'>
             <h2>Create a new post...</h2>
         </Link>
 
-        <>
-          {posts.map((post) => (
-              <div className="post diner-post" onClick={() => {setButtonPopup(true); setSelectedPost(post.id);}} >
-                  <img className="avatar" src={post.avatar_url}></img> 
-                  <div className="diner-info"> 
-                      <h2 className="truncate">{post.title}</h2>
-                      <h5>{post.datetime}</h5>
-                      {post.rating && post.num_ratings && <h3>{post.full_name} {post.rating}⭐ ({post.num_ratings} reviews)</h3>}
-                  </div>
-              </div>
-          ))}
-        </>
-        
+        {posts.map((post, index) => (
+          <div className="post diner-post" onClick={() => {setButtonPopup(true); setSelectedPost(index);}} >
+            <h2 className="truncate">{post.title}</h2>
+            <h5>{post.datetime}</h5>
+            <h3>{post.author.firstName} {post.author.lastName}</h3>
+          </div>
+        ))}
+
+      {posts && selectedPost != -1 && 
+      <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
+        <div className="otherUserProfile">
+          <h1>{posts[selectedPost].title}</h1>
+          <h3>{posts[selectedPost].author.firstName} {posts[selectedPost].author.lastName}</h3>
+          <h4>{posts[selectedPost].datetime}</h4>
+          <div id="wrapper">
+            <div id="first">
+              <img
+                style={{ width: "200px", height: "200px", borderRadius: "20px"}}
+                src={'https://picsum.photos/300/300'}
+              />
+            </div>
+            <div id="second">{posts[selectedPost].description}</div>
+          </div>
+          <div className="acc-btn">
+            <div onClick={() => setButtonPopup(false)}>
+              <button>Request</button> {/* Should add a request to the logged-in user's data. */}
+            </div>
+          </div>
+        </div>
+      </Popup>}
     </div>
   )
 }

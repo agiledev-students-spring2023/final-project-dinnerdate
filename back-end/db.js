@@ -30,8 +30,8 @@ const postSchema = new mongoose.Schema({
     description: { type: String, required: true },
 });
       
-const User = mongoose.model('user', userSchema);
-const Post = mongoose.model('post', postSchema);
+const User = mongoose.model('User', userSchema);
+const Post = mongoose.model('Post', postSchema);
   
 // Exporting our model objects
 module.exports = {

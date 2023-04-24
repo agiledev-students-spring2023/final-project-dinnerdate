@@ -72,8 +72,9 @@ app.get("/restaurant/:placeId", (req, res, next) => {
 });
 
 // serve post data for restaurant
-app.get("/restaurant/:placeId/posts", (req, res, next) => {
-  const placeId = req.params.placeId;
+app.get("/restaurant/:placeId/posts", async (req, res, next) => {
+  const posts = await Post.find({ placeId: req.params.placeId}).populate('author');
+  res.json(posts);
 });
 
 // serve diner post data
@@ -160,67 +161,11 @@ app.get("/chatdata/:chatId", (req, res, next) => {
     .catch((err) => next(err));
 });
 
-
-app.get("/profile", function (req, res) {
-  const url = "https://my.api.mockaroo.com/users.json?key=85d24ca0";
-  axios
-  .get(url)
-  .then(apiResponse => {
-    const userString = JSON.stringify(apiResponse.data).replace(/["\\n]/g, '').split(",");
-    const user = {
-      "id": userString[0],
-      "email": userString[1],
-      "username": userString[2],
-      "password": userString[3],
-      "first_name": userString[4],
-      "last_name": userString[5],
-      "birthdate": userString[6],
-      "gender": userString[7],
-      "mobile": userString[8]
-    };
-    console.log(user);
-    res.json(user);
-  })
-  .catch(err => { // if mockaroo doesn't work, serve static sample data
-    console.log(err);
-    res.json({
-      "id": Math.random().toString(36),
-      "email": "appleseedj@nyu.edu",
-      "username": "mockaroo_api_limit_reached",
-      "password": "verysecurepassword1234",
-      "first_name": "Johnny",
-      "last_name": "Appleseed",
-      "birthdate": "01/01/1983",
-      "gender": "male",
-      "mobile": "212998222",
-      "rating": 1,
-      "num_ratings": 2,
-    });
-  })
-});
-
-// validate email and mobile fields
-function validateProfile(req, res, next) {
-  const { email, mobile } = req.body;
-
-  // check if email is valid
-  if (!/\S+@\S+\.\S+/.test(email)) {
-    return res.status(400).json({ error: "Invalid email address" });
-  }
-
-  // check if mobile is valid
-  if (!/^\d{10}$/.test(mobile)) {
-    return res.status(400).json({ error: "Invalid mobile number" });
-  }
-
-  // if all validation passes, move to the next middleware function
-  next();
-}
-
 app.post('/create-post', async(req, res) => {
   const newPost = new Post(req.body);
   const savedPost = await newPost.save();
   console.log(`Registered new post: ${savedPost}`);
+  res.json();
 });
 
 app.post('/chat', (req, res) => {
