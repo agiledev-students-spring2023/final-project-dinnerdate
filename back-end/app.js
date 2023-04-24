@@ -40,6 +40,13 @@ app.get("/api/chat", (req, res) => {
   res.send(chats);
 });
 
+// retrieve single chat info from id
+app.get("/api/chat/:id", (req, res) => {
+  // console.log(req.params.id);
+  const singleChat = chats.find(c => c._id === req.params.id);
+  res.send(singleChat);
+});
+
 // serve logged-in user data
 app.get("/api/user", verifyToken, async (req, res, next) => {
   const userId = req.userId; // the logged-in users id, defined by verifyToken
