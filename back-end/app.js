@@ -49,19 +49,22 @@ app.patch("/api/user", verifyToken, async (req, res, next) => {
 app.get("/restaurant/:placeId", (req, res, next) => {
   const placeId = req.params.placeId;
   const url = `https://maps.googleapis.com/maps/api/place/details/json?placeid=${placeId}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
-  console.log(url);
-  axios
-    .get(url)
-    .then(apiResponse => {
-      const restaurant_data = apiResponse.data.result;
+  axios.get(url)
+    .then(response => {
+      const restaurantData = response.data.result;
+      // return null if placeId is not a food establishment
+      const restaurantTypes = ['bakery', 'cafe', 'bar', 'restaurant'];
+      if(!restaurantData.types.some(type => restaurantTypes.includes(type))) return res.json(); 
       const restaurant = {
-        "name": restaurant_data['name'],
-        "address": restaurant_data['formatted_address'],
-        "description": restaurant_data['editorial_summary'].overview,
-        "num_ratings": restaurant_data['user_ratings_total'],
-        "phone_number": restaurant_data['formatted_phone_number'],
-        "rating": restaurant_data['rating'],
-        "url": restaurant_data['url']
+        "name": restaurantData['name'],
+        "address": restaurantData['formatted_address'] || restaurantData[vicinity],
+        "description": restaurantData['editorial_summary'].overview,
+        "hours": restaurantData['current_opening_hours'],
+        "price_level": restaurantData['price_level'],
+        "num_ratings": restaurantData['user_ratings_total'],
+        "phone_number": restaurantData['formatted_phone_number'] || restaurantData['international_phone_number'],
+        "rating": restaurantData['rating'],
+        "url": restaurantData['url']
       };
       res.json(restaurant);
     })
