@@ -111,6 +111,7 @@ app.get("/diner-request/:requestId", (req, res, next) => {
       });
     })
 })
+
 //fetch chat data 
 app.get("/chatdata/:chatId", (req, res, next) => {
   const url = "https://my.api.mockaroo.com/chatdata.json?key=987d00a0";
