@@ -37,6 +37,14 @@ app.get("/api/user", verifyToken, async (req, res, next) => {
   res.json(user);
 });
 
+// modify logged-in user data
+app.patch("/api/user", verifyToken, async (req, res, next) => {
+  const userId = req.userId; // the logged-in users id, defined by verifyToken
+  const user = await User.findByIdAndUpdate(userId, req.body, { new: true });
+  if(!user) return res.status(400).json({ message: "User could not be found! "});
+  res.json(user);
+});
+
 // serve restaurant data
 app.get("/restaurant/:placeId", (req, res, next) => {
   const placeId = req.params.placeId;
