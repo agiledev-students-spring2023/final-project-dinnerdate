@@ -28,9 +28,11 @@ const Register = () => {
       }
 
       async function handleSubmit(event) {
-        formData.birthday = new Date(formData.birthday).toLocaleDateString();
+        const formDataCopy = {...formData};
+
+        formDataCopy.birthday = new Date(formDataCopy.birthday).toLocaleDateString();
         event.preventDefault();
-        await axios.post(`/register`, formData, {params: {}})
+        await axios.post(`/register`, formDataCopy, {params: {}})
             .then((response) => {
                 // Store token and user data in localStorage
                 localStorage.setItem('token', response.data.token);
@@ -39,7 +41,7 @@ const Register = () => {
                 // Redirect to home page
                 history.push('/');
             })
-            .catch(e => console.error(e.response.data.msg));
+            .catch(e => console.error(e.response.data.message));
       }
 
     return (
