@@ -173,50 +173,6 @@ app.get("/profile", function (req, res) {
   })
 });
 
-// validate email and mobile fields
-function validateProfile(req, res, next) {
-  const { email, mobile } = req.body;
-
-  // check if email is valid
-  if (!/\S+@\S+\.\S+/.test(email)) {
-    return res.status(400).json({ error: "Invalid email address" });
-  }
-
-  // check if mobile is valid
-  if (!/^\d{10}$/.test(mobile)) {
-    return res.status(400).json({ error: "Invalid mobile number" });
-  }
-
-  // if all validation passes, move to the next middleware function
-  next();
-}
-
-app.post("/profile", validateProfile, async (req, res) => {
-  // Get data from request body
-  const { email, username, first_name, last_name, birthdate, gender, mobile } = req.body;
-
-  // Save user data to database
-  const profile = new Profile({
-    email: email, 
-    username: username,
-    firstName: first_name,
-    lastName: last_name,
-    birthdate: birthdate,
-    gender: gender,
-    mobile: mobile,
-    createdAt: new Date()
-  });
-
-  try {
-    await profile.save();
-    console.log("Profile saved to database:", profile);
-    res.json({ success: true });
-  } catch (err) {
-    console.error("Error saving user to database:", err);
-    res.status(500).json({ error: "Internal server error" });
-  }
-});
-
 
 
 
