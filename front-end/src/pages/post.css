@@ -9,6 +9,10 @@
     display: block;
 }
 
+.datetime-label {
+    width: 500px;
+}
+
 .post-form .input {
     box-sizing: border-box;
     display: block;

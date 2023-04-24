@@ -1,0 +1,107 @@
+.chat-box {
+    display: flex;
+    flex-direction: column;
+    max-width: 600px;
+    height: 500px;
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+  }
+  
+  .message-area {
+    flex: 1;
+    padding: 10px;
+    overflow-y: scroll;
+  }
+  
+  /* Hide the scrollbar */
+  .message-area::-webkit-scrollbar {
+    width: 0px;
+    background-color: transparent;
+  }
+  
+  .message-area p {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  
+  .input-area {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+  }
+  
+  .input-area input[type="text"] {
+    flex: 1;
+    margin-right: 10px;
+    padding: 4px;
+    border-radius: 5px;
+    border: 1px solid #000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .input-area input[type="submit"] {
+    background-color: #4CAF50;
+    color: #fff;
+    border: 1px solid #000;
+    border-radius: 5px;
+    font-size: 16px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+
+   .input-area input[type="submit"]:hover {
+    background-color: #3e8e41;
+  }
+  
+  /* Change the font family and font size for the entire chat box */
+.chat-box {
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+  }
+  
+  /* Style the "Messages Appear Here" text inside the message area */
+  .message-area p {
+    color: #999;
+    font-style: italic;
+  }
+  
+  /* Style the send button on hover */
+  .input-area input[type="submit"]:hover {
+    background-color: #40824e;
+  }
+  
+  /* Style the chat box header */
+  .chat-box-header {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+  
+  /* Style the chat box footer */
+  .chat-box-footer {
+    background-color: #f2f2f2;
+    padding: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+  
+  /* Style the clear chat and block user buttons */
+  .action-area button {
+    background-color: #ccc;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .action-area button:hover {
+    background-color: #999;
+  }
