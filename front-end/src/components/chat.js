@@ -5,7 +5,6 @@ import { useParams } from 'react-router-dom';
 import Axios from 'axios';
 
 
-
 const Chat = () => {
   const [chatData, setChatData] = useState({});
     const routeParams = useParams();
@@ -44,6 +43,4 @@ const Chat = () => {
 }
 
 
-
-  
 export default Chat;

@@ -2,7 +2,7 @@ body {
     background-color: #f0f2f5;
     font-family: 'Arial', sans-serif;
 }
-t.chat-box {
+.chat-box {
     border: 1px solid black;
     width: 450px;
     height: 600px;
@@ -56,3 +56,5 @@ t.chat-box {
     border: none;
     border-radius: 5px;
   }
+ 
+  
