@@ -12,8 +12,7 @@ app.use(express.json())
 app.use(cors());
 app.use(express.urlencoded({ extended: true })) // decode url-encoded incoming POST data
 
-const User = require('./db');
-const Post = require('./db');
+const { User, Post } = require('./db');
 
 /*************************** Routes ***************************/
 // serve user data

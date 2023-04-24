@@ -22,8 +22,6 @@ const userSchema = new mongoose.Schema({
     createdAt: { type: Date, required: true },
 });
 
-module.exports = mongoose.model('User', userSchema);
-
 const postSchema = new mongoose.Schema({
     location: { type: String, required: true },
     title: { type: String, required: true },
@@ -33,4 +31,10 @@ const postSchema = new mongoose.Schema({
     description: { type: String, required: true },
 });
       
-module.exports = mongoose.model('Post', postSchema);
+const User = mongoose.model('user', userSchema);
+const Post = mongoose.model('post', postSchema);
+  
+// Exporting our model objects
+module.exports = {
+    User, Post
+}
