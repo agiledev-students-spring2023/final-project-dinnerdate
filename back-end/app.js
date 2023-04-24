@@ -208,9 +208,9 @@ app.post('/register', async (req, res) => {
     
     // check if email is used
     const existingEmail = await User.findOne({ email: email });
-    if (existingEmail) return res.status(400).json( { msg: "An account is already registered with this email." });
+    if (existingEmail) return res.status(400).json( { message: "An account is already registered with this email." });
     // double-check password
-    if (password != passwordCheck) return res.status(400).json({ msg: "Passwords must match" });
+    if (password != passwordCheck) return res.status(400).json({ message: "Passwords must match" });
 
     // hash passwords using bcrypt
     const salt = await bcrypt.genSalt();
@@ -243,7 +243,7 @@ app.post('/register', async (req, res) => {
       }
     });
 
-  } catch(e) { res.status(500).json({ err: e.message }); console.log(e.message) }
+  } catch(e) { res.status(500).json({ err: e.message }); }
 })
 
 app.post('/login', async (req, res) => {
@@ -252,11 +252,11 @@ app.post('/login', async (req, res) => {
 
     // find email in database
     const user = await User.findOne({ email: email });
-    if(!user) return res.status(400).json({ msg: "No account with this email has been registered. "});
+    if(!user) return res.status(400).json({ message: "No account with this email has been registered. "});
     
     // compare passwords
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ msg: "Password is incorrect." });
+    if (!isMatch) return res.status(400).json({ message: "Password is incorrect." });
 
     // create json web token
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
