@@ -87,9 +87,10 @@ const Register = () => {
                 <label> Re-enter Password
                     <input type="password" name="passwordCheck" value={formData.passwordCheck} onChange={handleChange} required/>
                 </label>
-
-                <div className="link"><Link className="link" to='/login'>Already have an account? Login here!</Link></div>
-                <div className="register-btn"><button>Register</button></div>
+                <div className="register-container">
+                    <div className="link"><Link className="link" to='/login'>Already have an account? Login here!</Link></div>
+                    <div className="register-btn"><button>Register</button></div>
+                </div>
             </form>
         </div>
     );
