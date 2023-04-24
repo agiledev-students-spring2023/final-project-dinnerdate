@@ -111,27 +111,32 @@ app.get("/diner-request/:requestId", (req, res, next) => {
       });
     })
 })
-//fetch chat data [broken]
+//fetch chat data 
 app.get("/chatdata/:chatId", (req, res, next) => {
   const url = "https://my.api.mockaroo.com/chatdata.json?key=987d00a0";
   axios
     .get(url)
     .then((apiResponse) => {
-      const chatString = JSON.stringify(apiResponse.data).replace(/["\\n]/g, '').split(",");
+      const chatData = apiResponse.data.find(chat => chat.chat_id === req.params.chatId);
+      if (!chatData) {
+        return res.status(404).json({ error: 'Chat not found' });
+      }
       const chat = {
-        "user": chatString[0],
-        "other_user": chatString[1],
-        "messages": chatString[2],
-        "messages.text": chatString[3],
-        "messages.message_id": chatString[4],
+        user: chatData.user,
+        other_user: chatData.other_user,
+        messages: chatData.messages.map(message => ({
+          text: message.text,
+          message_id: message.message_id
+        }))
       };
       res.json(chat);
     })
     .catch((err) => next(err));
 });
 
+
 app.get("/profile", function (req, res) {
-  const url = "https://my.api.mocokaroo.com/users.json?key=85d24ca0";
+  const url = "https://my.api.mockaroo.com/users.json?key=85d24ca0";
   axios
   .get(url)
   .then(apiResponse => {
@@ -166,6 +171,55 @@ app.get("/profile", function (req, res) {
       "num_ratings": 2,
     });
   })
+});
+
+// validate email and mobile fields
+function validateProfile(req, res, next) {
+  const { email, mobile } = req.body;
+
+  // check if email is valid
+  if (!/\S+@\S+\.\S+/.test(email)) {
+    return res.status(400).json({ error: "Invalid email address" });
+  }
+
+  // check if mobile is valid
+  if (!/^\d{10}$/.test(mobile)) {
+    return res.status(400).json({ error: "Invalid mobile number" });
+  }
+
+  // if all validation passes, move to the next middleware function
+  next();
+}
+
+app.post("/profile", validateProfile, async (req, res) => {
+  // Get data from request body
+  const { id, email, username, password, first_name, last_name, birthdate, gender, mobile } = req.body;
+
+  // Save user data to database
+  const user = new User({
+    firstName: first_name,
+    lastName: last_name,
+    email: email,
+    password: password,
+    birthdate: birthdate,
+    gender: gender,
+    createdAt: new Date()
+  });
+
+  try {
+    await user.save();
+    console.log("User saved to database:", user);
+    res.json({ success: true });
+  } catch (err) {
+    console.error("Error saving user to database:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
+
+app.listen(PORT, () => {
+  console.log(`Server started on port ${3000}`);
 });
 
 // serve images from picsum
@@ -285,6 +339,7 @@ app.post('/login', async (req, res) => {
   }
   catch (error) { res.status(500).json({ err: error.message }); }
 })
+
 
 // export the express app we created to make it available to other modules
 module.exports = app
