@@ -1,5 +1,5 @@
-.restaurant-info > *, .diner-posts > * {
-    margin-bottom: 20px;
+.diner-posts > * {
+    margin-bottom: 10px;
 }
 
 .restaurant-information > *, .diner-posts > h2 {

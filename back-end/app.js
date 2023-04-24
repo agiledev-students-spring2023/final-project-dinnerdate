@@ -4,6 +4,7 @@ const cors = require('cors')
 const axios = require("axios");
 const express = require("express") // CommonJS import style!
 const jwt = require("jsonwebtoken");
+const chats = require("./data/data")
 // const auth = require("./auth");
 
 // set up express
@@ -15,39 +16,69 @@ app.use(express.urlencoded({ extended: true })) // decode url-encoded incoming P
 const { User, Post } = require('./db');
 
 /*************************** Routes ***************************/
-// serve user data
-app.get("/user/:username", async (req, res, next) => {
-  const user = await User.findOne({username: req.params.username});
-  res.send(JSON.stringify(user));
+// check if api is running
+app.get("/", (req, res) => {
+  res.send("API is Running");
 });
 
-// serve user data
-app.get("/user/:username", async (req, res, next) => {
-  const user = await User.findOne({username: req.params.username});
-  res.send(JSON.stringify(user));
+// serve sample chat data
+app.get("/api/chat", (req, res) => {
+  res.send(chats);
+});
+
+// retrieve single chat info from id
+app.get("/api/chat/:id", (req, res) => {
+  // console.log(req.params.id);
+  const singleChat = chats.find(c => c._id === req.params.id);
+  res.send(singleChat);
+});
+
+// serve logged-in user data
+app.get("/user/:userId", async (req, res, next) => {
+  const userId = req.params.userId;
+  const user = await User.findById(userId);
+  if(!user) return res.status(400).json({ message: "User could not be found! "});
+  res.json(user);
+});
+
+// modify logged-in user data
+app.patch("/api/user", verifyToken, async (req, res, next) => {
+  const userId = req.userId; // the logged-in users id, defined by verifyToken
+  const user = await User.findByIdAndUpdate(userId, req.body, { new: true });
+  if(!user) return res.status(400).json({ message: "User could not be found! "});
+  res.json(user);
 });
 
 // serve restaurant data
 app.get("/restaurant/:placeId", (req, res, next) => {
   const placeId = req.params.placeId;
   const url = `https://maps.googleapis.com/maps/api/place/details/json?placeid=${placeId}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
-  console.log(url);
-  axios
-    .get(url)
-    .then(apiResponse => {
-      const restaurant_data = apiResponse.data.result;
+  axios.get(url)
+    .then(response => {
+      const restaurantData = response.data.result;
+      // return null if placeId is not a food establishment
+      const restaurantTypes = ['bakery', 'cafe', 'bar', 'restaurant'];
+      if(!restaurantData.types.some(type => restaurantTypes.includes(type))) return res.json(); 
       const restaurant = {
-        "name": restaurant_data['name'],
-        "address": restaurant_data['formatted_address'],
-        "description": restaurant_data['editorial_summary'].overview,
-        "num_ratings": restaurant_data['user_ratings_total'],
-        "phone_number": restaurant_data['formatted_phone_number'],
-        "rating": restaurant_data['rating'],
-        "url": restaurant_data['url']
+        "name": restaurantData['name'],
+        "address": restaurantData['formatted_address'] || restaurantData[vicinity],
+        "description": restaurantData['editorial_summary'].overview,
+        "hours": restaurantData['current_opening_hours'],
+        "price_level": restaurantData['price_level'],
+        "num_ratings": restaurantData['user_ratings_total'],
+        "phone_number": restaurantData['formatted_phone_number'] || restaurantData['international_phone_number'],
+        "rating": restaurantData['rating'],
+        "url": restaurantData['url']
       };
       res.json(restaurant);
     })
     .catch(err => next(err)) // pass any errors to express
+});
+
+// serve post data for restaurant
+app.get("/restaurant/:placeId/posts", async (req, res, next) => {
+  const posts = await Post.find({ placeId: req.params.placeId}).populate('author');
+  res.json(posts);
 });
 
 // serve diner post data
@@ -193,31 +224,28 @@ function validateProfile(req, res, next) {
 
 app.post("/profile", validateProfile, async (req, res) => {
   // Get data from request body
-  const { email, username, first_name, last_name, birthdate, gender, mobile } = req.body;
+  const { id, email, username, password, first_name, last_name, birthdate, gender, mobile } = req.body;
 
   // Save user data to database
-  const profile = new Profile({
-    email: email, 
-    username: username,
+  const user = new User({
     firstName: first_name,
     lastName: last_name,
+    email: email,
+    password: password,
     birthdate: birthdate,
     gender: gender,
-    mobile: mobile,
     createdAt: new Date()
   });
 
   try {
-    await profile.save();
-    console.log("Profile saved to database:", profile);
+    await user.save();
+    console.log("User saved to database:", user);
     res.json({ success: true });
   } catch (err) {
     console.error("Error saving user to database:", err);
     res.status(500).json({ error: "Internal server error" });
   }
 });
-
-
 
 // serve images from picsum
 app.get("/static/", (req, res, next) => {
