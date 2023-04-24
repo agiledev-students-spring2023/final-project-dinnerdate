@@ -7,15 +7,13 @@ const Navbar = ({ isLoggedIn, handleLogout}) => {
             <div className="links">
                 <Link to='/inbox'>Inbox</Link>
                 <Link to='/login'>Login</Link>
-                {isLoggedIn ? (
+                {isLoggedIn && (
                     <>
                         <Link to='/profile'>Profile</Link>
                         <button onClick = {handleLogout}>Logout</button>
                             </>
-                ) : (
-                    <Link to='/login'>Login</Link>
                 )}
-            </div>
+               </div>
         </nav>
     );
 }
