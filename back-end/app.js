@@ -13,6 +13,7 @@ app.use(cors());
 app.use(express.urlencoded({ extended: true })) // decode url-encoded incoming POST data
 
 const User = require('./db');
+const Post = require('./db');
 
 /*************************** Routes ***************************/
 // serve user data
@@ -173,11 +174,35 @@ app.get("/static/", (req, res, next) => {
   res.send(`<img src=${url}>`);
 })
 
-app.post('/create-post', (req, res) => {
-  const { title, dateTime, description } = req.body;
-  console.log(title, dateTime, description);
-  res.status(201).json({message: 'Post created successfully'});
-  console.log('We Posting!')
+app.post('/create-post', async(req, res) => {
+  try {
+    const { title, date, description } = req.body;
+
+    const newPost = new Post({
+      location: "RESTURANT NAME",
+      title: title,
+      createdBy: "USER",
+      date: date,
+      description: description
+    });
+
+    // save and log new post
+    const savedPost = await newPost.save();
+    console.log(`Added new post: ${savedPost}`)
+
+    // create and return json web token
+    const token = jwt.sign({ id: newPost._id }, process.env.JWT_SECRET);
+    res.json({
+      token,
+      post: {
+        id: newPost._id,
+        title: newPost.title,
+        date: newPost.date,
+        description: newPost.description,
+      }
+    });
+
+  } catch(e) { res.status(500).json({ err: e.message }); console.log(e.message) }
 });
 
 app.post('/chat', (req, res) => {
