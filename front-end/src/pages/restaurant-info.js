@@ -30,9 +30,9 @@ const sampleDinerPost = {
 const RestaurantInfo = ( props ) => {
     const [visibility, setVisibility] = useState(false);
  
-    const popupCloseHandler = (e) => {
-        setVisibility(e);
-    };
+  const popupCloseHandler = (e) => {
+    setVisibility(e);
+  };
 
     const [restaurantData, setRestaurantData] = useState(sampleRestaurantData);
     const [diners, setDiners] = useState([sampleDinerPost]);
@@ -47,7 +47,6 @@ const RestaurantInfo = ( props ) => {
 
     const fetchRestaurantInfo = () => {
         console.log(placeId);
-        console.log("hello?");
         Axios.get(`${serverUrl}:${serverPort}/restaurant/${placeId}`)
             .then((res) => {
                 setRestaurantData({
@@ -125,14 +124,6 @@ const RestaurantInfo = ( props ) => {
         )
     }
       
-    const CreatePost = () => {
-        return (
-            <Link to={`/create-post/${placeId}`} className='post create-post'>
-                <h2>Create a new post...</h2>
-            </Link>
-        )
-    }
-    
     return (        
         <div className="restaurant-info">
             {/* Restaurant Information */}
@@ -151,15 +142,14 @@ const RestaurantInfo = ( props ) => {
                     <DinerPosts diners = {diners}/>
                     <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
                         <div className="otherUserProfile">
-                            {/* {diners.length > 0 ? <h1> {diners[parseInt(selectedDiner)].full_name}, {diners[parseInt(selectedDiner)].datetime}</h1>
+                            {diners.length > 0 ? <h1> {diners[parseInt(selectedDiner)].full_name}, {diners[parseInt(selectedDiner)].datetime}</h1>
                                    : <h1>""</h1>}
                             {diners.length > 0 ? <div id="wrapper">
                                     <div id="first"><img style={{ width: "200px", height: "200px", borderRadius: "80px", paddingBottom: "30px" }}
                                             src={diners[parseInt(selectedDiner)].avatar_url} alt="" /></div>
                                     <div id="second">{diners[parseInt(selectedDiner)].description}</div>
                                 </div>
-                                   : <h1>""</h1>} */}
-                                   <h1>temp</h1>
+                                   : <h1>""</h1>}
                             <div className="acc-btn"><div onClick={() => setButtonPopup(false)}><button>Request</button></div></div>
                         </div>
                     </Popup>
@@ -167,6 +157,14 @@ const RestaurantInfo = ( props ) => {
             </div>
         </div>
     );
+}
+
+const CreatePost = () => {
+    return (
+        <Link to='/create-post' className='post create-post'>
+            <h2>Create a new post...</h2>
+        </Link>
+    )
 }
 
 export default RestaurantInfo;

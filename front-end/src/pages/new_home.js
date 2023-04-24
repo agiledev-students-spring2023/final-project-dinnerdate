@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from "react-router-dom";
 import axios from '../axiosInstance';
 import { GoogleMap, Marker, useLoadScript } from '@react-google-maps/api';
 import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete';
 import useOnclickOutside from 'react-cool-onclickoutside';
+import Popup from "../components/Popup.js";
 import './new_home.css';
 
 const libraries = ["places"];
 function Home() {
-  const [selected, setSelected] = useState(null); // selected restaurant { placeId, lat, lng }
+  const [selected, setSelected] = useState(); // selected restaurant { placeId, lat, lng }
 
   // Show "Loading..." if google maps API is not ready
   const { isLoaded } = useLoadScript({ googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY, libraries: libraries });
@@ -19,7 +21,7 @@ function Home() {
           <PlacesAutocomplete setSelected={setSelected} />
           <Map selected={selected} setSelected={setSelected} />
           <RestaurantInfo selected={selected} />
-          {/* {selected ? <h1><Link to={`/restaurant/${selected.placeId}`}> Go </Link></h1> : ""} */}
+          <Posts selected={selected} />
     </div>
   );
 }
@@ -64,7 +66,7 @@ const PlacesAutocomplete = ({ setSelected }) => {
   );
 };
 const Map = ({ selected, setSelected }) => { 
-  const [currPosition, setCurrPosition] = useState(null); // user's position
+  const [currPosition, setCurrPosition] = useState(); // user's position
   useEffect(() => { // get current position once
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
@@ -106,11 +108,49 @@ const RestaurantInfo = ({ selected }) => {
             <h2>{restaurantData.name} • {restaurantData.rating}⭐ • {'$'.repeat(restaurantData.price_level)}</h2>
             <p>📞 {restaurantData.phone_number}</p>
             <p>{restaurantData.description}</p>
-          </div>
-      ) : null}
+          </div>) : null}
     </>
   )
 
+}
+const Posts = ({ selected }) => {
+  const [posts, setPosts] = useState([]);
+  const [selectedPost, setSelectedPost] = useState();
+  const [buttonPopup, setButtonPopup] = useState(false);
+  
+  useEffect(() => {
+    if (!selected) return
+    axios.get(`/restaurant/${selected.placeId}/posts`)
+      .then(res => setPosts(res.data))
+      .catch(err => console.log(err ? err : "Unexpected error occurred."));
+  })
+
+  return (
+    <>
+      {posts.length ? (
+        <div className="posts">
+          <>Posts exist</>
+        </div>) : "There are no posts for this restaurant."}
+
+        <Link to='/create-post' className='post create-post'>
+            <h2>Create a new post...</h2>
+        </Link>
+
+        <>
+          {posts.map((post) => (
+              <div className="post diner-post" onClick={() => {setButtonPopup(true); setSelectedPost(post.id);}} >
+                  <img className="avatar" src={post.avatar_url}></img> 
+                  <div className="diner-info"> 
+                      <h2 className="truncate">{post.title}</h2>
+                      <h5>{post.datetime}</h5>
+                      {post.rating && post.num_ratings && <h3>{post.full_name} {post.rating}⭐ ({post.num_ratings} reviews)</h3>}
+                  </div>
+              </div>
+          ))}
+        </>
+        
+    </>
+  )
 }
 
 export default Home;
