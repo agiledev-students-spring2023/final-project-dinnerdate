@@ -41,7 +41,7 @@ const Register = () => {
                 // Redirect to home page
                 history.push('/');
             })
-            .catch(e => console.error(e.response.data.message));
+            .catch(e => console.error(e));
       }
 
     return (
