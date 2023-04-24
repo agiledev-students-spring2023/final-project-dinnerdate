@@ -14,17 +14,27 @@ app.use(express.urlencoded({ extended: true })) // decode url-encoded incoming P
 
 const { User, Post } = require('./db');
 
-/*************************** Routes ***************************/
-// serve user data
-app.get("/user/:username", async (req, res, next) => {
-  const user = await User.findOne({username: req.params.username});
-  res.send(JSON.stringify(user));
-});
 
-// serve user data
-app.get("/user/:username", async (req, res, next) => {
-  const user = await User.findOne({username: req.params.username});
-  res.send(JSON.stringify(user));
+/*************************** Middleware ***************************/
+function verifyToken(req, res, next) {
+  const token = req.headers['authorization'].replace(/^Bearer\s+/, "");;
+  if (!token) return res.status(401).send({ auth: false, message: 'No token provided.' });
+  try {
+    const decoded = jwt.verify(token,process.env.JWT_SECRET);
+    req.userId = decoded.id;
+  } catch (e) {
+    return res.status(500).send({ auth: false, message: 'Failed to authenticate token.' });
+  }
+  next();
+}
+
+/*************************** Routes ***************************/
+// serve logged-in user data
+app.get("/api/user", verifyToken, async (req, res, next) => {
+  const userId = req.userId; // the logged-in users id, defined by verifyToken
+  const user = await User.findOne({ _id:  userId});
+  if(!user) return res.status(400).json({ message: "User could not be found! "});
+  res.json(user);
 });
 
 // serve restaurant data
@@ -110,27 +120,33 @@ app.get("/diner-request/:requestId", (req, res, next) => {
       });
     })
 })
-//fetch chat data [broken]
+
+//fetch chat data 
 app.get("/chatdata/:chatId", (req, res, next) => {
   const url = "https://my.api.mockaroo.com/chatdata.json?key=987d00a0";
   axios
     .get(url)
     .then((apiResponse) => {
-      const chatString = JSON.stringify(apiResponse.data).replace(/["\\n]/g, '').split(",");
+      const chatData = apiResponse.data.find(chat => chat.chat_id === req.params.chatId);
+      if (!chatData) {
+        return res.status(404).json({ error: 'Chat not found' });
+      }
       const chat = {
-        "user": chatString[0],
-        "other_user": chatString[1],
-        "messages": chatString[2],
-        "messages.text": chatString[3],
-        "messages.message_id": chatString[4],
+        user: chatData.user,
+        other_user: chatData.other_user,
+        messages: chatData.messages.map(message => ({
+          text: message.text,
+          message_id: message.message_id
+        }))
       };
       res.json(chat);
     })
     .catch((err) => next(err));
 });
 
+
 app.get("/profile", function (req, res) {
-  const url = "https://my.api.mocokaroo.com/users.json?key=85d24ca0";
+  const url = "https://my.api.mockaroo.com/users.json?key=85d24ca0";
   axios
   .get(url)
   .then(apiResponse => {
@@ -165,6 +181,55 @@ app.get("/profile", function (req, res) {
       "num_ratings": 2,
     });
   })
+});
+
+// validate email and mobile fields
+function validateProfile(req, res, next) {
+  const { email, mobile } = req.body;
+
+  // check if email is valid
+  if (!/\S+@\S+\.\S+/.test(email)) {
+    return res.status(400).json({ error: "Invalid email address" });
+  }
+
+  // check if mobile is valid
+  if (!/^\d{10}$/.test(mobile)) {
+    return res.status(400).json({ error: "Invalid mobile number" });
+  }
+
+  // if all validation passes, move to the next middleware function
+  next();
+}
+
+app.post("/profile", validateProfile, async (req, res) => {
+  // Get data from request body
+  const { id, email, username, password, first_name, last_name, birthdate, gender, mobile } = req.body;
+
+  // Save user data to database
+  const user = new User({
+    firstName: first_name,
+    lastName: last_name,
+    email: email,
+    password: password,
+    birthdate: birthdate,
+    gender: gender,
+    createdAt: new Date()
+  });
+
+  try {
+    await user.save();
+    console.log("User saved to database:", user);
+    res.json({ success: true });
+  } catch (err) {
+    console.error("Error saving user to database:", err);
+    res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+
+
+app.listen(PORT, () => {
+  console.log(`Server started on port ${3000}`);
 });
 
 // serve images from picsum
@@ -242,9 +307,9 @@ app.post('/register', async (req, res) => {
     
     // check if email is used
     const existingEmail = await User.findOne({ email: email });
-    if (existingEmail) return res.status(400).json( { msg: "An account is already registered with this email." });
+    if (existingEmail) return res.status(400).json( { message: "An account is already registered with this email." });
     // double-check password
-    if (password != passwordCheck) return res.status(400).json({ msg: "Passwords must match" });
+    if (password != passwordCheck) return res.status(400).json({ message: "Passwords must match" });
 
     // hash passwords using bcrypt
     const salt = await bcrypt.genSalt();
@@ -277,7 +342,7 @@ app.post('/register', async (req, res) => {
       }
     });
 
-  } catch(e) { res.status(500).json({ err: e.message }); console.log(e.message) }
+  } catch(e) { res.status(500).json({ err: e.message }); }
 })
 
 app.post('/login', async (req, res) => {
@@ -286,11 +351,11 @@ app.post('/login', async (req, res) => {
 
     // find email in database
     const user = await User.findOne({ email: email });
-    if(!user) return res.status(400).json({ msg: "No account with this email has been registered. "});
+    if(!user) return res.status(400).json({ message: "No account with this email has been registered. "});
     
     // compare passwords
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ msg: "Password is incorrect." });
+    if (!isMatch) return res.status(400).json({ message: "Password is incorrect." });
 
     // create json web token
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
@@ -306,6 +371,7 @@ app.post('/login', async (req, res) => {
   }
   catch (error) { res.status(500).json({ err: error.message }); }
 })
+
 
 // export the express app we created to make it available to other modules
 module.exports = app
