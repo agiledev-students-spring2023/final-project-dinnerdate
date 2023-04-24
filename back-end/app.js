@@ -12,14 +12,10 @@ app.use(express.json())
 app.use(cors());
 app.use(express.urlencoded({ extended: true })) // decode url-encoded incoming POST data
 
-const { User, Post } = require('./db');
+const User = require('./db');
+const Post = require('./db');
 
 /*************************** Routes ***************************/
-// serve user data
-app.get("/user/:username", async (req, res, next) => {
-  const user = await User.findOne({username: req.params.username});
-  res.send(JSON.stringify(user));
-});
 
 // serve user data
 app.get("/user/:username", async (req, res, next) => {
@@ -203,7 +199,7 @@ app.post("/profile", validateProfile, async (req, res) => {
     password: password,
     birthdate: birthdate,
     gender: gender,
-    createdAt: new Date()
+    screatedAt: new Date()
   });
 
   try {
@@ -340,6 +336,32 @@ app.post('/login', async (req, res) => {
   catch (error) { res.status(500).json({ err: error.message }); }
 })
 
+// sample middleware that verifies JWT token
+const key='key';
+function verifyToken (req, res, next){
+  const authorizationHeader= req.headers['authorization'];
+  const token = authorizationHeader && authorizationHeader.split(' ')[1];
 
+  if (!token){
+    return res.status(401).send({message: 'Unauthorized'});
+  }
+
+  try {
+    const decoded = jwt.verify(token, key);
+    req.user=decoded;
+    next();
+  }
+  catch(err){
+    return res.status(401).send({ message: 'Unauthorized'});
+  }
+}
+
+//protected route that requires jwt token
+ app.get('./me', verifyToken, (req,res) => {
+  const user =req.user;
+  res.send(user);
+ });
+
+ app.listen(3000,() => console.log('Server started on port 3000'));
 // export the express app we created to make it available to other modules
 module.exports = app
