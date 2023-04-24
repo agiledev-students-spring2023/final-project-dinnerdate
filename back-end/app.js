@@ -217,7 +217,7 @@ app.post("/profile", validateProfile, async (req, res) => {
   }
 });
 
-// remove broken piece
+
 
 // serve images from picsum
 app.get("/static/", (req, res, next) => {
