@@ -21,6 +21,7 @@ const userSchema = new mongoose.Schema({
     birthdate: { type: Date }, // temporarily not required until we figure out how to make it required
     gender: { type: String, required: true },
     createdAt: { type: Date, required: true },
+    postId: { type: String },
 });
 
 const postSchema = new mongoose.Schema({
@@ -29,6 +30,7 @@ const postSchema = new mongoose.Schema({
     title: { type: String, required: true },
     datetime: { type: Date, required: true }, 
     description: { type: String, required: true },
+    requests: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
 });
 
 const chatSchema = new mongoose.Schema(

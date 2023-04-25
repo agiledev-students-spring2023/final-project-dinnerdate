@@ -15,7 +15,6 @@ app.use(express.urlencoded({ extended: true })) // decode url-encoded incoming P
 
 const { User, Post } = require('./db');
 
-
 /*************************** Middleware ***************************/
 function verifyToken(req, res, next) {
   const token = req.headers['authorization'].replace(/^Bearer\s+/, "");;
@@ -183,6 +182,39 @@ app.post('/create-post', async(req, res) => {
   const newPost = new Post(req.body);
   const savedPost = await newPost.save();
   console.log(`Registered new post: ${savedPost}`);
+
+  const userId = req.body.author
+  const db = require('mongodb')
+  const ObjectId = db.ObjectId; 
+  const id = new ObjectId(userId);
+  
+  // const user = await User.findOne({ "_id" : id});
+
+  try{
+    User.updateOne(
+      { _id: id },
+      { $set: { postId: newPost._id } }
+    )
+    .then((result) => {
+      // Check the result of the update operation
+      console.log(result);
+    
+      // Query for the updated user object
+      return User.findOne({ _id: id });
+    })
+    .then((user) => {
+      // Log the updated user object
+      console.log(user);
+    })
+    .catch((error) => {
+      // Handle any errors that may occur during the update or query operations
+      console.error(error);
+    });
+  }catch (e){
+    console.log(e)
+  }
+  
+
   res.json();
 });
 
@@ -267,6 +299,46 @@ app.post('/login', async (req, res) => {
   catch (error) { res.status(500).json({ err: error.message }); }
 })
 
+app.post('/edit-profile', async (req, res) => {
+  try {
+    const { firstName, lastName, email} = req.body;
+    console.log(req.body)
+
+    const db = require('mongodb')
+    const ObjectId = db.ObjectId; 
+    const id = new ObjectId(req.body.userId);
+    const user = await User.findOne({"_id": id});
+
+    try{
+      User.updateOne(
+        { _id: id },
+        { $set: { 
+          firstName: ((firstName != "") ? firstName : user.firstName),
+          lastName: ((lastName != "") ? lastName : user.lastName),
+          email: ((email != "") ? email : user.email)
+        } }
+      )
+      .then((result) => {
+        // Check the result of the update operation
+        console.log(result);
+      
+        // Query for the updated user object
+        return User.findOne({ _id: id });
+      })
+      .then((user) => {
+        // Log the updated user object
+        console.log(user);
+      })
+      .catch((error) => {
+        // Handle any errors that may occur during the update or query operations
+        console.error(error);
+      });
+    }catch (e){
+      console.log(e)
+    }
+
+  } catch(e) { res.status(500).json({ err: e.message }); }
+})
 
 // export the express app we created to make it available to other modules
 module.exports = app

@@ -30,6 +30,12 @@ const Profile = () => {
     createdAt: ''
   });
 
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: ''
+  });
+
   const userId = (localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : '');
 
   useEffect(() => {
@@ -61,6 +67,24 @@ const Profile = () => {
     console.log("LOGGED OUT!");
   };
 
+  function handleChange(event) {
+    const { name, value } = event.target;
+    setFormData({ ...formData, [name]: value });
+  }
+
+  async function handleSave(e) {
+    e.preventDefault();
+    const formDataCopy = {...formData, userId};
+
+    await axios.post(`/edit-profile`, formDataCopy, {params: {}})
+    .then(() => {
+        history.push('/profile');
+    })
+    .catch(e => console.error(e));
+
+    console.log(formDataCopy);
+  };
+
   const str = userData.birthdate;
   const temp = str.slice(0, 10);
 
@@ -87,31 +111,36 @@ const Profile = () => {
         />
       </div>
       <div className="editProfile">
-        <form>
+        <form onSubmit={handleSave}>
           <label>
             <p>First Name</p>
-            <input type="text" placeholder={userData.firstName} />
+            <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} placeholder={userData.firstName} />
           </label>
           <label>
             <p>Last Name</p>
-            <input type="text" placeholder={userData.lastName} />
+            <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} placeholder={userData.lastName} />
           </label>
           <label>
             <p>Email</p>
-            <input type="text" placeholder={userData.email} />
+            <input type="text" name="email" value={formData.email} onChange={handleChange} placeholder={userData.email} />
           </label>
+          <div className="save-btn">
+          <button>Save</button>
+          </div>
+          </form>
+          <div className="noneditable">
           <label>
             <p>Birthdate</p>
-            <input type="text" placeholder={temp} />
+            <input type="text" value={temp} readOnly/>
           </label>
           <label>
             <p>Gender</p>
-            <input type="text" placeholder={userData.gender} />
+            <input type="text" value={userData.gender} readOnly/>
           </label>
-          <div className="save-btn">
-            <button onClick={handleLogout}>Logout</button>
           </div>
-        </form>
+        <div className="save-btn">
+        <button onClick={handleLogout}>Logout</button>
+        </div>
       </div>
     </div>
   );
