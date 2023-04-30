@@ -1,4 +1,4 @@
-import './post.css'
+import './createpost.css'
 import { useState, useEffect } from 'react'
 import { useHistory, useParams } from "react-router-dom";
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
