@@ -162,9 +162,16 @@ const Posts = ({ selected }) => {
         </Link>
 
         {posts.map((post, index) => (
-          <div className="post diner-post" onClick={() => {setButtonPopup(true); setSelectedPost(index);}} >
+          <div className="post diner-post" key={index} onClick={() => {setButtonPopup(true); setSelectedPost(index);}} >
             <h2 className="truncate">{post.title}</h2>
-            <h5>{post.datetime}</h5>
+            <h5>{new Date(post.datetime).toLocaleString('en-US', { 
+            month: 'long', 
+            day: 'numeric', 
+            year: 'numeric', 
+            hour: 'numeric', 
+            minute: 'numeric',
+            timeZoneName: 'short'
+            })}</h5>
             <h3>{post.author.firstName} {post.author.lastName}</h3>
           </div>
         ))}
@@ -174,7 +181,15 @@ const Posts = ({ selected }) => {
         <div className="otherUserProfile">
           <h1>{posts[selectedPost].title}</h1>
           <h3>{posts[selectedPost].author.firstName} {posts[selectedPost].author.lastName}</h3>
-          <h4>{posts[selectedPost].datetime}</h4>
+          <h4>{new Date(posts[selectedPost].datetime).toLocaleString('en-US', { 
+            month: 'long', 
+            day: 'numeric', 
+            year: 'numeric', 
+            hour: 'numeric', 
+            minute: 'numeric',
+            timeZoneName: 'short'
+            })}
+          </h4>
           <div id="wrapper">
             <div id="first">
               <img
