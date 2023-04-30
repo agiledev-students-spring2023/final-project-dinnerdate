@@ -104,7 +104,8 @@ const RestaurantInfo = ({ selected, setIsRestaurant }) => {
 
   if(!restaurantData){
     setIsRestaurant(false);
-    return (<>This place is not a restaurant. Please select another location.</>)
+    if(selected) return (<>This place is not a restaurant. Please select another location.</>)
+    else return (<>Select a restaurant on the map.</>)
   }
   else{
     setIsRestaurant(true);
