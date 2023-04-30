@@ -1,3 +1,11 @@
+Link {
+    text-decoration: underline;
+}
+
+.acc-btn .close-btn{
+    width: 10%;
+}
+
 .diner-posts > * {
     margin-bottom: 10px;
 }

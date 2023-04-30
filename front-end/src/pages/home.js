@@ -5,7 +5,7 @@ import { GoogleMap, Marker, useLoadScript } from '@react-google-maps/api';
 import usePlacesAutocomplete, { getGeocode, getLatLng } from 'use-places-autocomplete';
 import useOnclickOutside from 'react-cool-onclickoutside';
 import Popup from "../components/Popup.js";
-import './new_home.css';
+import './home.css';
 
 const libraries = ["places"];
 function Home() {
