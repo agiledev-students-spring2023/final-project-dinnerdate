@@ -1,21 +1,14 @@
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { BrowserRouter, Route, Switch, useHistory } from 'react-router-dom';
-import { Navigate } from "react-router-dom";
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import Navbar from './components/Navbar'
-
-import CreatePost from './pages/createpost'
-import EditPost from './pages/editpost'
-import Home from './pages/new_home'
-import HomeConfirmed from './pages/homeConfirmed'
-import HomeLFD from './pages/home-lfd'
-import Inbox from './pages/inbox'
-import RestaurantInfo from './pages/restaurant-info'
 import Login from './pages/login'
-import Profile from './pages/profile'
 import Register from './pages/register'
-
+import Home from './pages/new_home'
+import CreatePost from './pages/createpost'
+import Profile from './pages/profile'
+import Inbox from './pages/inbox'
 import './index.css'
 
 function App() {
@@ -32,16 +25,10 @@ function App() {
               <Route path="/register"><Register /></Route>
 
               <ProtectedRoute exact path="/"><Home /></ProtectedRoute>
-              <Route path="/restaurant/:placeId"><RestaurantInfo /></Route>
-
               <Route path="/create-post/:placeId"><CreatePost /></Route>
-              <ProtectedRoute path="/edit-post"><EditPost /></ProtectedRoute>
 
               <ProtectedRoute path="/profile"><Profile /></ProtectedRoute>
               <ProtectedRoute path="/inbox"><Inbox /></ProtectedRoute>
-
-              <ProtectedRoute path="/date"><HomeConfirmed /></ProtectedRoute>
-              <ProtectedRoute path="/home-lfd"><HomeLFD /></ProtectedRoute>
 
             </Switch>
           </div>
