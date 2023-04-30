@@ -75,7 +75,7 @@ app.get("/restaurant/:placeId", (req, res, next) => {
       const restaurant = {
         "name": restaurantData['name'],
         "address": restaurantData['formatted_address'] || restaurantData[vicinity],
-        "description": restaurantData['editorial_summary'].overview,
+        "description": restaurantData['editorial_summary']?.overview,
         "hours": restaurantData['current_opening_hours'],
         "price_level": restaurantData['price_level'],
         "num_ratings": restaurantData['user_ratings_total'],
