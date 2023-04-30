@@ -13,7 +13,7 @@ app.use(express.json())
 app.use(cors());
 app.use(express.urlencoded({ extended: true })) // decode url-encoded incoming POST data
 
-const { User, Post } = require('./db');
+const { User, Post, Request } = require('./db');
 
 /*************************** Middleware ***************************/
 function verifyToken(req, res, next) {
@@ -178,7 +178,7 @@ app.get("/chatdata/:chatId", (req, res, next) => {
     .catch((err) => next(err));
 });
 
-app.post('/create-post', async(req, res) => {
+app.post('/create-post', async (req, res) => {
   const newPost = new Post(req.body);
   const savedPost = await newPost.save();
   console.log(`Registered new post: ${savedPost}`);
@@ -217,6 +217,12 @@ app.post('/create-post', async(req, res) => {
 
   res.json();
 });
+
+app.post('/create-request', async (req, res) => {
+  const newRequest = new Request(req.body);
+  const savedRequest = await newRequest.save();
+  console.log(`Registered new request: ${savedRequest}`);
+})
 
 app.post('/chat', (req, res) => {
   var message = new Message(req.body);

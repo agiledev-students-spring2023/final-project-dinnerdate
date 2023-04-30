@@ -140,6 +140,20 @@ const Posts = ({ selected }) => {
   }, [selectedPost])
 
   if(!selected) return (<></>)
+
+  const handleRequest = async (post) => {
+    console.log("Attempted to create request!");
+    const request = {
+      posterId: post.author._id,
+      requesterId: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : null,
+      postId: post._id,
+      status: "pending"
+    }
+    console.log(request);
+    await axios.post(`/create-request`, request)
+        .then((response) => console.log(response))
+        .catch(e => console.error(e.response.data.msg));
+  }
   return (
     <div className="posts">
       {posts.length ? "" : "There are no posts for this restaurant."}
@@ -165,14 +179,14 @@ const Posts = ({ selected }) => {
             <div id="first">
               <img
                 style={{ width: "200px", height: "200px", borderRadius: "20px"}}
-                src={'https://picsum.photos/300/300'}
+                src={'https://picsum.photos/300/300'} /* Should be profile picture */
               />
             </div>
             <div id="second">{posts[selectedPost].description}</div>
           </div>
           <div className="acc-btn">
             <div onClick={() => { setSelectedPost(-1); setButtonPopup(false);}}>
-              <button>Request</button> {/* Should add a request to the logged-in user's data. */}
+              <button onClick={() => handleRequest(posts[selectedPost])}>Request</button> {/* Should add a request to the logged-in user's data. */}
               <button className="close-btn">close</button>
             </div>
           </div>

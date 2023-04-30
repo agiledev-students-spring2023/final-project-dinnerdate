@@ -38,9 +38,7 @@ const requestSchema = new mongoose.Schema({
     posterId: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     requesterId: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     postId: {type: mongoose.Schema.Types.ObjectId, ref: 'Post', required: true },
-    message: { type: String, required: true },
     status: { type: String, required: true },
-    createdAt: { type: Date, required: true }
 });
 
 const chatSchema = new mongoose.Schema(
@@ -81,4 +79,5 @@ module.exports = {
     Chat,
     User,
     Post,
+    Request
 };
