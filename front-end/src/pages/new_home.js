@@ -9,7 +9,8 @@ import './new_home.css';
 
 const libraries = ["places"];
 function Home() {
-  const [selected, setSelected] = useState(); // selected restaurant { placeId, lat, lng }
+  const [selected, setSelected] = useState(); // selected location { placeId, lat, lng }
+  const [isRestaurant, setIsRestaurant] = useState(false); // if the selected location is a restaurant
 
   // Show "Loading..." if google maps API is not ready
   const { isLoaded } = useLoadScript({ googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY, libraries: libraries });
@@ -20,8 +21,8 @@ function Home() {
           <h1>Find / Create a Date</h1>
           <PlacesAutocomplete setSelected={setSelected} />
           <Map selected={selected} setSelected={setSelected} />
-          <RestaurantInfo selected={selected} />
-          <Posts selected={selected} />
+          <RestaurantInfo selected={selected} setIsRestaurant={setIsRestaurant} />
+          {isRestaurant && <Posts selected={selected} />}
     </div>
   );
 }
@@ -92,7 +93,7 @@ const Map = ({ selected, setSelected }) => {
     </GoogleMap>
   );
 }
-const RestaurantInfo = ({ selected }) => {
+const RestaurantInfo = ({ selected, setIsRestaurant }) => {
   const [restaurantData, setRestaurantData] = useState(null);
   useEffect(() => {
     if (!selected) return
@@ -101,11 +102,22 @@ const RestaurantInfo = ({ selected }) => {
       .catch(err => console.log(err ? err : "Unexpected error occurred."));
   }, [selected])
 
-  if(!restaurantData) return (<></>)
+  if(!restaurantData){
+    setIsRestaurant(false);
+    if(selected) return (<>This place is not a restaurant. Please select another location.</>)
+    else return (<>Select a restaurant on the map.</>)
+  }
+  else{
+    setIsRestaurant(true);
+  }
   return (
     <div className="restaurant-info">
-            <h2>{restaurantData.name} • {restaurantData.rating}⭐ • {'$'.repeat(restaurantData.price_level)}</h2>
-            <p>📞 {restaurantData.phone_number}</p>
+            <h2>
+              {restaurantData.name} 
+              {restaurantData.rating && " • " + restaurantData.rating + " ⭐"} 
+              {restaurantData.price_level && " • " + '$'.repeat(restaurantData.price_level)}
+            </h2>
+            <p>{restaurantData.phone_number && "📞" + restaurantData.phone_number}</p>
             <p>{restaurantData.description}</p>
     </div>
   )
@@ -128,6 +140,18 @@ const Posts = ({ selected }) => {
   }, [selectedPost])
 
   if(!selected) return (<></>)
+
+  const handleRequest = async (post) => {
+    const request = {
+      posterId: post.author._id,
+      requesterId: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : null,
+      postId: post._id,
+      status: "pending"
+    }
+    await axios.post(`/create-request`, request)
+        .then((response) => console.log(response))
+        .catch(e => console.error(e.response.data.msg));
+  }
   return (
     <div className="posts">
       {posts.length ? "" : "There are no posts for this restaurant."}
@@ -136,9 +160,16 @@ const Posts = ({ selected }) => {
         </Link>
 
         {posts.map((post, index) => (
-          <div className="post diner-post" onClick={() => {setButtonPopup(true); setSelectedPost(index);}} >
+          <div className="post diner-post" key={index} onClick={() => {setButtonPopup(true); setSelectedPost(index);}} >
             <h2 className="truncate">{post.title}</h2>
-            <h5>{post.datetime}</h5>
+            <h5>{new Date(post.datetime).toLocaleString('en-US', { 
+            month: 'long', 
+            day: 'numeric', 
+            year: 'numeric', 
+            hour: 'numeric', 
+            minute: 'numeric',
+            timeZoneName: 'short'
+            })}</h5>
             <h3>{post.author.firstName} {post.author.lastName}</h3>
           </div>
         ))}
@@ -148,19 +179,27 @@ const Posts = ({ selected }) => {
         <div className="otherUserProfile">
           <h1>{posts[selectedPost].title}</h1>
           <h3>{posts[selectedPost].author.firstName} {posts[selectedPost].author.lastName}</h3>
-          <h4>{posts[selectedPost].datetime}</h4>
+          <h4>{new Date(posts[selectedPost].datetime).toLocaleString('en-US', { 
+            month: 'long', 
+            day: 'numeric', 
+            year: 'numeric', 
+            hour: 'numeric', 
+            minute: 'numeric',
+            timeZoneName: 'short'
+            })}
+          </h4>
           <div id="wrapper">
             <div id="first">
               <img
                 style={{ width: "200px", height: "200px", borderRadius: "20px"}}
-                src={'https://picsum.photos/300/300'}
+                src={'https://picsum.photos/300/300'} /* Should be profile picture */
               />
             </div>
             <div id="second">{posts[selectedPost].description}</div>
           </div>
           <div className="acc-btn">
             <div onClick={() => { setSelectedPost(-1); setButtonPopup(false);}}>
-              <button>Request</button> {/* Should add a request to the logged-in user's data. */}
+              <button onClick={() => handleRequest(posts[selectedPost])}>Request</button> {/* Should add a request to the logged-in user's data. */}
               <button className="close-btn">close</button>
             </div>
           </div>

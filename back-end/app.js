@@ -13,7 +13,7 @@ app.use(express.json())
 app.use(cors());
 app.use(express.urlencoded({ extended: true })) // decode url-encoded incoming POST data
 
-const { User, Post } = require('./db');
+const { User, Post, Request } = require('./db');
 
 /*************************** Middleware ***************************/
 function verifyToken(req, res, next) {
@@ -75,7 +75,7 @@ app.get("/restaurant/:placeId", (req, res, next) => {
       const restaurant = {
         "name": restaurantData['name'],
         "address": restaurantData['formatted_address'] || restaurantData[vicinity],
-        "description": restaurantData['editorial_summary'].overview,
+        "description": restaurantData['editorial_summary']?.overview,
         "hours": restaurantData['current_opening_hours'],
         "price_level": restaurantData['price_level'],
         "num_ratings": restaurantData['user_ratings_total'],
@@ -178,7 +178,7 @@ app.get("/chatdata/:chatId", (req, res, next) => {
     .catch((err) => next(err));
 });
 
-app.post('/create-post', async(req, res) => {
+app.post('/create-post', async (req, res) => {
   const newPost = new Post(req.body);
   const savedPost = await newPost.save();
   console.log(`Registered new post: ${savedPost}`);
@@ -217,6 +217,24 @@ app.post('/create-post', async(req, res) => {
 
   res.json();
 });
+
+app.post('/create-request', async (req, res) => {
+  try {
+    const newRequest = new Request(req.body);
+    const savedRequest = await newRequest.save();
+    console.log(`Registered new request: ${savedRequest}`);
+
+    // creates requests array for requester if it does not exist
+    await User.updateOne({ _id: req.body.requesterId, requests: {$exists: false}}, {$set: {requests: []} });
+    // add request to requests array
+    await User.updateOne({ _id: req.body.requesterId}, { $push: { requests: savedRequest } });
+    // do the same for the post
+    await Post.updateOne({ _id: req.body.postId, requests: {$exists: false}}, {$set: {requests: []} });
+    await Post.updateOne({ _id: req.body.postId}, { $push: { requests: savedRequest } });
+
+    res.json(`Successfully registered new request`);
+  } catch (error) { res.status(500).json({ err: error.message }) }
+})
 
 app.post('/chat', (req, res) => {
   var message = new Message(req.body);
