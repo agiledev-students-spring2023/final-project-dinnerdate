@@ -226,9 +226,11 @@ app.post('/create-request', async (req, res) => {
 
     // creates requests array for requester if it does not exist
     await User.updateOne({ _id: req.body.requesterId, requests: {$exists: false}}, {$set: {requests: []} });
-    
     // add request to requests array
     await User.updateOne({ _id: req.body.requesterId}, { $push: { requests: savedRequest } });
+    // do the same for the post
+    await Post.updateOne({ _id: req.body.postId, requests: {$exists: false}}, {$set: {requests: []} });
+    await Post.updateOne({ _id: req.body.postId}, { $push: { requests: savedRequest } });
 
     res.json(`Successfully registered new request`);
   } catch (error) { res.status(500).json({ err: error.message }) }
