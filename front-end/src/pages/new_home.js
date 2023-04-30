@@ -104,7 +104,10 @@ const RestaurantInfo = ({ selected }) => {
   if(!restaurantData) return (<></>)
   return (
     <div className="restaurant-info">
-            <h2>{restaurantData.name} • {restaurantData.rating}⭐ • {'$'.repeat(restaurantData.price_level)}</h2>
+            <h2>{restaurantData.name} 
+            {restaurantData.rating ? " • " + restaurantData.rating : ""}⭐ 
+            {restaurantData.price_level ? " • " + '$'.repeat(restaurantData.price_level) : ""}
+            </h2>
             <p>📞 {restaurantData.phone_number}</p>
             <p>{restaurantData.description}</p>
     </div>
