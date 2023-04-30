@@ -22,6 +22,7 @@ const userSchema = new mongoose.Schema({
     gender: { type: String, required: true },
     createdAt: { type: Date, required: true },
     postId: { type: String },
+    requests: [{ type: mongoose.Schema.Types.ObjectId, ref: "Request" }] // requests made by this user
 });
 
 const postSchema = new mongoose.Schema({
@@ -30,7 +31,16 @@ const postSchema = new mongoose.Schema({
     title: { type: String, required: true },
     datetime: { type: Date, required: true }, 
     description: { type: String, required: true },
-    requests: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    requests: [{ type: mongoose.Schema.Types.ObjectId, ref: "Request" }] // requests made on this post
+});
+
+const requestSchema = new mongoose.Schema({
+    posterId: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    requesterId: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    postId: {type: mongoose.Schema.Types.ObjectId, ref: 'Post', required: true },
+    message: { type: String, required: true },
+    status: { type: String, required: true },
+    createdAt: { type: Date, required: true }
 });
 
 const chatSchema = new mongoose.Schema(
@@ -58,10 +68,12 @@ const messageSchema = mongoose.Schema(
     }
 );
 
-const Message = mongoose.model("Message", messageSchema);
-const Chat = mongoose.model("Chat", chatSchema);
 const User = mongoose.model("User", userSchema);
 const Post = mongoose.model("Post", postSchema);
+const Request = mongoose.model("Request", requestSchema);
+const Message = mongoose.model("Message", messageSchema);
+const Chat = mongoose.model("Chat", chatSchema);
+
   
 // Exporting our model objects
 module.exports = {
