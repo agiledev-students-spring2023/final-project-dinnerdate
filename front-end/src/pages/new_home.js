@@ -142,14 +142,12 @@ const Posts = ({ selected }) => {
   if(!selected) return (<></>)
 
   const handleRequest = async (post) => {
-    console.log("Attempted to create request!");
     const request = {
       posterId: post.author._id,
       requesterId: localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : null,
       postId: post._id,
       status: "pending"
     }
-    console.log(request);
     await axios.post(`/create-request`, request)
         .then((response) => console.log(response))
         .catch(e => console.error(e.response.data.msg));

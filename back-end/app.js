@@ -219,9 +219,19 @@ app.post('/create-post', async (req, res) => {
 });
 
 app.post('/create-request', async (req, res) => {
-  const newRequest = new Request(req.body);
-  const savedRequest = await newRequest.save();
-  console.log(`Registered new request: ${savedRequest}`);
+  try {
+    const newRequest = new Request(req.body);
+    const savedRequest = await newRequest.save();
+    console.log(`Registered new request: ${savedRequest}`);
+
+    // creates requests array for requester if it does not exist
+    await User.updateOne({ _id: req.body.requesterId, requests: {$exists: false}}, {$set: {requests: []} });
+    
+    // add request to requests array
+    await User.updateOne({ _id: req.body.requesterId}, { $push: { requests: savedRequest } });
+
+    res.json(`Successfully registered new request`);
+  } catch (error) { res.status(500).json({ err: error.message }) }
 })
 
 app.post('/chat', (req, res) => {
