@@ -9,7 +9,8 @@ import './new_home.css';
 
 const libraries = ["places"];
 function Home() {
-  const [selected, setSelected] = useState(); // selected restaurant { placeId, lat, lng }
+  const [selected, setSelected] = useState(); // selected location { placeId, lat, lng }
+  const [isRestaurant, setIsRestaurant] = useState(false); // if the selected location is a restaurant
 
   // Show "Loading..." if google maps API is not ready
   const { isLoaded } = useLoadScript({ googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY, libraries: libraries });
@@ -20,8 +21,8 @@ function Home() {
           <h1>Find / Create a Date</h1>
           <PlacesAutocomplete setSelected={setSelected} />
           <Map selected={selected} setSelected={setSelected} />
-          <RestaurantInfo selected={selected} />
-          <Posts selected={selected} />
+          <RestaurantInfo selected={selected} setIsRestaurant={setIsRestaurant} />
+          {isRestaurant && <Posts selected={selected} />}
     </div>
   );
 }
@@ -92,7 +93,7 @@ const Map = ({ selected, setSelected }) => {
     </GoogleMap>
   );
 }
-const RestaurantInfo = ({ selected }) => {
+const RestaurantInfo = ({ selected, setIsRestaurant }) => {
   const [restaurantData, setRestaurantData] = useState(null);
   useEffect(() => {
     if (!selected) return
@@ -101,14 +102,21 @@ const RestaurantInfo = ({ selected }) => {
       .catch(err => console.log(err ? err : "Unexpected error occurred."));
   }, [selected])
 
-  if(!restaurantData) return (<></>)
+  if(!restaurantData){
+    setIsRestaurant(false);
+    return (<>This place is not a restaurant. Please select another location.</>)
+  }
+  else{
+    setIsRestaurant(true);
+  }
   return (
     <div className="restaurant-info">
-            <h2>{restaurantData.name} 
-            {restaurantData.rating ? " • " + restaurantData.rating : ""}⭐ 
-            {restaurantData.price_level ? " • " + '$'.repeat(restaurantData.price_level) : ""}
+            <h2>
+              {restaurantData.name} 
+              {restaurantData.rating && " • " + restaurantData.rating + " ⭐"} 
+              {restaurantData.price_level && " • " + '$'.repeat(restaurantData.price_level)}
             </h2>
-            <p>📞 {restaurantData.phone_number}</p>
+            <p>{restaurantData.phone_number && "📞" + restaurantData.phone_number}</p>
             <p>{restaurantData.description}</p>
     </div>
   )
