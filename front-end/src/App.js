@@ -5,7 +5,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import Navbar from './components/Navbar'
 import Login from './pages/login'
 import Register from './pages/register'
-import Home from './pages/new_home'
+import Home from './pages/home'
 import CreatePost from './pages/createpost'
 import Profile from './pages/profile'
 import Inbox from './pages/inbox'
