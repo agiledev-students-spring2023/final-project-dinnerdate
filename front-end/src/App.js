@@ -23,15 +23,13 @@ function App() {
     axios.get(`/user/${userId}`)
     .then(res => {
       setUser(res.data)
-      if (res.data.postId) {
+      if (res.data.post) {
         setActivePost(true)
         console.log("boop");
       }
     })
     .catch(e => console.error(e));
   }, [])
-
-  const history = useHistory();
 
   return (
     <>

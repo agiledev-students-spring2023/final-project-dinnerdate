@@ -105,7 +105,7 @@ app.get("/diner-post/:id", async (req, res, next) => {
 app.get("/diner-requests/:postId", async (req, res, next) => {
   const requests = await Request.find({ postId: req.params.postId});
   res.json(requests);
-  console.log(requests);
+  // console.log(requests);
 })
 
 //fetch chat data 
@@ -134,48 +134,20 @@ app.get("/chatdata/:chatId", (req, res, next) => {
 app.post('/create-post', async (req, res) => {
   const newPost = new Post(req.body);
   const savedPost = await newPost.save();
-  console.log(`Registered new post: ${savedPost}`);
-
-  const userId = req.body.author
-  const db = require('mongodb')
-  const ObjectId = db.ObjectId; 
-  const id = new ObjectId(userId);
-  
-  // const user = await User.findOne({ "_id" : id});
-
   try{
-    User.updateOne(
-      { _id: id },
-      { $set: { postId: newPost._id } }
-    )
-    .then((result) => {
-      // Check the result of the update operation
-      console.log(result);
-    
-      // Query for the updated user object
-      return User.findOne({ _id: id });
-    })
-    .then((user) => {
-      // Log the updated user object
-      console.log(user);
-    })
-    .catch((error) => {
-      // Handle any errors that may occur during the update or query operations
-      console.error(error);
-    });
-  }catch (e){
-    console.log(e)
-  }
-  
-
-  res.json();
+    await User.updateOne(
+      { _id: req.body.author },
+      { $set: { post: savedPost } }
+    );
+    res.json(savedPost);
+  }catch (e){ res.status(500).json({error: 'An error occurred while updating the user'}) };
 });
 
 app.post('/create-request', async (req, res) => {
   try {
     const newRequest = new Request(req.body);
     const savedRequest = await newRequest.save();
-    console.log(`Registered new request: ${savedRequest}`);
+    // console.log(`Registered new request: ${savedRequest}`);
 
     // creates requests array for requester if it does not exist
     await User.updateOne({ _id: req.body.requesterId, requests: {$exists: false}}, {$set: {requests: []} });
@@ -313,33 +285,32 @@ app.post('/edit-profile', async (req, res) => {
 
 app.post('/delete-post', async (req, res) => {
   try {
-    await User.updateOne({ _id: req.body.user}, { $set: { postId: null } });
+    await User.updateOne({ _id: req.body.user}, { $set: { post: null } });
 
     await Post.deleteOne({ _id: req.body.postId});
 
     const temp = await Request.find({ postId: req.body.postId});
-    console.log(temp);
     temp.forEach((request => {
-      console.log(request._id)
+      // console.log(request._id)
       try{
         User.updateOne({ requests: request._id }, { $pull: { requests: request._id }})
         .then((result) => {
           // Check the result of the update operation
-          console.log(result);
+          // console.log(result);
         
           // Query for the updated user object
           return User.findOne({ requests: request._id });
         })
         .then((user) => {
           // Log the updated user object
-          console.log(user);
+          // console.log(user);
         })
         .catch((error) => {
           // Handle any errors that may occur during the update or query operations
-          console.error(error);
+          // console.error(error);
         });
       }catch (e){
-        console.log(e)
+        // console.log(e)
       }
     }));
 

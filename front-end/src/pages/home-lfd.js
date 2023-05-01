@@ -42,8 +42,8 @@ function HomeLFD() {
     }, [])
 
     useEffect(() => {
-        if (userData && userData.postId) {
-            axios.get(`/diner-requests/${userData.postId}`)
+        if (userData && userData.post) {
+            axios.get(`/diner-requests/${userData.post}`)
               .then(res => setRequests(res.data.map(e => ({key: e._id, ...e}))))
               .catch(err => console.log(err ? err : "Unexpected error occurred."));
         }
@@ -57,7 +57,7 @@ function HomeLFD() {
     const handleDelete = async () => {
         const request = {
           user: userId,
-          postId: userData.postId
+          postId: userData.post
         }
         await axios.post(`/delete-post`, request)
             .then((response) => window.location.reload())
