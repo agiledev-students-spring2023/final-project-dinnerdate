@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import './home-lfd.css';
 import { useEffect, useState } from 'react'
 import Popup from "../components/Popup.js";
-import Axios from 'axios';
+import axios from '../axiosInstance';
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 const serverPort = process.env.REACT_APP_SERVER_PORT;
 
@@ -10,6 +10,25 @@ const HomeLFD = () => {
     const [diners, setDiners] = useState([])
     const [selectedDiner, setSelectedDiner] = useState([-1]);
     const [buttonPopup, setButtonPopup] = useState(false);
+    const [userData, setUser] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        birthdate: '',
+        gender: '',
+        createdAt: '',
+        requests: [],
+        postId: ''
+    });
+
+    const userId = (localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : '');
+
+    useEffect(() => {
+        axios.get(`/user/${userId}`)
+        .then(res => setUser(res.data))
+        .catch(e => console.error(e.response.data.message));
+    }, [])
 
     useEffect(() => {
         fetchDinerRequests();
@@ -20,7 +39,7 @@ const HomeLFD = () => {
         const dinerRequests = [];
         for(let i = 0; i < randInt; i++){
             // slug should be id of diner post in the future
-            await Axios.get(`${serverUrl}:${serverPort}/diner-request/${randInt}`)
+            await axios.get(`${serverUrl}:${serverPort}/diner-request/${randInt}`)
                 .then((res) => {
                     const request = res.data;
                     const dinerPost = ({
@@ -70,6 +89,16 @@ const HomeLFD = () => {
         );
     }
 
+    const handleDelete = async () => {
+        const request = {
+          user: userId,
+          postId: userData.postId
+        }
+        await axios.post(`/delete-post`, request)
+            .then((response) => console.log(response))
+            .catch(e => console.error(e.response.data.msg));
+    }
+
     return (
         <div className="homeLFD">
             <h1>Your Post</h1>
@@ -90,8 +119,7 @@ const HomeLFD = () => {
                             <div className="acc-btn"><Link to="/date"><button>Accept</button></Link></div>
                         </div>
             </Popup>
-            <Link className="edit-post" to="edit-post"><button>Edit Post</button></Link>
-            <Link className="remove-post" to="/"><button>Remove Post</button></Link>
+            <button onClick={handleDelete}>Delete Post</button>
         </div>
     );
 }

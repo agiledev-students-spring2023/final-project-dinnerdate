@@ -358,5 +358,20 @@ app.post('/edit-profile', async (req, res) => {
   } catch(e) { res.status(500).json({ err: e.message }); }
 })
 
+app.post('/delete-post', async (req, res) => {
+  try {
+    await User.updateOne({ _id: req.body.user}, { $set: { postId: '' } });
+
+    await Post.deleteOne({ _id: req.body.postId});
+
+    // delete from each user requests
+    // aggregate and unwind but idk exact query yet 
+
+    await Request.deleteMany({ postId: req.body.postId});
+
+    res.json(`Successfully deleted post`);
+  } catch (error) { res.status(500).json({ err: error.message }) }
+})
+
 // export the express app we created to make it available to other modules
 module.exports = app
