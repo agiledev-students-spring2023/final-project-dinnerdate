@@ -49,7 +49,7 @@ app.get("/api/chat/:id", (req, res) => {
 // serve logged-in user data
 app.get("/user/:userId", async (req, res, next) => {
   const userId = req.params.userId;
-  const user = await User.findById(userId);
+  const user = await User.findById(userId).populate('post');
   if(!user) return res.status(400).json({ message: "User could not be found! "});
   res.json(user);
 });
@@ -97,7 +97,7 @@ app.get("/restaurant/:placeId/posts", async (req, res, next) => {
 // serve diner post data
 app.get("/diner-post/:id", async (req, res, next) => {
   const postId = req.params.postId;
-  const post = await Post.findById(postId);
+  const post = await Post.find({ _id: postId });
   res.json(post);
 })
 
