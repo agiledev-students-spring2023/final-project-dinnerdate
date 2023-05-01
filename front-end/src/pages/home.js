@@ -162,7 +162,7 @@ const Posts = ({ selected }) => {
         {posts.map((post, index) => (
           <div className="post diner-post" key={index} onClick={() => {setButtonPopup(true); setSelectedPost(index);}} >
             <h2 className="truncate">{post.title}</h2>
-            <h5>{new Date(post.datetime).toLocaleString('en-US', { 
+            <h5>{new Date(post?.datetime).toLocaleString('en-US', { 
             month: 'long', 
             day: 'numeric', 
             year: 'numeric', 
@@ -170,7 +170,7 @@ const Posts = ({ selected }) => {
             minute: 'numeric',
             timeZoneName: 'short'
             })}</h5>
-            <h3>{post.author.firstName} {post.author.lastName}</h3>
+            <h3>{post?.author?.firstName} {post?.author?.lastName}</h3>
           </div>
         ))}
 
