@@ -39,14 +39,16 @@ function HomeLFD() {
     useEffect(() => {
         axios.get(`/user/${userId}`)
         .then(res => setUser(res.data))
-        .catch(e => console.error(e.response.data.message));
+        .catch(e => console.error(e.response.data.message))
     }, [])
 
     useEffect(() => {
-      axios.get(`/diner-requests/644f04285b601445e2347142`)
-        .then(res => setRequests(res.data.map(e => ({key: e._id, ...e}))))
-        .catch(err => console.log(err ? err : "Unexpected error occurred."));
-    }, [])
+        if (userData && userData.postId) {
+            axios.get(`/diner-requests/${userData.postId}`)
+              .then(res => setRequests(res.data.map(e => ({key: e._id, ...e}))))
+              .catch(err => console.log(err ? err : "Unexpected error occurred."));
+        }
+    }, [userData]);
   
     useEffect(() => {
       if(selectedReq == -1) return;
@@ -60,6 +62,18 @@ function HomeLFD() {
         await axios.post(`/delete-post`, request)
             .then((response) => console.log(response))
             .catch(e => console.error(e.response.data.msg));
+    }
+
+    const handleAccept = async (request) => {
+        await axios.post(`/accept`, request)
+        .then((response) => console.log(response))
+        .catch(e => console.error(e.response.data.msg));
+    }
+
+    const handleDecline = async (request) => {
+        await axios.post(`/decline`, request)
+        .then((response) => console.log(response))
+        .catch(e => console.error(e.response.data.msg));
     }
 
     return (
@@ -90,9 +104,9 @@ function HomeLFD() {
               <div id="second">other info</div>
             </div>
             <div className="acc-btn">
-              <div onClick={() => { setSelectedReq(-1); setButtonPopup(false);}}>
-              <div className="dec-btn"><div onClick={() => setButtonPopup(false)}><button>Decline</button></div></div>
-                <div className="acc-btn"><button>Accept</button></div>
+              <div onClick={() => { setSelectedReq(-1); setButtonPopup(false) }}>
+              <div className="dec-btn"><div onClick={() => {setButtonPopup(false); handleDecline(requests[selectedReq]); window.location.reload(true)}}><button>Decline</button></div></div>
+                <div className="acc-btn"><button onClick={() => {handleAccept(requests[selectedReq])}}>Accept</button></div>
                 <button className="close-btn">close</button>
               </div>
             </div>

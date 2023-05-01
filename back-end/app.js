@@ -326,5 +326,28 @@ app.post('/delete-post', async (req, res) => {
   } catch (error) { res.status(500).json({ err: error.message }) }
 })
 
+app.post('/decline', async (req, res) => {
+  try {
+    await Request.updateOne({ _id: req.body._id}, { $set: { status: 'declined' } });
+
+    await Post.updateOne({ _id: req.body.postId}, { $pull: { requests: req.body._id } });
+    await Request.deleteOne({ _id: req.body._id});
+
+    //delete from other places
+
+    res.json(`Successfully declined request`);
+  } catch (error) { res.status(500).json({ err: error.message }) }
+})
+
+app.post('/accept', async (req, res) => {
+  try {
+    await Request.updateOne({ _id: req.body._id}, { $set: { status: 'accepted' } });
+
+    //delete from other places
+
+    res.json(`Successfully accepted request`);
+  } catch (error) { res.status(500).json({ err: error.message }) }
+})
+
 // export the express app we created to make it available to other modules
 module.exports = app
