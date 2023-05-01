@@ -1,21 +1,20 @@
-import { Link } from "react-router-dom";
-// import './home-lfd.css';
 import './home.css';
 import { useEffect, useState } from 'react'
 import Popup from "../components/Popup.js";
 import axios from '../axiosInstance';
+import { useHistory } from 'react-router-dom';
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 const serverPort = process.env.REACT_APP_SERVER_PORT;
 
 function HomeLFD() {
-    const [selected, setSelected] = useState(1);
-    return (
-      <div className="home">
-            <h1>Your Post</h1>
-            <Requests selected={selected} />
-      </div>
-    );
-  }
+  const [selected, setSelected] = useState(1);
+  return (
+    <div className="home">
+          <h1>Your Post</h1>
+          <Requests selected={selected} />
+    </div>
+  );
+}
   
   const Requests = ({ selected }) => {
     const [requests, setRequests] = useState([]);
@@ -54,13 +53,14 @@ function HomeLFD() {
       if(selectedReq == -1) return;
     }, [selectedReq])
     
+    const history = useHistory();
     const handleDelete = async () => {
         const request = {
           user: userId,
           postId: userData.postId
         }
         await axios.post(`/delete-post`, request)
-            .then((response) => console.log(response))
+            .then((response) => window.location.reload())
             .catch(e => console.error(e.response.data.msg));
     }
 

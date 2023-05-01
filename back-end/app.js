@@ -313,7 +313,7 @@ app.post('/edit-profile', async (req, res) => {
 
 app.post('/delete-post', async (req, res) => {
   try {
-    await User.updateOne({ _id: req.body.user}, { $set: { postId: '' } });
+    await User.updateOne({ _id: req.body.user}, { $set: { postId: null } });
 
     await Post.deleteOne({ _id: req.body.postId});
 

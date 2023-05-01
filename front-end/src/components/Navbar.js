@@ -7,14 +7,14 @@ const Navbar = () => {
     useEffect(() => {
         setUser((localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null));
     }, [])
-    
+
     return (
         <nav className="navbar">
             <Link to='/'><h1>DinnerDate</h1></Link>
             <div className="links">
                 <Link to='/'>Home</Link>
                 <Link to='/inbox'>Inbox</Link>
-                <Link to='/profile'>{user?.firstName + " " + user?.lastName}</Link>
+                {user && <Link to='/profile'>{user?.firstName + " " + user?.lastName}</Link>}
             </div>
         </nav>
     );

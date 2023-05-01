@@ -40,7 +40,10 @@ const CreatePost = () => {
       formDataCopy.date = new Date(formDataCopy.date);
       event.preventDefault();
       await axios.post(`/create-post`, formDataCopy)
-        .then((response) => history.push('/'))
+        .then((response) => {
+          history.push('/'); 
+          window.location.reload();
+        })
         .catch(e => console.error(e.response.data.msg));
   }
 
