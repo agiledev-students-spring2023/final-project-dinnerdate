@@ -95,64 +95,17 @@ app.get("/restaurant/:placeId/posts", async (req, res, next) => {
 });
 
 // serve diner post data
-app.get("/diner-post/:id", (req, res, next) => {
-  const url = "https://my.api.mockaroo.com/diner_posts.json?key=85d24ca0";
-  axios
-    .get(url)
-    .then(apiResponse => {
-      const postString = JSON.stringify(apiResponse.data).replace(/["\\n]/g, '').split(",");
-      const post = {
-        "id": postString[0],
-        "title": postString[1],
-        "datetime": postString[2],
-        "full_name": postString[3],
-        "description": postString[4],
-        "rating": postString[5],
-        "num_ratings": postString[6]
-      };
-      res.json(post);
-    })
-    .catch(err => { // if mockaroo doesn't work, serve static sample data
-      console.log(err);
-      res.json({
-        "id": Math.random().toString(36),
-        "title": "Mockaroo API rate limit reached",
-        "datetime": "04/01/2023",
-        "full_name": "Johnny Appleseed",
-        "description": "I am lonely.",
-        "rating": 1,
-        "num_ratings": 2,
-      });
-    })
+app.get("/diner-post/:id", async (req, res, next) => {
+  const postId = req.params.postId;
+  const post = await Post.findById(postId);
+  res.json(post);
 })
 
 // serve diner request data
-app.get("/diner-request/:requestId", (req, res, next) => {
-  const url = "https://my.api.mockaroo.com/diner_requests.json?key=85d24ca0";
-  axios
-    .get(url)
-    .then(apiResponse => {
-      const postString = JSON.stringify(apiResponse.data).replace(/["\\n]/g, '').split(",");
-      const post = {
-        "id": postString[0],
-        "full_name": postString[1],
-        "rating": postString[2],
-        "num_ratings": postString[3],
-        "message": postString[4]
-      };
-
-      res.json(post);
-    })
-    .catch(err => { // if mockaroo doesn't work, serve static sample data
-      console.log(err);
-      res.json({
-        "id": Math.random().toString(36),
-        "full_name": "Johnny Appleseed",
-        "rating": 1,
-        "num_ratings": 2,
-        "message": "Mockaroo API rate limit reached",
-      });
-    })
+app.get("/diner-requests/:postId", async (req, res, next) => {
+  const requests = await Request.find({ postId: req.params.postId});
+  res.json(requests);
+  console.log(requests);
 })
 
 //fetch chat data 
