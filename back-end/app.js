@@ -95,64 +95,17 @@ app.get("/restaurant/:placeId/posts", async (req, res, next) => {
 });
 
 // serve diner post data
-app.get("/diner-post/:id", (req, res, next) => {
-  const url = "https://my.api.mockaroo.com/diner_posts.json?key=85d24ca0";
-  axios
-    .get(url)
-    .then(apiResponse => {
-      const postString = JSON.stringify(apiResponse.data).replace(/["\\n]/g, '').split(",");
-      const post = {
-        "id": postString[0],
-        "title": postString[1],
-        "datetime": postString[2],
-        "full_name": postString[3],
-        "description": postString[4],
-        "rating": postString[5],
-        "num_ratings": postString[6]
-      };
-      res.json(post);
-    })
-    .catch(err => { // if mockaroo doesn't work, serve static sample data
-      console.log(err);
-      res.json({
-        "id": Math.random().toString(36),
-        "title": "Mockaroo API rate limit reached",
-        "datetime": "04/01/2023",
-        "full_name": "Johnny Appleseed",
-        "description": "I am lonely.",
-        "rating": 1,
-        "num_ratings": 2,
-      });
-    })
+app.get("/diner-post/:id", async (req, res, next) => {
+  const postId = req.params.postId;
+  const post = await Post.findById(postId);
+  res.json(post);
 })
 
 // serve diner request data
-app.get("/diner-request/:requestId", (req, res, next) => {
-  const url = "https://my.api.mockaroo.com/diner_requests.json?key=85d24ca0";
-  axios
-    .get(url)
-    .then(apiResponse => {
-      const postString = JSON.stringify(apiResponse.data).replace(/["\\n]/g, '').split(",");
-      const post = {
-        "id": postString[0],
-        "full_name": postString[1],
-        "rating": postString[2],
-        "num_ratings": postString[3],
-        "message": postString[4]
-      };
-
-      res.json(post);
-    })
-    .catch(err => { // if mockaroo doesn't work, serve static sample data
-      console.log(err);
-      res.json({
-        "id": Math.random().toString(36),
-        "full_name": "Johnny Appleseed",
-        "rating": 1,
-        "num_ratings": 2,
-        "message": "Mockaroo API rate limit reached",
-      });
-    })
+app.get("/diner-requests/:postId", async (req, res, next) => {
+  const requests = await Request.find({ postId: req.params.postId});
+  res.json(requests);
+  console.log(requests);
 })
 
 //fetch chat data 
@@ -356,6 +309,67 @@ app.post('/edit-profile', async (req, res) => {
     }
 
   } catch(e) { res.status(500).json({ err: e.message }); }
+})
+
+app.post('/delete-post', async (req, res) => {
+  try {
+    await User.updateOne({ _id: req.body.user}, { $set: { postId: '' } });
+
+    await Post.deleteOne({ _id: req.body.postId});
+
+    const temp = await Request.find({ postId: req.body.postId});
+    console.log(temp);
+    temp.forEach((request => {
+      console.log(request._id)
+      try{
+        User.updateOne({ requests: request._id }, { $pull: { requests: request._id }})
+        .then((result) => {
+          // Check the result of the update operation
+          console.log(result);
+        
+          // Query for the updated user object
+          return User.findOne({ requests: request._id });
+        })
+        .then((user) => {
+          // Log the updated user object
+          console.log(user);
+        })
+        .catch((error) => {
+          // Handle any errors that may occur during the update or query operations
+          console.error(error);
+        });
+      }catch (e){
+        console.log(e)
+      }
+    }));
+
+    await Request.deleteMany({ postId: req.body.postId});
+
+    res.json(`Successfully deleted post`);
+  } catch (error) { res.status(500).json({ err: error.message }) }
+})
+
+app.post('/decline', async (req, res) => {
+  try {
+    await Request.updateOne({ _id: req.body._id}, { $set: { status: 'declined' } });
+
+    await Post.updateOne({ _id: req.body.postId}, { $pull: { requests: req.body._id } });
+    await Request.deleteOne({ _id: req.body._id});
+
+    //delete from other places
+
+    res.json(`Successfully declined request`);
+  } catch (error) { res.status(500).json({ err: error.message }) }
+})
+
+app.post('/accept', async (req, res) => {
+  try {
+    await Request.updateOne({ _id: req.body._id}, { $set: { status: 'accepted' } });
+
+    //delete from other places
+
+    res.json(`Successfully accepted request`);
+  } catch (error) { res.status(500).json({ err: error.message }) }
 })
 
 // export the express app we created to make it available to other modules
