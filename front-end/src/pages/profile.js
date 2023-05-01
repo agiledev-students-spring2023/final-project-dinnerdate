@@ -63,8 +63,8 @@ const Profile = () => {
   const handleLogout = (e) => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
-    history.push('/login');
-    console.log("LOGGED OUT!");
+    history.push('/login'); 
+    window.location.reload();
   };
 
   function handleChange(event) {

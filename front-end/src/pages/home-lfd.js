@@ -8,6 +8,21 @@ const serverPort = process.env.REACT_APP_SERVER_PORT;
 
 function HomeLFD() {
   const [selected, setSelected] = useState(1);
+  const [post, setPost] = useState(null);
+
+  const userId = (localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : '');
+
+  useEffect(() => {
+    axios.get(`/user/${userId}`)
+    .then(res => {
+      if (res) {
+        // setPost(res.data.post)
+        console.log(res.data);
+      }
+    })
+    .catch(e => console.error(e));
+  }, [])
+
   return (
     <div className="home">
           <h1>Your Post</h1>

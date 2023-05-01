@@ -48,8 +48,7 @@ app.get("/api/chat/:id", (req, res) => {
 
 // serve logged-in user data
 app.get("/user/:userId", async (req, res, next) => {
-  const userId = req.params.userId;
-  const user = await User.findById(userId);
+  const user = await User.findById(req.params.userId);
   if(!user) return res.status(400).json({ message: "User could not be found! "});
   res.json(user);
 });
@@ -295,22 +294,17 @@ app.post('/delete-post', async (req, res) => {
       try{
         User.updateOne({ requests: request._id }, { $pull: { requests: request._id }})
         .then((result) => {
-          // Check the result of the update operation
-          // console.log(result);
-        
-          // Query for the updated user object
           return User.findOne({ requests: request._id });
         })
         .then((user) => {
-          // Log the updated user object
-          // console.log(user);
+
+          console.log(user);
         })
         .catch((error) => {
-          // Handle any errors that may occur during the update or query operations
-          // console.error(error);
+          console.error(error);
         });
       }catch (e){
-        // console.log(e)
+        console.log(e)
       }
     }));
 

@@ -16,7 +16,7 @@ const CreatePost = () => {
       author: JSON.parse(localStorage.getItem('user')).id,
       title: '',
       datetime: dayjs().add(1, 'hour'),
-      description: ''
+      description: '',
     });
 
 
