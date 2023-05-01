@@ -9,6 +9,7 @@ import Home from './pages/home'
 import CreatePost from './pages/createpost'
 import Profile from './pages/profile'
 import Inbox from './pages/inbox'
+import HomeLFD from './pages/home-lfd'
 import './index.css'
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
 
               <ProtectedRoute path="/profile"><Profile /></ProtectedRoute>
               <ProtectedRoute path="/inbox"><Inbox /></ProtectedRoute>
+              <ProtectedRoute path="/home-lfd"><HomeLFD /></ProtectedRoute>
 
             </Switch>
           </div>
