@@ -317,8 +317,31 @@ app.post('/delete-post', async (req, res) => {
 
     await Post.deleteOne({ _id: req.body.postId});
 
-    // delete from each user requests
-    // aggregate and unwind but idk exact query yet 
+    const temp = await Request.find({ postId: req.body.postId});
+    console.log(temp);
+    temp.forEach((request => {
+      console.log(request._id)
+      try{
+        User.updateOne({ requests: request._id }, { $pull: { requests: request._id }})
+        .then((result) => {
+          // Check the result of the update operation
+          console.log(result);
+        
+          // Query for the updated user object
+          return User.findOne({ requests: request._id });
+        })
+        .then((user) => {
+          // Log the updated user object
+          console.log(user);
+        })
+        .catch((error) => {
+          // Handle any errors that may occur during the update or query operations
+          console.error(error);
+        });
+      }catch (e){
+        console.log(e)
+      }
+    }));
 
     await Request.deleteMany({ postId: req.body.postId});
 
