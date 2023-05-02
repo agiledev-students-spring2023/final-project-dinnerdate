@@ -26,9 +26,15 @@ const CreatePost = () => {
         .catch(e => console.error(e.response.data.message));
     }, [])
 
+
+    // 250 character limit on post
     function handleChange(event) {
       const { name, value } = event.target;
-      setFormData({ ...formData, [name]: value });
+      if (name==='description'){
+      setFormData({ ...formData, [name]: value.slice(0,250)});
+      } else {
+        setFormData({...formData, [name]: value});
+      }
     }
 
     function handleDateChange(date) {
