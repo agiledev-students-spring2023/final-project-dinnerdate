@@ -10,10 +10,11 @@ function HomeLFD() {
   const [selected, setSelected] = useState(1);
   const [postId, setPostId] = useState(null);
   const [post, setPost] = useState(null);
+  const [restaurant, setRestaurant] = useState(null);
 
   const userId = (localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : '');
 
-  useEffect(() => { // get postId
+  useEffect(() => { // get postId from user
     axios.get(`/user/${userId}`)
     .then(res => {
       if (res.data.post) {
@@ -23,7 +24,7 @@ function HomeLFD() {
     .catch(e => console.error(e));
   }, [])
 
-  useEffect(() => { // get post
+  useEffect(() => { // get post from postId
     if (!postId) return;
     axios.get(`/diner-post/${postId}`)
     .then(res => {
@@ -32,19 +33,33 @@ function HomeLFD() {
     .catch(e => console.error(e));
   }, [postId])
 
+  useEffect(() => { // get restaurant data from post
+    if (!post) return;
+    axios.get(`/restaurant/${post.placeId}`)
+    .then(res => {
+      setRestaurant(res.data);
+    })
+  }, [post])
+
   return (
     <div className="home">
-          <h1>Your Post</h1>
-          <h2>Title: {post?.title}</h2>
-          <h4>Date and time: {new Date(post?.datetime).toLocaleString('en-US', { 
+          <h1>Your Post for:</h1>
+          <h2>{restaurant?.name}</h2>
+          <p>{restaurant?.address}</p>
+          <h3>Title</h3>
+          <p>{post?.title}</p>
+          <h3>Date and time</h3>
+          <p>{new Date(post?.datetime).toLocaleString('en-US', { 
             month: 'long', 
             day: 'numeric', 
             year: 'numeric', 
             hour: 'numeric', 
             minute: 'numeric',
             timeZoneName: 'short'
-            })}</h4>
-          <h3>Description: {post?.description}</h3>
+            })}</p>
+          <h3>Description</h3>
+          <p>{post?.description}</p>
+          <br/>
           <Requests selected={selected} />
     </div>
   );
