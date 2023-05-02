@@ -85,3 +85,53 @@
 .register .name * {
     width: 100%;
 }
+
+/* make sure styling looks good on mobile as well */
+@media screen and (max-width: 600px) {
+    .login h1{
+        font-size: 24px;
+        padding-bottom:10px;
+    }
+
+    .login input {
+        width: 90%;
+    }
+
+    .register input {
+        width: 100%;
+    }
+
+    .register select {
+        width: 100%;
+    }
+
+    .login-btn {
+        margin: 10px auto;
+        display:block;
+    }
+
+    .register-btn{
+        margin-right: 10px;
+    }
+
+    .login-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .register-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .register-btn{
+        margin-top: 10px;
+        float:none;
+    }
+
+    .login-btn {
+        margin-top: 10px;
+        float:none;
+    }
+}
+
