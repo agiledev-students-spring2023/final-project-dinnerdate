@@ -51,17 +51,10 @@ const postSchema = new mongoose.Schema({
 });
 
 const dateSchema = new mongoose.Schema({
-  posterId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
-  requesterId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
-  },
-  postId: { type: mongoose.Schema.Types.ObjectId, ref: "Post", required: true },
+  poster: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  requester: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  placeId: { type: String, required: true },
+  datetime: { type: Date, required: true }
 });
 
 const chatSchema = new mongoose.Schema(

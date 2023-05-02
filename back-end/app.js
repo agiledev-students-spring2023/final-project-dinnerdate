@@ -71,7 +71,14 @@ app.get("/api/chat/:id", (req, res) => {
 
 // serve user data
 app.get("/user/:userId", async (req, res, next) => {
-  const user = await User.findById(req.params.userId);
+  const user = await User.findById(req.params.userId)
+                .populate({
+                  path: 'dinnerDate',
+                  populate: [
+                    { path: 'poster' },
+                    { path: 'requester' }
+                  ]
+                });
   if (!user)
     return res.status(400).json({ message: "User could not be found! " });
   res.json(user);
@@ -403,50 +410,35 @@ app.post("/decline", async (req, res) => {
 
 app.post("/accept", async (req, res) => {
   try {
-    const postId = req.body.post;
-    const post = await Post.findById(postId).populate("author");
-    console.log(post);
+    const postId = req.body.postId;
+    const request = await Request.findOne({ postId });
+    const post = await Post.findById(postId);
 
-    // posterId
-    // requesterId
-    // placeId
-    // datetime
+    const newDate = new DinnerDate({
+      poster: request.posterId,
+      requester: request.requesterId,
+      placeId: post.placeId,
+      datetime: post.datetime
+    });
 
-    // delete the related post and all associated requests
-    // await axios.post('/delete-post', req.body); 
-    res.status(200).json({ msg: "ok" });
-
-  } catch (error) {
-    res.status(500).json({ err: error.message });
-  }
-
-  // req.body._id, req.body.post
-  try {
-    await Request.updateOne(
-      { _id: req.body._id },
-      { $set: { status: "accepted" } }
+    console.log(newDate);
+    const savedDate = await newDate.save();
+    console.log(`Registered new date: ${savedDate}`);
+    
+    // update date for users
+    await User.updateMany(
+      { _id: { $in: [request.posterId, request.requesterId] } },
+      { $set: { dinnerDate: newDate._id } }
     );
 
-    //delete from other places
+    await axios.post(`${process.env.APP_URL}/delete-post`, req); // delete post and all associated requests
 
-    res.json(`Successfully accepted request`);
+    res.status(200).json("Date successfully created");
   } catch (error) {
+    console.log(error);
     res.status(500).json({ err: error.message });
   }
 });
 
-app.post("/create-date", async (req, res) => {
-  try {
-    const newDate = new Date(req.body);
-    const savedDate = await newDate.save();
-    // make /delete-post delete all requests and call that here
-    // delete all requeusts of poster and requester
-    // add date to both poster and requester
-  } catch (e) {
-    res
-      .status(500)
-      .json({ error: "An error occurred while updating the user" });
-  }
-});
 // export the express app we created to make it available to other modules
 module.exports = app;

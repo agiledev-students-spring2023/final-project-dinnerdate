@@ -1,0 +1,8 @@
+.btn-container{
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+}
+.btn-container > button {
+    margin: 0px 25px;
+  }
