@@ -366,21 +366,13 @@ app.post("/edit-profile", async (req, res) => {
 app.post("/delete-post", async (req, res) => {
   try {
     const postId = req.body.postId;
-
-    // find all users with requests that match this postId and remove the request
-    await User.updateMany(
+    await User.updateMany( // find all users with requests that match this postId and remove the request
       { requests: { $elemMatch: { postId } } },
       { $pull: { requests: { postId } } }
     );
-
-    // find all requests that match this postId and remove them
-    await Request.deleteMany({ postId });
-
-    // find and delete the post
-    await Post.deleteOne({ _id: postId });
-
-    // find and delete the post from the poster
-    await User.updateOne({ _id: req.body.user }, { $set: { post: null } });
+    await Request.deleteMany({ postId }); // find all requests that match this postId and remove them
+    await Post.deleteOne({ _id: postId }); // find and delete the post
+    await User.updateOne({ _id: req.body.user }, { $set: { post: null } }); // find and delete the post from the poster
 
     res.json(`Successfully deleted post`);
   } catch (error) {
