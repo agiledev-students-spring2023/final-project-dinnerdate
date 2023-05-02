@@ -125,38 +125,3 @@ Link {
     }
 }
 
-/*ensure styling also looks good on desktop */
-@media only screen and (min-width: 601px) {
-    .restaurant-information {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 50px;
-    }
-
-    .restaurant-information > * {
-        margin: 0;
-    }
-
-    .diner-post {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap:50px;
-    }
-
-    .create-post {
-        justify-content: flex-end;
-        margin-bottom: 50px;
-    }
-
-    .post{
-        width: 100%;
-        margin-top: 0;
-        padding: 20px;
-    }
-
-    .post > * {
-        margin:10px 0;
-    }
-
-}
