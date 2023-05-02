@@ -31,3 +31,34 @@
     margin-top: 10px;
     margin-left: auto;
 }
+
+/* ensure styling looks good on mobile */
+
+@media only screen and (max-width:600px) {
+    .post-form{
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .datetime-label {
+        width: 100%;
+    }
+
+    .post-form .input {
+        padding: 7px;
+    }
+
+    .post-form textarea{
+        height:150px;
+    }
+    
+    .post-form {
+        margin-top: 20px;
+        margin-left: 0;
+    }
+
+    .post-btn {
+        margin-top: 20px;
+        margin-left: 0;
+    }
+}
