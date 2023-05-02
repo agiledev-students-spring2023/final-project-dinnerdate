@@ -27,3 +27,33 @@
 .noneditable{
     padding-top: 40px;
 }
+
+/* ensure styling looks good on mobile */
+
+@media  screen and (max-width:600px) {
+
+    .profile label {
+        font-size: 1.2em;
+    }
+
+    .profile input {
+        padding: 12px 15px;
+    }
+
+    .profile input {
+        max-width: 400px;
+    }
+
+    .save-btn {
+        margin-top: 20px;
+    }
+
+    .editProfile {
+        padding: 40px 20px;
+    }
+
+    .noneditable {
+        padding-top: 20px;
+    }
+    
+}
