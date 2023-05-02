@@ -110,7 +110,7 @@ app.get("/diner-post/:postId", async (req, res, next) => {
 
 // serve diner request data
 app.get("/diner-requests/:postId", async (req, res, next) => {
-  const requests = await Request.find({ postId: req.params.postId});
+  const requests = await Request.find({ postId: req.params.postId}).populate('requesterId');
   res.json(requests);
   // console.log(requests);
 })

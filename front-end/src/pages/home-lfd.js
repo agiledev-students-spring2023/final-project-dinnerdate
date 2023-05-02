@@ -116,27 +116,13 @@ function HomeLFD() {
   
           {requests.map((request, index) => (
             <div className="post diner-post" key={index} onClick={() => {setButtonPopup(true); setSelectedReq(index);}} >
-              <h2 className="truncate">{request._id}</h2>
-              <h5></h5>
-              <h3></h3>
+              <h2 className="truncate">{request?.requesterId?.firstName} {request?.requesterId?.lastName}</h2>
             </div>
           ))}
   
         {requests && selectedReq != -1 && 
         <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
           <div className="otherUserProfile">
-            <h1>USER INFO</h1>
-            <h3>blah</h3>
-            <h4>blah</h4>
-            <div id="wrapper">
-              <div id="first">
-                <img
-                  style={{ width: "200px", height: "200px", borderRadius: "20px"}}
-                  src={'https://picsum.photos/300/300'} /* Should be profile picture */
-                />
-              </div>
-              <div id="second">other info</div>
-            </div>
             <div className="acc-btn">
               <div onClick={() => { setSelectedReq(-1); setButtonPopup(false) }}>
               <div className="dec-btn"><div onClick={() => {setButtonPopup(false); handleDecline(requests[selectedReq]); window.location.reload(true)}}><button>Decline</button></div></div>
