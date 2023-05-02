@@ -13,28 +13,6 @@ mongoose
     console.log("Error connecting to MongoDB", error);
   });
 
-const userSchema = new mongoose.Schema({
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
-  email: { type: String, required: true },
-  password: { type: String, required: true },
-  birthdate: { type: Date }, // temporarily not required until we figure out how to make it required
-  gender: { type: String, required: true },
-  createdAt: { type: Date, required: true },
-  post: { type: mongoose.Schema.Types.ObjectId, ref: "Post", required: false },
-  dinnerDate: { type: mongoose.Schema.Types.ObjectID, ref: "DinnerDate", required: false },
-  requests: [{ type: mongoose.Schema.Types.ObjectId, ref: "Request" }], // requests made by this user
-});
-
-const postSchema = new mongoose.Schema({
-  placeId: { type: String, required: true },
-  author: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  title: { type: String, required: true },
-  datetime: { type: Date, required: true },
-  description: { type: String, required: true },
-  requests: [{ type: mongoose.Schema.Types.ObjectId, ref: "Request" }], // requests made on this post
-});
-
 const requestSchema = new mongoose.Schema({
   posterId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -48,6 +26,28 @@ const requestSchema = new mongoose.Schema({
   },
   postId: { type: mongoose.Schema.Types.ObjectId, ref: "Post", required: true },
   status: { type: String, required: true },
+});
+
+const userSchema = new mongoose.Schema({
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
+  email: { type: String, required: true },
+  password: { type: String, required: true },
+  birthdate: { type: Date }, // temporarily not required until we figure out how to make it required
+  gender: { type: String, required: true },
+  createdAt: { type: Date, required: true },
+  post: { type: mongoose.Schema.Types.ObjectId, ref: "Post", required: false },
+  dinnerDate: { type: mongoose.Schema.Types.ObjectID, ref: "DinnerDate", required: false },
+  requests: [requestSchema], // requests made by this user
+});
+
+const postSchema = new mongoose.Schema({
+  placeId: { type: String, required: true },
+  author: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  title: { type: String, required: true },
+  datetime: { type: Date, required: true },
+  description: { type: String, required: true },
+  requests: [{ type: mongoose.Schema.Types.ObjectId, ref: "Request" }], // requests made on this post
 });
 
 const dateSchema = new mongoose.Schema({

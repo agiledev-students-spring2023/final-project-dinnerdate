@@ -2,19 +2,17 @@ require("dotenv").config();
 const bcrypt = require("bcryptjs");
 const cors = require("cors");
 const axios = require("axios");
-const express = require("express"); // CommonJS import style!
+const express = require("express");
 const jwt = require("jsonwebtoken");
 const chats = require("./data/data");
-const mongoose = require("mongoose");
-// const auth = require("./auth");
 
 // set up express
 const app = express();
 app.use(express.json());
 app.use(cors());
-app.use(express.urlencoded({ extended: true })); // decode url-encoded incoming POST data
+app.use(express.urlencoded({ extended: true }));
 
-const { User, Post, Request } = require("./db");
+const { User, Post, Request, DinnerDate } = require("./db");
 
 /*************************** Middleware ***************************/
 function verifyToken(req, res, next) {
@@ -71,7 +69,7 @@ app.get("/api/chat/:id", (req, res) => {
   res.send(singleChat);
 });
 
-// serve logged-in user data
+// serve user data
 app.get("/user/:userId", async (req, res, next) => {
   const user = await User.findById(req.params.userId);
   if (!user)
@@ -175,9 +173,9 @@ app.get("/chatdata/:chatId", (req, res, next) => {
 });
 
 app.post("/create-post", async (req, res) => {
-  const newPost = new Post(req.body);
-  const savedPost = await newPost.save();
   try {
+    const newPost = new Post(req.body);
+    const savedPost = await newPost.save();
     await User.updateOne(
       { _id: req.body.author },
       { $set: { post: savedPost } }
@@ -367,33 +365,22 @@ app.post("/edit-profile", async (req, res) => {
 
 app.post("/delete-post", async (req, res) => {
   try {
+    const postId = req.body.postId;
+
+    // find all users with requests that match this postId and remove the request
+    await User.updateMany(
+      { requests: { $elemMatch: { postId } } },
+      { $pull: { requests: { postId } } }
+    );
+
+    // find all requests that match this postId and remove them
+    await Request.deleteMany({ postId });
+
+    // find and delete the post
+    await Post.deleteOne({ _id: postId });
+
+    // find and delete the post from the poster
     await User.updateOne({ _id: req.body.user }, { $set: { post: null } });
-
-    await Post.deleteOne({ _id: req.body.postId });
-
-    const temp = await Request.find({ postId: req.body.postId });
-    temp.forEach((request) => {
-      // console.log(request._id)
-      try {
-        User.updateOne(
-          { requests: request._id },
-          { $pull: { requests: request._id } }
-        )
-          .then((result) => {
-            return User.findOne({ requests: request._id });
-          })
-          .then((user) => {
-            console.log(user);
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      } catch (e) {
-        console.log(e);
-      }
-    });
-
-    await Request.deleteMany({ postId: req.body.postId });
 
     res.json(`Successfully deleted post`);
   } catch (error) {
@@ -437,5 +424,18 @@ app.post("/accept", async (req, res) => {
   }
 });
 
+app.post("/create-date", async (req, res) => {
+  try {
+    const newDate = new Date(req.body);
+    const savedDate = await newDate.save();
+    // make /delete-post delete all requests and call that here
+    // delete all requeusts of poster and requester
+    // add date to both poster and requester
+  } catch (e) {
+    res
+      .status(500)
+      .json({ error: "An error occurred while updating the user" });
+  }
+});
 // export the express app we created to make it available to other modules
 module.exports = app;
