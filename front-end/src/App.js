@@ -25,7 +25,6 @@ function App() {
       setUser(res.data)
       if (res.data.post) {
         setActivePost(true)
-        console.log("boop");
       }
     })
     .catch(e => console.error(e));

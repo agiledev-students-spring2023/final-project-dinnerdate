@@ -5,6 +5,7 @@ const axios = require("axios");
 const express = require("express") // CommonJS import style!
 const jwt = require("jsonwebtoken");
 const chats = require("./data/data")
+const mongoose = require('mongoose');
 // const auth = require("./auth");
 
 // set up express
@@ -94,10 +95,17 @@ app.get("/restaurant/:placeId/posts", async (req, res, next) => {
 });
 
 // serve diner post data
-app.get("/diner-post/:id", async (req, res, next) => {
+app.get("/diner-post/:postId", async (req, res, next) => {
   const postId = req.params.postId;
-  const post = await Post.findById(postId);
-  res.json(post);
+  console.log(postId);
+  
+  const post = await Post.findById(postId).populate('author');
+  if (!post) {
+    console.log ('Post not found');
+  }
+  else {
+    res.json(post);
+  }
 })
 
 // serve diner request data
@@ -192,7 +200,8 @@ app.post('/register', async (req, res) => {
       password: passwordHash,
       birthdate: birthday,
       gender: gender,
-      createdAt: new Date(Date.now()).toLocaleDateString()
+      createdAt: new Date(Date.now()).toLocaleDateString(),
+      post: null
     });
 
     // save and log new user

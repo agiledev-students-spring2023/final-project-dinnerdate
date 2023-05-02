@@ -8,24 +8,43 @@ const serverPort = process.env.REACT_APP_SERVER_PORT;
 
 function HomeLFD() {
   const [selected, setSelected] = useState(1);
+  const [postId, setPostId] = useState(null);
   const [post, setPost] = useState(null);
 
   const userId = (localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : '');
 
-  useEffect(() => {
+  useEffect(() => { // get postId
     axios.get(`/user/${userId}`)
     .then(res => {
-      if (res) {
-        // setPost(res.data.post)
-        console.log(res.data);
+      if (res.data.post) {
+        setPostId(res.data.post)
       }
     })
     .catch(e => console.error(e));
   }, [])
 
+  useEffect(() => { // get post
+    if (!postId) return;
+    axios.get(`/diner-post/${postId}`)
+    .then(res => {
+      setPost(res.data)
+    })
+    .catch(e => console.error(e));
+  }, [postId])
+
   return (
     <div className="home">
           <h1>Your Post</h1>
+          <h2>Title: {post?.title}</h2>
+          <h4>Date and time: {new Date(post?.datetime).toLocaleString('en-US', { 
+            month: 'long', 
+            day: 'numeric', 
+            year: 'numeric', 
+            hour: 'numeric', 
+            minute: 'numeric',
+            timeZoneName: 'short'
+            })}</h4>
+          <h3>Description: {post?.description}</h3>
           <Requests selected={selected} />
     </div>
   );
