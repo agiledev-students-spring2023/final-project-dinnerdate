@@ -105,3 +105,32 @@
   .action-area button:hover {
     background-color: #999;
   }
+
+  /* ensure styling looks good on mobile as well as desktop */
+  @media only screen and (max-width:600px) {
+    
+    .chat-box {
+      font-size:12px
+    }
+
+    .chat-box {
+      max-width: 100%;
+    }
+
+    .input-area input[type="text"]{
+      width: 70%;
+    }
+
+    .chat-box {
+      margin: 10px;
+      padding: 5px;
+    }
+
+    .message-area{
+      padding: 5px;
+    }
+
+    .input-area{
+      padding: 5px;
+    }
+  }
