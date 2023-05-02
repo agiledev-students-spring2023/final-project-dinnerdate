@@ -36,9 +36,32 @@ app.get("/", (req, res) => {
 });
 
 // serve sample chat data
-app.get("/api/chat", (req, res) => {
-  res.send(chats);
+app.get("/api/chat", verifyToken, async(req, res) => {
+
+  // res.send(chats);
 });
+
+app.post("/api/chat", verifyToken, async(req, res) => {
+  // req.body
+
+});
+
+app.get("/test", async(req, res) => {
+console.log(req);
+console.log(res);
+})
+
+app.get("/api/user", async (req, res) => {
+  const search = req.query.search
+  const result = await User.find({
+    $or: [
+      { firstName: { $regex: search, $options: 'i' } },
+      { email: { $regex: search, $options: 'i' } },
+    ],
+  })
+  // .find({ _id: { $ne: req.user._id } });
+  res.send(result)
+})
 
 // retrieve single chat info from id
 app.get("/api/chat/:id", (req, res) => {
