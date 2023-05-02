@@ -1,8 +1,6 @@
 import './home-date.css';
 import { useEffect, useState } from 'react'
 import axios from '../axiosInstance';
-import { useHistory } from 'react-router-dom';
-
 
 function HomeDate() {
     const [date, setDate] = useState(null);
@@ -31,6 +29,16 @@ function HomeDate() {
         window.open(mapsLink, '_blank');
     }
 
+    const handleDeleteDate = async () => {
+        const req = {
+            dateId: date?._id,
+            posterId: date?.poster._id,
+            requesterId: date?.requester._id,
+        }
+        await axios.post(`/delete-date`, req)
+            .then((response) => window.location.reload());
+    }
+
     return (
         <div className="home">
             <h1> Congratulations, you have a date! </h1>
@@ -39,7 +47,6 @@ function HomeDate() {
               {restaurant?.rating && " • " + restaurant?.rating + " ⭐"} 
               {restaurant?.price_level && " • " + '$'.repeat(restaurant?.price_level)}
             </h3>
-            <p>{date?.placeId}</p>
             <p>{restaurant?.address}</p>
             <p>{restaurant?.phone_number && "📞" + restaurant?.phone_number}</p>
             <p>{restaurant?.description}</p>
@@ -49,8 +56,8 @@ function HomeDate() {
             <div className="btn-container">
                 <button>Chat</button>
                 <button onClick={handleDirections}>Get Directions</button>
-                <button>Resolve Date</button>
-                <button>Cancel Date</button>
+                <button onClick={handleDeleteDate}>Resolve Date</button>
+                <button onClick={handleDeleteDate}>Cancel Date</button>
             </div>
         </div>
     );

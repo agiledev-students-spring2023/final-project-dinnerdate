@@ -3,8 +3,6 @@ import { useEffect, useState } from 'react'
 import Popup from "../components/Popup.js";
 import axios from '../axiosInstance';
 import { useHistory } from 'react-router-dom';
-const serverUrl = process.env.REACT_APP_SERVER_URL;
-const serverPort = process.env.REACT_APP_SERVER_PORT;
 
 function HomeLFD() {
   const [selected, setSelected] = useState(1);

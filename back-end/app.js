@@ -440,5 +440,18 @@ app.post("/accept", async (req, res) => {
   }
 });
 
+app.post("/delete-date", async (req,res) => {
+  const dateId = req.body.dateId;
+  const posterId = req.body.posterId;
+  const requesterId = req.body.requesterId;
+  
+  await User.updateMany(
+    { _id: { $in: [posterId, requesterId] } },
+    { $set: { dinnerDate: null } }
+  );
+
+  await DinnerDate.deleteOne({ _id: dateId });
+})
+
 // export the express app we created to make it available to other modules
 module.exports = app;
