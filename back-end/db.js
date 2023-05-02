@@ -22,6 +22,7 @@ const userSchema = new mongoose.Schema({
   gender: { type: String, required: true },
   createdAt: { type: Date, required: true },
   post: { type: mongoose.Schema.Types.ObjectId, ref: "Post", required: false },
+  dinnerDate: { type: mongoose.Schema.Types.ObjectID, ref: "DinnerDate", required: false },
   requests: [{ type: mongoose.Schema.Types.ObjectId, ref: "Request" }], // requests made by this user
 });
 
@@ -47,6 +48,20 @@ const requestSchema = new mongoose.Schema({
   },
   postId: { type: mongoose.Schema.Types.ObjectId, ref: "Post", required: true },
   status: { type: String, required: true },
+});
+
+const dateSchema = new mongoose.Schema({
+  posterId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  requesterId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  postId: { type: mongoose.Schema.Types.ObjectId, ref: "Post", required: true },
 });
 
 const chatSchema = new mongoose.Schema(
@@ -77,6 +92,7 @@ const messageSchema = mongoose.Schema(
 const User = mongoose.model("User", userSchema);
 const Post = mongoose.model("Post", postSchema);
 const Request = mongoose.model("Request", requestSchema);
+const DinnerDate = mongoose.model("DinnerDate", dateSchema);
 const Message = mongoose.model("Message", messageSchema);
 const Chat = mongoose.model("Chat", chatSchema);
 
@@ -87,4 +103,5 @@ module.exports = {
   User,
   Post,
   Request,
+  DinnerDate
 };
