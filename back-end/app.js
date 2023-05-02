@@ -14,7 +14,7 @@ app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: true })); // decode url-encoded incoming POST data
 
-const { User, Post, Request } = require("./db");
+const { User, Post, Request, Chat } = require("./db");
 
 /*************************** Middleware ***************************/
 function verifyToken(req, res, next) {
@@ -424,18 +424,70 @@ app.post("/decline", async (req, res) => {
 
 app.post("/accept", async (req, res) => {
   try {
+    const requestId = req.body._id;
+    const request = await Request.findById(requestId).populate(
+      "posterId requesterId postId"
+    );
+    console.log(requestId);
+    console.log(request);
+
+    if (!request) {
+      return res.status(404).send("Request not found");
+    }
+
+    // if (request.status !== "pending") {
+    //   return res.status(400).send("Request already accepted or declined");
+    // }
+
+    const { posterId, requesterId, postId } = request;
+
+    // Check if a chat already exists between the users
+    const existingChat = await Chat.findOne({
+      users: { $all: [posterId._id, requesterId._id] },
+    });
+
+    let chat;
+
+    if (existingChat) {
+      // If a chat already exists, use that chat
+      chat = existingChat;
+      console.log("Chat between users already exists!");
+    } else {
+      // If no chat exists, create a new chat
+      const chatName = `${posterId.firstName} ${posterId.lastName} and ${requesterId.firstName} ${requesterId.lastName}`;
+      chat = await Chat.create({
+        chatName,
+        users: [posterId._id, requesterId._id],
+      });
+    }
+
+    // Update the request status to "accepted" and set the chat
     await Request.updateOne(
-      { _id: req.body._id },
-      { $set: { status: "accepted" } }
+      { _id: requestId },
+      { $set: { status: "accepted", chatId: chat._id } }
     );
 
-    //delete from other places
-
-    res.json(`Successfully accepted request`);
+    return res.status(200).send("Request accepted and chat link successful");
   } catch (error) {
-    res.status(500).json({ err: error.message });
+    console.log(error);
+    return res.status(500).send("Internal server error");
   }
 });
+
+// app.post("/accept", async (req, res) => {
+//   try {
+//     await Request.updateOne(
+//       { _id: req.body._id },
+//       { $set: { status: "accepted" } }
+//     );
+
+//     //delete from other places
+
+//     res.json(`Successfully accepted request`);
+//   } catch (error) {
+//     res.status(500).json({ err: error.message });
+//   }
+// });
 
 // export the express app we created to make it available to other modules
 module.exports = app;
