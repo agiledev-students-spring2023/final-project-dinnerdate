@@ -3,13 +3,10 @@ import { useState, useEffect } from 'react';
 import axios from '../axiosInstance';
 import { Link } from "react-router-dom";
 const Navbar = () => {
-    const [user, setUser] = useState();
-    const userId = (localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : '');
+    const [user, setUser] = useState()
     useEffect(() => {
-        axios.get(`/user/${userId}`)
-        .then(res => setUser(res.data))
-        .catch(e => console.error(e.response.data.message));
-      }, [])
+        setUser((localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : null));
+    }, [])
 
     return (
         <nav className="navbar">
@@ -17,7 +14,7 @@ const Navbar = () => {
             <div className="links">
                 <Link to='/'>Home</Link>
                 <Link to='/inbox'>Inbox</Link>
-                <Link to='/profile'>{user?.firstName + " " + user?.lastName}</Link>
+                {user && <Link to='/profile'>{user?.firstName + " " + user?.lastName}</Link>}
             </div>
         </nav>
     );

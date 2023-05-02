@@ -12,7 +12,24 @@ import Inbox from './pages/inbox'
 import HomeLFD from './pages/home-lfd'
 import './index.css'
 
+import { useState, useEffect } from 'react'
+import axios from './axiosInstance';
+
 function App() {
+  const [user, setUser] = useState();
+  const [activePost, setActivePost] = useState(false);
+  const userId = (localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : '');
+  useEffect(() => {
+    axios.get(`/user/${userId}`)
+    .then(res => {
+      setUser(res.data)
+      if (res.data.post) {
+        setActivePost(true)
+      }
+    })
+    .catch(e => console.error(e));
+  }, [])
+
   return (
     <>
       <BrowserRouter>
@@ -25,7 +42,8 @@ function App() {
               <Route path="/login"><Login /></Route>           
               <Route path="/register"><Register /></Route>
 
-              <ProtectedRoute exact path="/"><Home /></ProtectedRoute>
+              {activePost ? <ProtectedRoute exact path="/"><HomeLFD /></ProtectedRoute>
+                          : <ProtectedRoute exact path="/"><Home /></ProtectedRoute>}
               <Route path="/create-post/:placeId"><CreatePost /></Route>
 
               <ProtectedRoute path="/profile"><Profile /></ProtectedRoute>

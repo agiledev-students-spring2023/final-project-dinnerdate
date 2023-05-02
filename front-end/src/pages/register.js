@@ -38,7 +38,8 @@ const Register = () => {
                 localStorage.setItem('user', JSON.stringify(response.data.user));
 
                 // Redirect to home page
-                history.push('/');
+                history.push('/'); 
+                window.location.reload();
             })
             .catch(e => console.error(e));
       }

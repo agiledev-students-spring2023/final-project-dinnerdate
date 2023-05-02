@@ -46,7 +46,7 @@ Link {
     max-width: 475px;
 }
 
-.create-post, .diner-post {
+.create-post {
     display: flex;
 }
 
@@ -56,7 +56,11 @@ Link {
 }
 
 .diner-post > * {
-    padding: 10px 0px 10px 15px;
+    padding: 0px 0px 0px 15px;
+}
+
+.author {
+    padding: 10px 0px 0px 10px;
 }
 
 .acc-btn Button{ 

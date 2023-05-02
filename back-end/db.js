@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
     birthdate: { type: Date }, // temporarily not required until we figure out how to make it required
     gender: { type: String, required: true },
     createdAt: { type: Date, required: true },
-    postId: { type: String },
+    post: {type: mongoose.Schema.Types.ObjectId, ref: 'Post', required: false },
     requests: [{ type: mongoose.Schema.Types.ObjectId, ref: "Request" }] // requests made by this user
 });
 
