@@ -88,3 +88,75 @@ Link {
 #second {
     overflow: hidden; 
 }
+
+
+/*styling for mobile*/
+
+@media only screen and (max-width:767px){
+
+    .restaurant-information {
+        display:block;
+    }
+
+    .restaurant-information > * {
+        margin: 10px 0;
+    }
+
+    .diner-post > * {
+        margin-bottom: 20px;
+    }
+
+    .create-post > form {
+        width: 100%;
+    }
+
+    .post {
+        height:auto;
+        margin-top:0;
+        padding:10px;
+    }
+
+    .post > * {
+        margin: 5px 0;
+    }
+
+    .truncate {
+        max-width: 100%;
+    }
+}
+
+/*ensure styling also looks good on desktop */
+@media only screen and (min-width: 768px) {
+    .restaurant-information {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 50px;
+    }
+
+    .restaurant-information > * {
+        margin: 0;
+    }
+
+    .diner-post {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap:50px;
+    }
+
+    .create-post {
+        justify-content: flex-end;
+        margin-bottom: 50px;
+    }
+
+    .post{
+        width: 100%;
+        margin-top: 0;
+        padding: 20px;
+    }
+
+    .post > * {
+        margin:10px 0;
+    }
+    
+}
