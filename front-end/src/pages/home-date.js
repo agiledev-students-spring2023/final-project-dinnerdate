@@ -63,7 +63,6 @@ function HomeDate() {
             <p>Diner 2: {date?.requester.firstName + " " + date?.requester.lastName}</p>
 
             <div className="btn-container">
-                <button>Chat</button>
                 <button onClick={handleDirections}>Get Directions</button>
                 <button onClick={handleDeleteDate}>Resolve Date</button>
                 <button onClick={handleDeleteDate}>Cancel Date</button>

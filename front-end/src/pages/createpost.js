@@ -4,8 +4,6 @@ import { useHistory, useParams } from "react-router-dom";
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import dayjs from 'dayjs';
 import axios from '../axiosInstance';
-const serverUrl = process.env.REACT_APP_SERVER_URL;
-const serverPort = process.env.REACT_APP_SERVER_PORT;
 
 const CreatePost = () => {
     const history = useHistory();

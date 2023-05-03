@@ -4,9 +4,6 @@ import React, { useState } from 'react';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import './login.css';
 
-const serverUrl = process.env.REACT_APP_SERVER_URL;
-const serverPort = process.env.REACT_APP_SERVER_PORT;
-
 const Register = () => {
     const history = useHistory();
     const [formData, setFormData] = useState({
