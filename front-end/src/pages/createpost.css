@@ -11,6 +11,10 @@
 
 .datetime-label {
     width: 500px;
+    color: #333;
+    letter-spacing: 2px;
+    background-color: #f7f7f7;
+    border-radius: 5px;
 }
 
 .post-form .input {
@@ -24,8 +28,10 @@
 
 .post-form textarea {
     height: 300px;
+    font-size: 1.1rem;
+    font-family: 'Roboto', sans-serif;
+    color: #333;
 }
-
 .post-form .post-btn {
     display: flex;
     margin-top: 10px;
@@ -62,3 +68,22 @@
         margin-left: 0;
     }
 }
+
+textarea {
+    border-radius: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    line-height: 1.5;
+    width: 100%;
+    max-width: 100%;
+    min-height: 100px;
+    resize: vertical;
+    box-sizing: border-box;
+  }
+  
+  textarea:focus {
+    outline: none;
+    border-color: #7e78b6;
+    box-shadow: 0 0 3px #7e78b6;
+  }
