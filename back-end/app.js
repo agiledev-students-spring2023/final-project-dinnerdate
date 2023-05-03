@@ -12,7 +12,7 @@ app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 
-const { User, Post, Request, DinnerDate } = require("./db");
+const { User, Post, Request, DinnerDate, Chat } = require("./db");
 
 /*************************** Middleware ***************************/
 function verifyToken(req, res, next) {
@@ -29,6 +29,43 @@ function verifyToken(req, res, next) {
   }
   next();
 }
+
+const chatGenerator = async (req, res, next) => {
+  try {
+    const requestId = req.body._id;
+    const request = await Request.findById(requestId).populate(
+      "posterId requesterId"
+    );
+    console.log("testing!");
+    const { posterId, requesterId } = request;
+    console.log(posterId);
+    // Check if a chat already exists between the users
+    const existingChat = await Chat.findOne({
+      users: { $all: [posterId._id, requesterId._id] },
+    });
+
+    let chat;
+
+    if (existingChat) {
+      // If a chat already exists, use that chat
+      chat = existingChat;
+      console.log("Chat between users already exists!");
+    } else {
+      // If no chat exists, create a new chat
+      const chatName = `${posterId.firstName} ${posterId.lastName} and ${requesterId.firstName} ${requesterId.lastName}`;
+      chat = await Chat.create({
+        chatName,
+        users: [posterId._id, requesterId._id],
+      });
+    }
+
+    // Set the chat
+    return res.status(200).send("Chat creation successful");
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send("Internal server error");
+  }
+};
 
 /*************************** Routes ***************************/
 // check if api is running
@@ -71,14 +108,10 @@ app.get("/api/chat/:id", (req, res) => {
 
 // serve user data
 app.get("/user/:userId", async (req, res, next) => {
-  const user = await User.findById(req.params.userId)
-                .populate({
-                  path: 'dinnerDate',
-                  populate: [
-                    { path: 'poster' },
-                    { path: 'requester' }
-                  ]
-                });
+  const user = await User.findById(req.params.userId).populate({
+    path: "dinnerDate",
+    populate: [{ path: "poster" }, { path: "requester" }],
+  });
   if (!user)
     return res.status(400).json({ message: "User could not be found! " });
   res.json(user);
@@ -370,7 +403,8 @@ app.post("/delete-post", async (req, res) => {
   try {
     console.log(req.body);
     const postId = req.body.postId;
-    await User.updateMany( // find all users with requests that match this postId and remove the request
+    await User.updateMany(
+      // find all users with requests that match this postId and remove the request
       { requests: { $elemMatch: { postId } } },
       { $pull: { requests: { postId } } }
     );
@@ -404,7 +438,7 @@ app.post("/decline", async (req, res) => {
   }
 });
 
-app.post("/accept", async (req, res) => {
+app.post("/accept", chatGenerator, async (req, res) => {
   try {
     const postId = req.body.postId;
     const request = await Request.findOne({ postId });
@@ -414,12 +448,12 @@ app.post("/accept", async (req, res) => {
       poster: request.posterId,
       requester: request.requesterId,
       placeId: post.placeId,
-      datetime: post.datetime
+      datetime: post.datetime,
     });
 
     const savedDate = await newDate.save();
     console.log(`Registered new date: ${savedDate}`);
-    
+
     // update date for users
     await User.updateMany(
       { _id: { $in: [request.posterId, request.requesterId] } },
@@ -436,20 +470,19 @@ app.post("/accept", async (req, res) => {
   }
 });
 
-app.post("/delete-date", async (req,res) => {
+app.post("/delete-date", async (req, res) => {
   const dateId = req.body.dateId;
   const posterId = req.body.posterId;
   const requesterId = req.body.requesterId;
-  
+
   await User.updateMany(
     { _id: { $in: [posterId, requesterId] } },
     { $set: { dinnerDate: null } }
   );
 
   await DinnerDate.deleteOne({ _id: dateId });
-
   res.status(200).json("Date successfully deleted");
-})
+});
 
 // export the express app we created to make it available to other modules
 module.exports = app;
