@@ -5,11 +5,13 @@ import { LocalizationProvider } from '@mui/x-date-pickers';
 import Navbar from './components/Navbar'
 import Login from './pages/login'
 import Register from './pages/register'
+import HomeDate from './pages/home-date'
+import HomeLFD from './pages/home-lfd'
 import Home from './pages/home'
 import CreatePost from './pages/createpost'
 import Profile from './pages/profile'
 import Inbox from './pages/inbox'
-import HomeLFD from './pages/home-lfd'
+
 import './index.css'
 
 import { useState, useEffect } from 'react'
@@ -18,6 +20,7 @@ import axios from './axiosInstance';
 function App() {
   const [user, setUser] = useState();
   const [activePost, setActivePost] = useState(false);
+  const [activeDate, setActiveDate] = useState(false);
   const userId = (localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')).id : '');
   useEffect(() => {
     axios.get(`/user/${userId}`)
@@ -25,6 +28,10 @@ function App() {
       setUser(res.data)
       if (res.data.post) {
         setActivePost(true)
+      }
+
+      if (res.data.dinnerDate) {
+        setActiveDate(true)
       }
     })
     .catch(e => console.error(e));
@@ -42,13 +49,14 @@ function App() {
               <Route path="/login"><Login /></Route>           
               <Route path="/register"><Register /></Route>
 
-              {activePost ? <ProtectedRoute exact path="/"><HomeLFD /></ProtectedRoute>
-                          : <ProtectedRoute exact path="/"><Home /></ProtectedRoute>}
+              { activeDate ? (<ProtectedRoute exact path="/"><HomeDate /></ProtectedRoute>) 
+              : activePost ? (<ProtectedRoute exact path="/"><HomeLFD /></ProtectedRoute>) 
+              : (<ProtectedRoute exact path="/"><Home /></ProtectedRoute>)}
+              
               <Route path="/create-post/:placeId"><CreatePost /></Route>
 
               <ProtectedRoute path="/profile"><Profile /></ProtectedRoute>
               <ProtectedRoute path="/inbox"><Inbox /></ProtectedRoute>
-              <ProtectedRoute path="/home-lfd"><HomeLFD /></ProtectedRoute>
 
             </Switch>
           </div>
