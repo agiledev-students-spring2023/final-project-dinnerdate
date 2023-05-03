@@ -152,3 +152,30 @@ Link {
     }
 }
 
+.places-autocomplete input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 8px;
+    font-size: 12px;
+  }
+  
+  .places-autocomplete input::placeholder {
+    color: #999;
+  }
+  
+  .places-autocomplete input:focus {
+    outline: none;
+  }
+  
+  .places-autocomplete input[value=""] {
+    width: auto;
+  }
+  
+  .places-autocomplete input:not([value=""]) {
+    width: auto !important;
+  }
+
+  .posts {
+    margin-top: 10px;
+    margin-bottom: 30px;
+  }
