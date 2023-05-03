@@ -13,7 +13,6 @@ const Navbar = () => {
             <Link to='/'><h1>DinnerDate</h1></Link>
             <div className="links">
                 <Link to='/'>Home</Link>
-                <Link to='/inbox'>Inbox</Link>
                 {user && <Link to='/profile'>{user?.firstName + " " + user?.lastName}</Link>}
             </div>
         </nav>
