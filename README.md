@@ -1,5 +1,7 @@
 # Dinner Date
-Dinner Date is a social networking app that provides a platform for users to find others to dine with. 
+Dinner Date is a social networking app that provides a platform for users to find others to dine with.
+
+[Deployment Link](https://dinnerdate-vvwz2.ondigitalocean.app/login)
 
 ## Team Members
 [Andrew Huang](https://github.com/andrew0022), [Claire Guo](https://github.com/clairekguo), [Frank Weng](https://github.com/wengf2086), [Jeffrey Chen](https://github.com/FrozenEclipse), [Victoria Carroll](https://github.com/victoriacarroll323) 
