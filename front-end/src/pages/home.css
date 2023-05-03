@@ -22,6 +22,55 @@ Link {
     margin-top: -2px; 
     transition-duration: 0.4s;
 }
+
+.otherUserProfile {
+    border-radius: 10px;
+    height: 100px;
+  }
+
+  .acc-btn {
+    float: right; 
+    margin-top: 50px;
+    text-align: center;
+  }
+  
+  .acc-btn button:first-child {
+    margin-right: 130px;
+    font-size: 1.2em; 
+    width: 275px; 
+    height: 50px; 
+  }
+
+  #profile-pic {
+    width: 250px;
+    height: 250px;
+    border-radius: 20px;
+  }
+
+  #first {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-left: -25px;
+    margin-top: 10px;
+    width: 300px;
+    float:left; 
+  }
+
+  #second {
+    overflow: hidden; 
+    margin-top: 10px;
+}
+
+#wrapper {
+    padding-top: 20px;
+    width: stretch;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden; 
+}
+
 /* When post is hovered over, post (and everything in it) changes color */
 .post * { 
     transition-duration: 0.4s;
@@ -63,32 +112,10 @@ Link {
     padding: 10px 0px 0px 10px;
 }
 
-.acc-btn Button{ 
-    float: right; 
-    width: 280px;
-}
-
 .dec-btn Button{ 
     float: left; 
     width: 280px;
 }
-
-#wrapper {
-    padding-top: 20px;
-    width: stretch;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    overflow: hidden; 
-}
-#first {
-    width: 300px;
-    float:left; 
-}
-#second {
-    overflow: hidden; 
-}
-
 
 /*styling for mobile*/
 
