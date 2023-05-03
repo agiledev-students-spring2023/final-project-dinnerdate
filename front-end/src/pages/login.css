@@ -1,0 +1,137 @@
+.login h1 {
+    padding-bottom: 15px;
+}
+.login .name {
+    display: flex;
+    align-items: center;
+}
+
+.login .name * {
+    width: 100%;
+}
+
+.login-btn {
+    margin-left: 200px;
+  }
+
+  .register-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .register-btn {
+    margin-right: 20px;
+  }
+
+  .login-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+.login input {
+    box-sizing: border-box;
+    padding: 7px 10px;
+    width: 100%;
+    transition-duration: 0.4s;
+}
+
+.link {
+    text-decoration: underline;
+    color: var(--color-1);
+    float: left;
+}
+.link:hover{
+    filter: brightness(70%);
+}
+
+.login p {
+    font-weight: bold;
+}
+
+.register-btn .login-btn { float: right; }
+
+.register label {
+    padding: 10px 0px 0px 0px;
+    font-weight: bold;
+    text-align: left;
+    display: block;
+}
+
+.register input {
+    width: 100%;
+    padding: 7px 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+.register select {
+    width: 30%;
+    padding: 7px 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+.register .name {
+    display: flex;
+    align-items: center;
+}
+
+.register .name * {
+    width: 100%;
+}
+
+/* make sure styling looks good on mobile as well */
+@media only screen and (max-width: 600px) {
+    .login h1{
+        font-size: 24px;
+        padding-bottom:10px;
+    }
+
+    .login input {
+        width: 90%;
+    }
+
+    .register input {
+        width: 100%;
+    }
+
+    .register select {
+        width: 100%;
+    }
+
+    .login-btn {
+        margin: 10px auto;
+        display:block;
+    }
+
+    .register-btn{
+        margin-right: 10px;
+    }
+
+    .login-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .register-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .register-btn{
+        margin-top: 10px;
+        float:none;
+    }
+
+    .login-btn {
+        margin-top: 10px;
+        float:none;
+    }
+}
+

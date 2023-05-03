@@ -1,0 +1,89 @@
+/* This CSS file is used for both createpost.js and editpost.js. */
+.post-form h1, .post-form h2, .post-form h3 {
+    text-align: center;
+}
+
+.post-form label > p {
+    margin-top: 30px;
+    font-weight: bold;
+    display: block;
+}
+
+.datetime-label {
+    width: 500px;
+    color: #333;
+    letter-spacing: 2px;
+    background-color: #f7f7f7;
+    border-radius: 5px;
+}
+
+.post-form .input {
+    box-sizing: border-box;
+    display: block;
+    padding: 7px 10px;
+    width: 100%;
+    resize: vertical;
+    transition-duration: 0.4s;
+}
+
+.post-form textarea {
+    height: 300px;
+    font-size: 1.1rem;
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+}
+.post-form .post-btn {
+    display: flex;
+    margin-top: 10px;
+    margin-left: auto;
+}
+
+/* ensure styling looks good on mobile */
+
+@media only screen and (max-width:600px) {
+    .post-form{
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .datetime-label {
+        width: 100%;
+    }
+
+    .post-form .input {
+        padding: 7px;
+    }
+
+    .post-form textarea{
+        height:150px;
+    }
+    
+    .post-form {
+        margin-top: 20px;
+        margin-left: 0;
+    }
+
+    .post-btn {
+        margin-top: 20px;
+        margin-left: 0;
+    }
+}
+
+textarea {
+    border-radius: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    line-height: 1.5;
+    width: 100%;
+    max-width: 100%;
+    min-height: 100px;
+    resize: vertical;
+    box-sizing: border-box;
+  }
+  
+  textarea:focus {
+    outline: none;
+    border-color: #7e78b6;
+    box-shadow: 0 0 3px #7e78b6;
+  }

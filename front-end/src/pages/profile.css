@@ -1,0 +1,59 @@
+.profile label {
+    padding: 10px 0px 0px 0px;
+    font-weight: bold;
+    text-align: left;
+    display: block;
+}
+
+.profile input {
+    width: 100%;
+    padding: 7px 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    box-sizing: border-box;
+    resize: vertical;
+}
+
+.input {
+    margin: 10px 0; 
+}
+
+.save-btn { float: right; }
+
+.editProfile{
+    padding-bottom: 50px;
+}
+
+.noneditable{
+    padding-top: 40px;
+}
+
+/* ensure styling looks good on mobile */
+
+@media only screen and (max-width:600px) {
+
+    .profile label {
+        font-size: 1.2em;
+    }
+
+    .profile input {
+        padding: 12px 15px;
+    }
+
+    .profile input {
+        max-width: 400px;
+    }
+
+    .save-btn {
+        margin-top: 20px;
+    }
+
+    .editProfile {
+        padding: 40px 20px;
+    }
+
+    .noneditable {
+        padding-top: 20px;
+    }
+    
+}

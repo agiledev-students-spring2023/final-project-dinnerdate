@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Cantarell&display=swap');
+
+:root {
+  --color-1: #9690ce;
+  --color-2: #ddd;
+}
+
+/* All elements on the page */
+* {
+  margin: 0;
+  font-family: 'Cantarell', sans-serif;
+  color: #333;
+}
+
+/* Unique content of the page, excluding NavBar */
+.content {
+  max-width: 600px;
+  margin: 0 auto; /* sets top and bottom margins to 0 and left and right to auto */
+}
+
+/* When button is hovered over, it changes color */
+button {
+  background-color: white;
+  border: 1px solid var(--color-2);
+  border-radius:8px;
+  color: var(--color-1);
+  cursor: pointer;
+  padding: 9px 10px;
+  text-align: center;
+  transition-duration: 0.4s;
+}
+button:hover {
+  background-color: var(--color-1);
+  color: white;
+}
+button:hover a{
+  color: white;
+}
+
+/* When link is hovered over, it changes color */
+a {
+  text-decoration: none; /* Remove underline */
+  transition-duration: 0.4s;
+}
+a:hover {
+  color: var(--color-1); 
+}
+
+/* Styling for all input and textarea elements */
+input, select {
+  border: 1px solid var(--color-2);
+  border-radius:8px;
+}
+input:hover, input:focus, select:hover, select:focus {
+  outline: none !important;
+  border: 1px solid var(--color-1); 
+}
+input:focus, select:focus {
+  box-shadow: 0 0 10px var(--color-1); 
+}

@@ -1,0 +1,43 @@
+/* NavBar */
+.navbar {
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    max-width: 600px;
+    margin: 0 auto;
+    border-bottom: 1px solid var(--color-2);
+    max-width: 600px;
+}
+
+.navbar h1 {
+color: var(--color-1);
+}
+.navbar .links {
+margin-left: auto;
+}
+.navbar .links * {
+margin-left: 16px;
+text-decoration: none;
+padding: 6px;
+}
+
+/* ensure styling looks good on mobile as well as desktop */
+@media only screen and (max-width:600px) {
+    .navbar{
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .navbar .links{
+        margin: 20px 0 0 0;
+    }
+
+    .navbar .links {
+        margin: 0;
+        padding: 10px;
+        display: block;
+        text-align: center;
+        border-bottom: 1px solid var(--color-2);
+        width: 100%;
+    }
+}
