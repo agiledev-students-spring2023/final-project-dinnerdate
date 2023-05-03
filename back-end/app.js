@@ -446,8 +446,9 @@ app.post("/delete-date", async (req,res) => {
     { $set: { dinnerDate: null } }
   );
 
-
   await DinnerDate.deleteOne({ _id: dateId });
+
+  res.status(200).json("Date successfully deleted");
 })
 
 // export the express app we created to make it available to other modules

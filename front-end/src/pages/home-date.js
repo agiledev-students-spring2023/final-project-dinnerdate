@@ -1,5 +1,5 @@
 import './home-date.css';
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 import axios from '../axiosInstance';
 
 function HomeDate() {
@@ -36,7 +36,8 @@ function HomeDate() {
             requesterId: date?.requester._id,
         }
         await axios.post(`/delete-date`, req)
-            .then((response) => window.location.reload());
+          .then(window.location.reload());
+        
     }
 
     return (
