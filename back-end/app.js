@@ -168,7 +168,6 @@ app.get("/restaurant/:placeId/posts", async (req, res, next) => {
 // serve diner post data
 app.get("/diner-post/:postId", async (req, res, next) => {
   const postId = req.params.postId;
-  console.log(postId);
 
   const post = await Post.findById(postId).populate("author");
   if (!post) {
@@ -362,7 +361,6 @@ app.post("/login", async (req, res) => {
 app.post("/edit-profile", async (req, res) => {
   try {
     const { firstName, lastName, email } = req.body;
-    console.log(req.body);
 
     const db = require("mongodb");
     const ObjectId = db.ObjectId;
@@ -381,8 +379,6 @@ app.post("/edit-profile", async (req, res) => {
         }
       )
         .then((result) => {
-          // Check the result of the update operation
-          console.log(result);
 
           // Query for the updated user object
           return User.findOne({ _id: id });
@@ -405,6 +401,7 @@ app.post("/edit-profile", async (req, res) => {
 
 app.post("/delete-post", async (req, res) => {
   try {
+    console.log(req.body);
     const postId = req.body.postId;
     await User.updateMany(
       // find all users with requests that match this postId and remove the request
@@ -414,7 +411,6 @@ app.post("/delete-post", async (req, res) => {
     await Request.deleteMany({ postId }); // find all requests that match this postId and remove them
     await Post.deleteOne({ _id: postId }); // find and delete the post
     await User.updateOne({ _id: req.body.user }, { $set: { post: null } }); // find and delete the post from the poster
-
     res.json(`Successfully deleted post`);
   } catch (error) {
     res.status(500).json({ err: error.message });
@@ -455,7 +451,6 @@ app.post("/accept", chatGenerator, async (req, res) => {
       datetime: post.datetime,
     });
 
-    console.log(newDate);
     const savedDate = await newDate.save();
     console.log(`Registered new date: ${savedDate}`);
 
@@ -465,7 +460,8 @@ app.post("/accept", chatGenerator, async (req, res) => {
       { $set: { dinnerDate: newDate._id } }
     );
 
-    await axios.post(`${process.env.APP_URL}/delete-post`, req); // delete post and all associated requests
+    console.log(req.body);
+    await axios.post(`${process.env.APP_URL}/delete-post`, { user: req.body.posterId, postId: req.body.postId }); // delete post and all associated requests
 
     res.status(200).json("Date successfully created");
   } catch (error) {
@@ -485,6 +481,7 @@ app.post("/delete-date", async (req, res) => {
   );
 
   await DinnerDate.deleteOne({ _id: dateId });
+  res.status(200).json("Date successfully deleted");
 });
 
 // export the express app we created to make it available to other modules

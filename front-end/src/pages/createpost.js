@@ -37,9 +37,9 @@ const CreatePost = () => {
       }
     }
 
-    function handleDateChange(date) {
-      handleChange({ target: { name: 'date', value: date }});
-    }
+    const handleDateChange = (date) => {
+      setFormData({ ...formData, datetime: date });
+    };
     
     async function handleSubmit(event) {
       const formDataCopy = {...formData};
@@ -70,7 +70,7 @@ const CreatePost = () => {
                 <label className="datetime-label">
                     <p>Date and Time</p>
                     <DateTimePicker
-                      value={formData.datetime} 
+                      value={formData.datetime}
                       onChange={handleDateChange}
                       disablePast
                     />

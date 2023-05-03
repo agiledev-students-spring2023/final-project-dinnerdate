@@ -113,7 +113,7 @@ function HomeLFD() {
 
     const handleAccept = async (request) => {
         await axios.post(`/accept`, request)
-        .then((response) => console.log(response))
+        .then((response) => window.location.reload())
         .catch(e => console.error(e.response.data.msg));
     }
 
@@ -138,8 +138,10 @@ function HomeLFD() {
           <div className="otherUserProfile">
             <div className="acc-btn">
               <div onClick={() => { setSelectedReq(-1); setButtonPopup(false) }}>
-              <div className="dec-btn"><div onClick={() => {setButtonPopup(false); handleDecline(requests[selectedReq]); window.location.reload(true)}}><button>Decline</button></div></div>
+              <div className="btn-container">
+                <div className="dec-btn"><div onClick={() => {setButtonPopup(false); handleDecline(requests[selectedReq]); window.location.reload(true)}}><button>Decline</button></div></div>
                 <div className="acc-btn"><button onClick={() => {handleAccept(requests[selectedReq])}}>Accept</button></div>
+              </div>
                 <button className="close-btn">close</button>
               </div>
             </div>

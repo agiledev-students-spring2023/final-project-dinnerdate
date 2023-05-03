@@ -178,8 +178,8 @@ const Posts = ({ selected }) => {
       
       <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
         <div className="otherUserProfile">
-          <h1>{posts[selectedPost].title}</h1>
-          <h3>{posts[selectedPost].author.firstName} {posts[selectedPost].author.lastName}</h3>
+          <h1>{posts[selectedPost]?.title}</h1>
+          <h3>{posts[selectedPost]?.author?.firstName} {posts[selectedPost]?.author?.lastName}</h3>
           <h4>{new Date(posts[selectedPost].datetime).toLocaleString('en-US', { 
             month: 'long', 
             day: 'numeric', 
