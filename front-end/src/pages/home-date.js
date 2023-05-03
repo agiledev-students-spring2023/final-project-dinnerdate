@@ -50,6 +50,14 @@ function HomeDate() {
             <p>{restaurant?.address}</p>
             <p>{restaurant?.phone_number && "📞" + restaurant?.phone_number}</p>
             <p>{restaurant?.description}</p>
+            <p>Time: {new Date(date?.datetime).toLocaleString('en-US', { 
+            month: 'long', 
+            day: 'numeric', 
+            year: 'numeric', 
+            hour: 'numeric', 
+            minute: 'numeric',
+            timeZoneName: 'short'
+            })}</p>
             <p>Diner 1: {date?.poster.firstName + " " + date?.poster.lastName}</p>
             <p>Diner 2: {date?.requester.firstName + " " + date?.requester.lastName}</p>
 
