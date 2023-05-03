@@ -3,10 +3,6 @@ import axios from '../axiosInstance';
 import React, { useState } from 'react';
 import './login.css'
 
-const serverUrl = process.env.REACT_APP_SERVER_URL;
-const serverPort = process.env.REACT_APP_SERVER_PORT;
-
-
 const Login = () => {
     const history = useHistory();
 
