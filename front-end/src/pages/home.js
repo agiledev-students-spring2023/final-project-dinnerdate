@@ -175,6 +175,7 @@ const Posts = ({ selected }) => {
         ))}
 
       {posts && selectedPost != -1 && 
+      
       <Popup trigger={buttonPopup} setTrigger={setButtonPopup}>
         <div className="otherUserProfile">
           <h1>{posts[selectedPost]?.title}</h1>
@@ -190,8 +191,7 @@ const Posts = ({ selected }) => {
           </h4>
           <div id="wrapper">
             <div id="first">
-              <img
-                style={{ width: "200px", height: "200px", borderRadius: "20px"}}
+              <img id="profile-pic"
                 src={'https://picsum.photos/300/300'} /* Should be profile picture */
               />
             </div>

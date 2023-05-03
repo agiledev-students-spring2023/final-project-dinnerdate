@@ -44,9 +44,9 @@ function HomeLFD() {
           <h1>Your Post for:</h1>
           <h2>{restaurant?.name}</h2>
           <p>{restaurant?.address}</p>
-          <h3>Title</h3>
+          <h3>Title:</h3>
           <p>{post?.title}</p>
-          <h3>Date and time</h3>
+          <h3>Date and time:</h3>
           <p>{new Date(post?.datetime).toLocaleString('en-US', { 
             month: 'long', 
             day: 'numeric', 
@@ -55,7 +55,7 @@ function HomeLFD() {
             minute: 'numeric',
             timeZoneName: 'short'
             })}</p>
-          <h3>Description</h3>
+          <h3>Description:</h3>
           <p>{post?.description}</p>
           <br/>
           <Requests selected={selected} />
