@@ -438,7 +438,7 @@ app.post("/decline", async (req, res) => {
   }
 });
 
-app.post("/accept", chatGenerator, async (req, res) => {
+app.post("/accept", async (req, res) => {
   try {
     const postId = req.body.postId;
     const request = await Request.findOne({ postId });
