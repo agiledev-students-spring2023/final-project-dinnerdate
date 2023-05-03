@@ -113,7 +113,7 @@ function HomeLFD() {
 
     const handleAccept = async (request) => {
         await axios.post(`/accept`, request)
-        .then((response) => console.log(response))
+        .then((response) => window.location.reload())
         .catch(e => console.error(e.response.data.msg));
     }
 
